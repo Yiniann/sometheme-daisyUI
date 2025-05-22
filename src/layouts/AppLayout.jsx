@@ -4,6 +4,7 @@ import Sidebar from "../components/layout/Sidebar"
 import { Menu, Settings, IdCard } from "lucide-react"
 import Infobar from '../components/layout/Infobar'
 import Settingsbar from "../components/layout/Settingsbar" 
+import Docker from "../components/layout/Docker"
 
 const AppLayout = () => {
   const [drawerOpen, setDrawerOpen] = useState(false)//sidebar抽屉状态
@@ -56,7 +57,7 @@ const AppLayout = () => {
       {/* 抽屉遮罩层（小屏） */}
       {drawerOpen && (
         <div
-          className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+          className="fixed z-40 left-0 right-0 top-14 bottom-16 bg-black/40 lg:hidden"
           onClick={() => setDrawerOpen(false)}
           aria-hidden="true"
         />
@@ -76,7 +77,7 @@ const AppLayout = () => {
 
         {/* 抽屉导航栏（小屏） */}
         <aside
-          className={`fixed top-14 left-0 bottom-0 z-50 w-64 transform bg-base-200 border-r rounded-r-lg border-base-300 transition-transform duration-300 lg:hidden ${
+          className={`fixed top-14 left-0 bottom-16 lg:top-0 lg:bottom-0 z-50 w-64 transform bg-base-200 border-r rounded-r-lg border-base-300 transition-transform duration-300 shadow-xl lg:hidden ${
             drawerOpen ? "translate-x-0" : "-translate-x-full"
           }`}
           aria-hidden={!drawerOpen}
@@ -115,12 +116,12 @@ const AppLayout = () => {
         <>
           {/* 右侧抽屉遮罩层 */}
           <div
-            className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+            className="fixed z-40 left-0 right-0 top-14 bottom-16 bg-black/40 lg:hidden"
             onClick={() => setActiveRightPanel(null)}
             aria-hidden="true"
           />
 
-          <div className="fixed right-0 top-14 lg:top-0 bottom-0 z-50 w-72 bg-base-100 border-l border-base-300 shadow-xl rounded-l-lg">
+          <div className="fixed right-0 top-14 bottom-16 lg:top-0 lg:bottom-0 z-50 w-72 bg-base-200 border-l border-base-300 shadow-xl rounded-l-lg">
             <div className="flex items-center justify-between border-b border-base-300 p-4">
               <h2 className="font-bold text-lg">
                 {activeRightPanel === "info" ? "用户信息" : "设置"}
@@ -140,10 +141,11 @@ const AppLayout = () => {
         </>
       )}
 
-
-          </div>
       
+      </div>
+    <Docker />
     </div>
+  
   )
 }
 
