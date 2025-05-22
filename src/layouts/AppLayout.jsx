@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react"
 import { Outlet } from "react-router-dom"
 import Sidebar from "../components/layout/Sidebar"
-import { Menu, Settings, IdCard } from "lucide-react"
+import { Menu } from "lucide-react"
 import Infobar from '../components/layout/Infobar'
 import Settingsbar from "../components/layout/Settingsbar" 
 import Docker from "../components/layout/Docker"
+import RightPanelWrapper from "../components/layout/RightPanelWrapper";
+import RightPanelToggleButtons from "../components/layout/RightPanelToggleButtons";
+
 
 import { useDispatch} from "react-redux";
 import {
@@ -21,9 +24,16 @@ const AppLayout = () => {
   const [activeRightPanel, setActiveRightPanel] = useState(null); //右侧栏状态
   //右侧panel标题
   const panelMap = {
-    info: Infobar,
-    settings: Settingsbar,
-  };
+      info: {
+        component: Infobar,
+        title: "账户信息",
+      },
+      settings: {
+        component: Settingsbar,
+        title: "设置",
+      },
+    };
+
 
    useEffect(() => {
     // 只有在首次进入应用且没有检查过登录状态时才触发 checkLogin
@@ -76,27 +86,10 @@ const AppLayout = () => {
           🚀 Shuttle
         </span>
 
-        {/* Info按钮 */}
-        <button
-          className="btn btn-square btn-ghost ml-2"
-          onClick={() =>
-            setActiveRightPanel(activeRightPanel === "info" ? null : "info")
-          }
-          aria-label="用户信息"
-        >
-          <IdCard className="w-5 h-5" />
-        </button>
-
-        {/* Settings按钮 */}
-        <button
-          className="btn btn-square btn-ghost ml-2"
-          onClick={() =>
-            setActiveRightPanel(activeRightPanel === "settings" ? null : "settings")
-          }
-          aria-label="设置"
-        >
-          <Settings className="w-5 h-5" />
-        </button>
+        <RightPanelToggleButtons
+          active={activeRightPanel}
+          setActive={setActiveRightPanel}
+        />
       </header>
 
 
@@ -139,57 +132,20 @@ const AppLayout = () => {
 
         {/* 右侧栏（仅大屏显示） */}
         <aside className="hidden lg:flex flex-col items-center w-16 bg-base-200 border-l border-base-300 py-4 space-y-4">
-         <button
-          className="btn btn-ghost btn-sm p-2"
-          onClick={() =>
-            setActiveRightPanel(activeRightPanel === "info" ? null : "info")
-          }
-        >
-          <IdCard className="w-5 h-5" />
-        </button>
-
-        <button
-          className="btn btn-ghost btn-sm p-2"
-          onClick={() =>
-            setActiveRightPanel(activeRightPanel === "settings" ? null : "settings")
-          }
-        >
-          <Settings className="w-5 h-5" />
-        </button>
+          <RightPanelToggleButtons
+            active={activeRightPanel}
+            setActive={setActiveRightPanel}
+          />
         </aside>
 
-        {/* 右侧抽屉*/}
-        {activeRightPanel && (() => {
-          const PanelComponent = panelMap[activeRightPanel];
-          if (!PanelComponent) return null;
 
-          const title = PanelComponent.title || "面板";
+        {/* 右侧抽屉组件 */}
+     <RightPanelWrapper
+        panelKey={activeRightPanel}
+        onClose={() => setActiveRightPanel(null)}
+        panelMap={panelMap}
+      />
 
-          return (
-            <>
-              <div
-                className="fixed z-40 left-0 right-0 top-14 bottom-16 bg-black/40 lg:bg-transparent"
-                onClick={() => setActiveRightPanel(null)}
-                aria-hidden="true"
-              />
-
-              <div className="fixed right-0 top-14 bottom-16 lg:top-0 lg:bottom-0 z-50 w-72 bg-base-200 border-l border-base-300 shadow-xl rounded-l-lg">
-                <div className="flex items-center justify-between border-b border-base-300 p-4">
-                  <h2 className="font-bold text-lg">{title}</h2>
-                  <button
-                    className="btn btn-sm btn-ghost"
-                    onClick={() => setActiveRightPanel(null)}
-                  >
-                    ✕
-                  </button>
-                </div>
-                <div className="overflow-y-auto p-4">
-                  <PanelComponent />
-                </div>
-              </div>
-            </>
-          );
-        })()}
 
 
       
