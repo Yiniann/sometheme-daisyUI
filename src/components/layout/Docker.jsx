@@ -4,7 +4,7 @@ import { Home, LayoutDashboard, FileText, User, Store } from "lucide-react";
 const navItemClass = ({ isActive }) =>
   `flex flex-col items-center justify-center gap-1 text-xs h-full w-full rounded-lg ${
     isActive
-      ? "bg-accent text-accent-content font-semibold"
+      ? "bg-neutral text-neutral-content font-semibold"
       : "text-base-content hover:bg-base-200"
   }`;
 

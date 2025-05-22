@@ -1,7 +1,7 @@
 import { Languages, Palette } from "lucide-react";
 import { useState, useEffect } from "react";
 
-const themes = ["light", "dark", "cupcake", "retro", "dracula", "cyberpunk"];
+const themes = ["light", "dark", "nord","valentine", "cupcake", "dracula", "cyberpunk"];
 
 const Settingsbar = () => {
   const [followSystem, setFollowSystem] = useState(true);

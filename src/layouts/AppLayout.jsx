@@ -71,18 +71,18 @@ const AppLayout = () => {
   return (
     <div className="flex flex-col h-screen">
       {/* 顶栏（小屏显示） */}
-      <header className="fixed top-0 left-0 right-0 z-30 h-14 w-full bg-accent text-accent-content flex items-center px-4 shadow-md lg:hidden">
+      <header className="fixed top-0 left-0 right-0 z-30 h-14 w-full bg-neutral text-neutral-content flex items-center px-4 shadow-md lg:hidden">
         {/* 左侧菜单按钮 */}
         <button
           className="btn btn-square btn-ghost mr-2"
-          onClick={() => setDrawerOpen(true)}
+          onClick={() => setDrawerOpen(!drawerOpen)}
           aria-label="打开菜单"
         >
           <Menu className="w-6 h-6" />
         </button>
 
         {/* 中间 LOGO */}
-        <span className="flex-grow text-center text-xl font-bold select-none text-base-content">
+        <span className="flex-grow text-center text-xl font-bold select-none">
           🚀 Shuttle
         </span>
 

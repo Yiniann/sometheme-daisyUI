@@ -3,8 +3,8 @@ import { NavLink } from "react-router-dom";
 import { Send, LayoutDashboard, MessagesSquare, IdCard, Store, ShoppingCart, } from "lucide-react";
 
 const navItemClass = ({ isActive }) =>
-  `flex items-center gap-3 px-4 py-3 rounded-md hover:bg-base-300 w-full ${
-    isActive ? "bg-accent text-accent-content font-semibold" : "text-base-content"
+  `flex items-center gap-3 px-4 py-3 rounded-md hover:bg-neutral/30 w-full ${
+    isActive ? "bg-neutral text-neutral-content font-semibold " : "text-base-content"
   }`;
 
 const Sidebar = ({ onLinkClick }) => {
