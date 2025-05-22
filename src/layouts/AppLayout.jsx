@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Outlet } from "react-router-dom"
 import Sidebar from "../components/layout/Sidebar"
 import { Menu, Settings, IdCard } from "lucide-react"
@@ -6,10 +6,57 @@ import Infobar from '../components/layout/Infobar'
 import Settingsbar from "../components/layout/Settingsbar" 
 import Docker from "../components/layout/Docker"
 
+import { useDispatch} from "react-redux";
+import {
+  fetchInfo,
+  fetchSubscription,
+  getStat,
+  fetchNotice,
+} from "../redux/slices/userSlice";
+import { fetchAccountConfig, checkLogin } from "../redux/slices/passportSlice";
+
 const AppLayout = () => {
+  const dispatch = useDispatch()
   const [drawerOpen, setDrawerOpen] = useState(false)//sidebar抽屉状态
   const [activeRightPanel, setActiveRightPanel] = useState(null); //右侧栏状态
+  //右侧panel标题
+  const panelMap = {
+    info: Infobar,
+    settings: Settingsbar,
+  };
 
+   useEffect(() => {
+    // 只有在首次进入应用且没有检查过登录状态时才触发 checkLogin
+    if (!sessionStorage.getItem("hasCheckedLogin")) {
+      const fetchLoginStatus = async () => {
+        try {
+          await dispatch(checkLogin()).unwrap();
+          sessionStorage.setItem("hasCheckedLogin", "true");
+        } catch (error) {
+          console.error("登录状态检查失败", error);
+        }
+      };
+      fetchLoginStatus();
+    }
+  }, [dispatch]);
+
+  //获取数据
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        await Promise.all([
+          dispatch(fetchInfo()).unwrap(),
+          dispatch(fetchSubscription()).unwrap(),
+          dispatch(getStat()).unwrap(),
+          dispatch(fetchNotice()).unwrap(),
+          dispatch(fetchAccountConfig()).unwrap(),
+        ]);
+      } catch (error) {
+        console.error("数据请求失败", error);
+      }
+    };
+    fetchData();
+  }, [dispatch]);
 
   return (
     <div className="flex flex-col h-screen">
@@ -112,34 +159,38 @@ const AppLayout = () => {
         </aside>
 
         {/* 右侧抽屉*/}
-        {activeRightPanel && (
-        <>
-          {/* 右侧抽屉遮罩层 */}
-          <div
-            className="fixed z-40 left-0 right-0 top-14 bottom-16 bg-black/40 lg:hidden"
-            onClick={() => setActiveRightPanel(null)}
-            aria-hidden="true"
-          />
+        {activeRightPanel && (() => {
+          const PanelComponent = panelMap[activeRightPanel];
+          if (!PanelComponent) return null;
 
-          <div className="fixed right-0 top-14 bottom-16 lg:top-0 lg:bottom-0 z-50 w-72 bg-base-200 border-l border-base-300 shadow-xl rounded-l-lg">
-            <div className="flex items-center justify-between border-b border-base-300 p-4">
-              <h2 className="font-bold text-lg">
-                {activeRightPanel === "info" ? "用户信息" : "设置"}
-              </h2>
-              <button
-                className="btn btn-sm btn-ghost"
+          const title = PanelComponent.title || "面板";
+
+          return (
+            <>
+              <div
+                className="fixed z-40 left-0 right-0 top-14 bottom-16 bg-black/40 lg:bg-transparent"
                 onClick={() => setActiveRightPanel(null)}
-              >
-                ✕
-              </button>
-            </div>
-            <div className="overflow-y-auto p-4">
-              {activeRightPanel === "info" && <Infobar />}
-              {activeRightPanel === "settings" && <Settingsbar />}
-            </div>
-          </div>
-        </>
-      )}
+                aria-hidden="true"
+              />
+
+              <div className="fixed right-0 top-14 bottom-16 lg:top-0 lg:bottom-0 z-50 w-72 bg-base-200 border-l border-base-300 shadow-xl rounded-l-lg">
+                <div className="flex items-center justify-between border-b border-base-300 p-4">
+                  <h2 className="font-bold text-lg">{title}</h2>
+                  <button
+                    className="btn btn-sm btn-ghost"
+                    onClick={() => setActiveRightPanel(null)}
+                  >
+                    ✕
+                  </button>
+                </div>
+                <div className="overflow-y-auto p-4">
+                  <PanelComponent />
+                </div>
+              </div>
+            </>
+          );
+        })()}
+
 
       
       </div>

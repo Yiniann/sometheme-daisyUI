@@ -104,4 +104,6 @@ const Settingsbar = () => {
   );
 };
 
+Settingsbar.title = "设置";
+
 export default Settingsbar;
