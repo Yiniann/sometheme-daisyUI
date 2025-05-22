@@ -13,7 +13,7 @@ const AppLayout = () => {
   return (
     <div className="flex flex-col h-screen">
       {/* 顶栏（小屏显示） */}
-      <header className="fixed top-0 left-0 right-0 z-30 h-14 w-full bg-accent text-primary-content flex items-center px-4 shadow-md lg:hidden">
+      <header className="fixed top-0 left-0 right-0 z-30 h-14 w-full bg-accent text-accent-content flex items-center px-4 shadow-md lg:hidden">
         {/* 左侧菜单按钮 */}
         <button
           className="btn btn-square btn-ghost mr-2"
@@ -112,7 +112,15 @@ const AppLayout = () => {
 
         {/* 右侧抽屉*/}
         {activeRightPanel && (
-          <div className="fixed right-0 top-14 lg:top-0 bottom-0 z-50 w-72 bg-base-100 border-l border-base-300 shadow-xl ">
+        <>
+          {/* 右侧抽屉遮罩层 */}
+          <div
+            className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+            onClick={() => setActiveRightPanel(null)}
+            aria-hidden="true"
+          />
+
+          <div className="fixed right-0 top-14 lg:top-0 bottom-0 z-50 w-72 bg-base-100 border-l border-base-300 shadow-xl rounded-l-lg">
             <div className="flex items-center justify-between border-b border-base-300 p-4">
               <h2 className="font-bold text-lg">
                 {activeRightPanel === "info" ? "用户信息" : "设置"}
@@ -129,7 +137,9 @@ const AppLayout = () => {
               {activeRightPanel === "settings" && <Settingsbar />}
             </div>
           </div>
-        )}
+        </>
+      )}
+
 
           </div>
       
