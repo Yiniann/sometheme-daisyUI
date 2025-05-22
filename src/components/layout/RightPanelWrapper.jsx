@@ -6,7 +6,7 @@ const RightPanelWrapper = ({ panelKey, onClose, panelMap }) => {
   return (
     <>
       <div
-        className="fixed z-40 left-0 right-0 top-14 bottom-16 bg-black/40 lg:bg-transparent"
+        className="fixed z-40 left-0 right-0 top-14 bottom-16 lg:top-0 lg:bottom-0 bg-black/40 lg:bg-transparent"
         onClick={onClose}
         aria-hidden="true"
       />

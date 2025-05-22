@@ -56,7 +56,7 @@ const Settingsbar = () => {
         <label className="label cursor-pointer flex items-center">
           <input
             type="checkbox"
-            className="toggle toggle-sm"
+            className="toggle toggle-sm toggle-primary"
             checked={followSystem}
             onChange={toggleFollowSystem}
           />
@@ -72,7 +72,7 @@ const Settingsbar = () => {
             UI 主题
           </label>
           <select
-            className="select select-bordered select-sm w-full"
+            className="select select-bordered select-sm select-primary w-full"
             value={theme}
             onChange={handleThemeChange}
           >
@@ -92,7 +92,7 @@ const Settingsbar = () => {
           语言
         </label>
         <select
-          className="select select-bordered select-sm w-full"
+          className="select select-bordered select-sm select-primary w-full"
           value={lang}
           onChange={(e) => setLang(e.target.value)}
         >

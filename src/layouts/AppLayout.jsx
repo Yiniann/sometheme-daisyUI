@@ -107,7 +107,7 @@ const AppLayout = () => {
         {/* 左侧导航栏（大屏） */}
         <aside className="hidden lg:flex lg:flex-col w-auto bg-base-200 border-r border-base-300">
           {/* 居中logo */}
-          <div className="m-4 mb-10 p-5 text-xl font-bold  sm:text-2xl lg:text-2xl 2xl:text-3xl dark:text-white flex  items-center w-full">
+          <div className="m-4 mb-10 p-5 text-xl font-bold  sm:text-2xl lg:text-2xl 2xl:text-3xl flex  items-center w-full">
             <span className="mr-2 text-3xl">🚀</span> 
             Shuttle
           </div>
