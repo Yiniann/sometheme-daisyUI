@@ -12,7 +12,7 @@ const Sidebar = ({ onLinkClick }) => {
     <nav className="flex flex-col p-4 space-y-2 w-full">
       <NavLink to="/home" className={navItemClass} onClick={onLinkClick}>
         <Send className="w-5 h-5 flex-shrink-0" />
-        <span className="truncate">首页</span>
+        <span className="truncate">Home</span>
       </NavLink>
       <NavLink to="/dashboard" className={navItemClass} onClick={onLinkClick}>
         <LayoutDashboard className="w-5 h-5 flex-shrink-0" />
@@ -28,7 +28,7 @@ const Sidebar = ({ onLinkClick }) => {
       </NavLink>
       <NavLink to="/ticket" className={navItemClass} onClick={onLinkClick}>
         <MessagesSquare className="w-5 h-5 flex-shrink-0" />
-        <span className="truncate">工单</span>
+        <span className="truncate">Ticket</span>
       </NavLink>
       <NavLink to="/profile" className={navItemClass} onClick={onLinkClick}>
         <IdCard className="w-5 h-5 flex-shrink-0" />
