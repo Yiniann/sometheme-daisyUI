@@ -13,7 +13,8 @@ const AppLayout = () => {
   return (
     <div className="flex flex-col h-screen">
       {/* 顶栏（小屏显示） */}
-      <header className="fixed top-0 left-0 right-0 z-30 h-14 w-full bg-primary text-primary-content flex items-center px-4 shadow-md lg:hidden">
+      <header className="fixed top-0 left-0 right-0 z-30 h-14 w-full bg-accent text-primary-content flex items-center px-4 shadow-md lg:hidden">
+        {/* 左侧菜单按钮 */}
         <button
           className="btn btn-square btn-ghost mr-2"
           onClick={() => setDrawerOpen(true)}
@@ -21,11 +22,35 @@ const AppLayout = () => {
         >
           <Menu className="w-6 h-6" />
         </button>
+
+        {/* 中间 LOGO */}
         <span className="flex-grow text-center text-xl font-bold select-none text-base-content">
           🚀 Shuttle
         </span>
 
+        {/* Info按钮 */}
+        <button
+          className="btn btn-square btn-ghost ml-2"
+          onClick={() =>
+            setActiveRightPanel(activeRightPanel === "info" ? null : "info")
+          }
+          aria-label="用户信息"
+        >
+          <IdCard className="w-5 h-5" />
+        </button>
+
+        {/* Settings按钮 */}
+        <button
+          className="btn btn-square btn-ghost ml-2"
+          onClick={() =>
+            setActiveRightPanel(activeRightPanel === "settings" ? null : "settings")
+          }
+          aria-label="设置"
+        >
+          <Settings className="w-5 h-5" />
+        </button>
       </header>
+
 
 
       {/* 抽屉遮罩层（小屏） */}
@@ -41,7 +66,7 @@ const AppLayout = () => {
         {/* 左侧导航栏（大屏） */}
         <aside className="hidden lg:flex lg:flex-col w-auto bg-base-200 border-r border-base-300">
           {/* 居中logo */}
-          <div className="m-4 mb-10 p-5 text-xl font-bold text-black sm:text-2xl lg:text-2xl 2xl:text-3xl dark:text-white flex  items-center w-full">
+          <div className="m-4 mb-10 p-5 text-xl font-bold  sm:text-2xl lg:text-2xl 2xl:text-3xl dark:text-white flex  items-center w-full">
             <span className="mr-2 text-3xl">🚀</span> 
             Shuttle
           </div>
@@ -85,11 +110,11 @@ const AppLayout = () => {
         </button>
         </aside>
 
-        {/* 右侧抽屉：大屏显示 */}
+        {/* 右侧抽屉*/}
         {activeRightPanel && (
-          <div className="fixed right-0 top-0 bottom-0 z-50 w-72 bg-base-100 border-l border-base-300 shadow-xl hidden lg:block">
+          <div className="fixed right-0 top-14 lg:top-0 bottom-0 z-50 w-72 bg-base-100 border-l border-base-300 shadow-xl ">
             <div className="flex items-center justify-between border-b border-base-300 p-4">
-              <h2 className="font-bold text-base">
+              <h2 className="font-bold text-lg">
                 {activeRightPanel === "info" ? "用户信息" : "设置"}
               </h2>
               <button

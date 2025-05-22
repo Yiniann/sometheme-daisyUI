@@ -13,12 +13,14 @@ import Order from "./pages/Order";
 import Ticket from "./pages/Ticket";
 import Profile from "./pages/Profile";
 
+import { useThemeInit } from "./hooks/useThemeInit";
 import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   const isAuthenticated = useSelector(
     (state) => state.passport.isAuthenticated
   );
+  useThemeInit()
 
   return (
     <BrowserRouter>

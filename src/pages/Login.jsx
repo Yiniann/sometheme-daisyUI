@@ -266,7 +266,7 @@ const Login = () => {
                 ? isLoading.forgetPassword
                 : isLoading[mode]
             }
-            className="btn btn-primary w-full"
+            className='btn btn-primary w-full'
           >
             {isLoading[mode] ? "处理中..." : TEXT[mode].button}
           </button>

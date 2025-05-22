@@ -4,7 +4,7 @@ import { Send, LayoutDashboard, MessagesSquare, IdCard, Store, ShoppingCart, } f
 
 const navItemClass = ({ isActive }) =>
   `flex items-center gap-3 px-4 py-3 rounded-md hover:bg-base-300 w-full ${
-    isActive ? "bg-primary text-primary-content font-semibold" : "text-base-content"
+    isActive ? "bg-accent text-accent-content font-semibold" : "text-base-content"
   }`;
 
 const Sidebar = ({ onLinkClick }) => {

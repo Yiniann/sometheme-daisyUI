@@ -1,39 +1,95 @@
-// components/layout/Settingsbar.jsx
-import { Sun, Moon, Globe, Languages } from "lucide-react";
-import { useState } from "react";
+import { Languages, Palette } from "lucide-react";
+import { useState, useEffect } from "react";
+
+const themes = ["light", "dark", "cupcake", "retro", "dracula", "cyberpunk"];
 
 const Settingsbar = () => {
+  const [followSystem, setFollowSystem] = useState(true);
   const [theme, setTheme] = useState("light");
   const [lang, setLang] = useState("zh");
 
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light";
-    setTheme(newTheme);
+  // 初始化设置
+  useEffect(() => {
+    const storedFollow = localStorage.getItem("followSystem");
+    const storedTheme = localStorage.getItem("theme");
+    const follow = storedFollow === null ? true : storedFollow === "true";
+    const currentTheme = storedTheme || "light";
+
+    setFollowSystem(follow);
+    setTheme(currentTheme);
+
+    if (!follow) {
+      document.documentElement.setAttribute("data-theme", currentTheme);
+    }
+  }, []);
+
+  const applyTheme = (newTheme) => {
     document.documentElement.setAttribute("data-theme", newTheme);
+  };
+
+  const toggleFollowSystem = () => {
+    const newFollow = !followSystem;
+    setFollowSystem(newFollow);
+    localStorage.setItem("followSystem", newFollow.toString());
+
+    if (newFollow) {
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      applyTheme(prefersDark ? "dark" : "light");
+    } else {
+      applyTheme(theme);
+    }
+  };
+
+  const handleThemeChange = (e) => {
+    const selectedTheme = e.target.value;
+    setTheme(selectedTheme);
+    localStorage.setItem("theme", selectedTheme);
+    if (!followSystem) {
+      applyTheme(selectedTheme);
+    }
   };
 
   return (
     <div className="space-y-4">
-      <div className="text-lg font-bold">设置</div>
-
-      <div className="form-control">
-        <label className="label">
-          <span className="label-text">
-            <Sun className="w-4 h-4 inline-block mr-2" />
-            主题
-          </span>
+      {/* 跟随系统 */}
+      <div className="form-control flex flex-row items-center space-x-2">
+        <label className="label cursor-pointer flex items-center">
+          <input
+            type="checkbox"
+            className="toggle toggle-sm"
+            checked={followSystem}
+            onChange={toggleFollowSystem}
+          />
+          <span className="label-text ml-2 select-none">跟随系统主题</span>
         </label>
-        <button className="btn btn-sm w-full" onClick={toggleTheme}>
-          切换为 {theme === "light" ? "暗色" : "亮色"} 模式
-        </button>
       </div>
 
+      {/* 自定义主题选择 */}
+      {!followSystem && (
+        <div className="form-control">
+          <label className="label flex items-center">
+            <Palette className="w-4 h-4 mr-2" />
+            UI 主题
+          </label>
+          <select
+            className="select select-bordered select-sm w-full"
+            value={theme}
+            onChange={handleThemeChange}
+          >
+            {themes.map((t) => (
+              <option key={t} value={t}>
+                {t}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
+      {/* 语言切换 */}
       <div className="form-control">
-        <label className="label">
-          <span className="label-text">
-            <Languages className="w-4 h-4 inline-block mr-2" />
-            语言
-          </span>
+        <label className="label flex items-center">
+          <Languages className="w-4 h-4 mr-2" />
+          语言
         </label>
         <select
           className="select select-bordered select-sm w-full"
