@@ -28,7 +28,7 @@ const LogoutButton = ({ onLogout }) => {
 };
   return (
     <>
-      <button onClick={openModal} className="btn btn-error btn-sm">
+      <button onClick={openModal} className="btn btn-error text-error-content btn-sm">
         退出登录
       </button>
 
