@@ -12,7 +12,7 @@ const Infobar = () => {
       {/* 用户头像区域 */}
       <div className="flex items-center gap-5">
         <div className="avatar">
-          <div className="w-16 h-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-4 overflow-hidden">
+          <div className="w-16 h-16 rounded-full ring ring-neutral ring-offset-base-100 ring-offset-4 overflow-hidden">
             <img
               src={info?.avatar_url || "/default-avatar.png"}
               alt="用户头像"

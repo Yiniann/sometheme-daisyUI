@@ -1,6 +1,6 @@
 // Sidebar.jsx
 import { NavLink } from "react-router-dom";
-import { Send, LayoutDashboard, MessagesSquare, IdCard, Store, ShoppingCart, } from "lucide-react";
+import { Send, LayoutDashboard, MessagesSquare, IdCard, Store, ShoppingCart,BookOpen } from "lucide-react";
 
 const navItemClass = ({ isActive }) =>
   `flex items-center gap-3 px-4 py-3 rounded-md hover:bg-neutral/30 w-full ${
@@ -29,6 +29,10 @@ const Sidebar = ({ onLinkClick }) => {
       <NavLink to="/ticket" className={navItemClass} onClick={onLinkClick}>
         <MessagesSquare className="w-5 h-5 flex-shrink-0" />
         <span className="truncate">Ticket</span>
+      </NavLink>
+       <NavLink to="/knowledege" className={navItemClass} onClick={onLinkClick}>
+        <BookOpen className="w-5 h-5 flex-shrink-0" />
+        <span className="truncate">Knowledege</span>
       </NavLink>
       <NavLink to="/profile" className={navItemClass} onClick={onLinkClick}>
         <IdCard className="w-5 h-5 flex-shrink-0" />

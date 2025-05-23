@@ -11,6 +11,7 @@ import NotFound from "./pages/NotFound";
 import Plan from "./pages/Plan";
 import Order from "./pages/Order";
 import Ticket from "./pages/Ticket";
+import Knowledege from './pages/Knowledege'
 import Profile from "./pages/Profile";
 
 import { useThemeInit } from "./hooks/useThemeInit";//主题初始化
@@ -59,6 +60,7 @@ const App = () => {
             <Route path="plan" element={<Plan />} />
             <Route path="order" element={<Order />} />
             <Route path="ticket" element={<Ticket />} />
+            <Route path="knowledege" element={<Knowledege />} />
             <Route path="profile" element={<Profile />} />
           </Route>
 

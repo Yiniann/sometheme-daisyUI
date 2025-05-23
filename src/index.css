@@ -1,4 +1,9 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 @plugin "daisyui" {
   themes: light --default, dark --prefersdark, cupcake, dracula, cyberpunk, valentine, nord;
 }
+
+
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *, [data-theme=dracula] *))
+

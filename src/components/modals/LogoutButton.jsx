@@ -28,7 +28,7 @@ const LogoutButton = ({ onLogout }) => {
 };
   return (
     <>
-      <button onClick={openModal} className="btn btn-error text-error-content btn-sm">
+      <button onClick={openModal} className="btn btn-primary text-primary-content btn-sm">
         退出登录
       </button>
 
@@ -45,7 +45,7 @@ const LogoutButton = ({ onLogout }) => {
           <button
             onClick={handleLogout}
             disabled={loading}
-            className="btn btn-error"
+            className="btn btn-primary"
           >
             {loading ? "退出中..." : "确认退出"}
           </button>

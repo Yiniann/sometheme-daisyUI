@@ -1,35 +1,51 @@
-import React from "react";
 import { useSelector } from "react-redux";
-import parse from "html-react-parser";
+import ReactMarkdown from "react-markdown";
+import { CalendarDays, Megaphone } from "lucide-react";
+import WelcomeBanner from "../components/home/WelcomeBanner"
 
 const Home = () => {
-  const userEmail = useSelector((state) => state.user.info?.email);
   const { notices, loading, error, fetchedNotice } = useSelector(
     (state) => state.user
   );
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8 space-y-12">
+    
+    <div className="p-2 lg:px-8 space-y-12">
       {/* Hero */}
-      <section className="hero bg-base-200 rounded-lg shadow-lg p-12 text-center min-h-[180px] flex flex-col justify-center">
-        <h1 className="text-4xl font-bold mb-4 leading-snug">
-          欢迎回来，{userEmail || "尊敬的用户"}
-        </h1>
-        <p className="text-lg text-gray-600">
-          这里是您的专属代理服务面板，祝您使用愉快！
-        </p>
-      </section>
+      <WelcomeBanner />
 
-      {/* 公告 Timeline */}
+
+      {/* 公告列表 */}
       <section>
-        <h2 className="text-2xl font-semibold mb-6">最新公告</h2>
-
         {loading.fetchNotice && (
-          <p className="text-center text-gray-500">正在加载公告...</p>
+          <ul className="list bg-base-100 rounded-box shadow-md divide-y divide-primary">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <li
+                key={index}
+                className="p-4 flex flex-col md:flex-row md:items-start md:gap-4"
+              >
+                {/* 图标占位 */}
+                <div className="flex-shrink-0">
+                  <div className="skeleton w-6 h-6 mt-1 rounded-full" />
+                </div>
+
+                {/* 内容区 */}
+                <div className="flex-grow space-y-2">
+                  <div className="skeleton h-5 w-32 rounded" /> {/* 标题 */}
+                  <div className="space-y-1">
+                    <div className="skeleton h-4 w-full rounded" />
+                    <div className="skeleton h-4 w-4/5 rounded" />
+                    <div className="skeleton h-4 w-3/5 rounded" />
+                  </div>
+                  <div className="skeleton h-3 w-24 rounded" /> {/* 时间 */}
+                </div>
+              </li>
+            ))}
+          </ul>
         )}
 
         {error.fetchNotice && (
-          <p className="text-center text-red-500">
+          <p className="text-center text-error">
             加载公告失败：{error.fetchNotice}
           </p>
         )}
@@ -37,25 +53,39 @@ const Home = () => {
         {!loading.fetchNotice && !error.fetchNotice && fetchedNotice && (
           <>
             {notices && notices.length > 0 ? (
-              <div className="timeline timeline-vertical">
+              <ul className="list bg-base-100 rounded-box shadow-md divide-y divide-primary">
                 {notices
                   .slice()
                   .reverse()
                   .map(({ title, content, created_at }, index) => (
-                    <div key={index} className="timeline-item">
-                      <div className="timeline-dot"></div>
-                      <div className="timeline-content p-4 bg-base-100 rounded-lg shadow">
-                        <h3 className="font-semibold text-lg mb-2">{title}</h3>
-                        <div className="prose max-w-full">{parse(content)}</div>
-                        <time className="text-xs text-gray-400 mt-2 block">
-                          发布时间: {new Date(created_at * 1000).toLocaleString()}
-                        </time>
+                    <li
+                      key={index}
+                      className="p-4 flex flex-col md:flex-row md:items-start md:gap-4"
+                    >
+                      <div className="flex-shrink-0">
+                        <CalendarDays className="w-6 h-6 text-primary mt-1" />
                       </div>
-                    </div>
+
+                      <div className="flex-grow space-y-1">
+                        {/* 标题和时间 */}
+                        <div className="flex justify-between items-center flex-wrap gap-2">
+                          <div className="font-semibold text-lg">{title}</div>
+                          <time className="text-xs text-primary whitespace-nowrap">
+                            发布时间：{new Date(created_at * 1000).toLocaleString()}
+                          </time>
+                        </div>
+
+                        {/* 内容 */}
+                        <div className="prose prose-sm max-w-none">
+                          <ReactMarkdown>{content}</ReactMarkdown>
+                        </div>
+                      </div>
+                    </li>
                   ))}
-              </div>
+              </ul>
+
             ) : (
-              <p className="text-center text-gray-500">暂无公告。</p>
+              <p className="text-center text-neutral">暂无公告。</p>
             )}
           </>
         )}
@@ -64,4 +94,4 @@ const Home = () => {
   );
 };
 
-export default Home
+export default Home;

@@ -69,7 +69,7 @@ const ResetPasswordButton = () => {
 
   return (
     <>
-      <button onClick={openModal} className="btn btn-warning text-warning-content btn-sm w-full">
+      <button onClick={openModal} className="btn btn-outline btn-neutral btn-sm w-full">
         修改密码
       </button>
 
