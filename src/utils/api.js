@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getValue } from "../config/runtimeConfig";
 
-const baseURL = 'https://shuttle.en1an.com'
+const baseURL = ''
 const api = axios.create({
   baseURL: baseURL, // 初始为空
   timeout: 10000,

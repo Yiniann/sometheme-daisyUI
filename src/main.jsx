@@ -5,8 +5,10 @@ import App from "./App.jsx";
 import "./index.css";
 import store from "./redux/store.js";
 import { loadRuntimeConfig } from "./config/runtimeConfig";
+import { initApi } from "./utils/api.js"; 
 
 loadRuntimeConfig().then(() => {
+  initApi(); //  初始化 axios 的 baseURL
   createRoot(document.getElementById("root")).render(
     <StrictMode>
       <Provider store={store}>
