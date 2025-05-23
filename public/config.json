@@ -2,7 +2,7 @@
   "baseUrl": "https://shuttle.en1an.com",
   "siteName": "Shuttle",
   "appLogo": "🚀",
-  "loginPageImage": "/car.jpg",
+  "loginPageImage": "/header.jpg",
   "headerImage": "/header.jpg",
   "favicon": "favicon.svg"
 }

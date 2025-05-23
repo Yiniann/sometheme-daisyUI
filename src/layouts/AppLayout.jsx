@@ -7,7 +7,7 @@ import Settingsbar from "../components/layout/Settingsbar"
 import Docker from "../components/layout/Docker"
 import RightPanelWrapper from "../components/layout/RightPanelWrapper";
 import RightPanelToggleButtons from "../components/layout/RightPanelToggleButtons";
-
+import { getValue } from "../config/runtimeConfig"
 
 import { useDispatch} from "react-redux";
 import {
@@ -22,6 +22,9 @@ const AppLayout = () => {
   const dispatch = useDispatch()
   const [drawerOpen, setDrawerOpen] = useState(false)//sidebar抽屉状态
   const [activeRightPanel, setActiveRightPanel] = useState(null); //右侧栏状态
+  const siteName = getValue("siteName", "App")
+  const appLogo = getValue("appLogo","")
+  
   //右侧panel标题
   const panelMap = {
       info: {
@@ -83,7 +86,7 @@ const AppLayout = () => {
 
         {/* 中间 LOGO */}
         <span className="flex-grow text-center text-xl font-bold select-none">
-          🚀 Shuttle
+          {appLogo} {siteName}
         </span>
 
         <RightPanelToggleButtons
@@ -108,8 +111,8 @@ const AppLayout = () => {
         <aside className="hidden lg:flex lg:flex-col w-auto bg-base-200 border-r border-base-300">
           {/* 居中logo */}
           <div className="m-4 mb-10 p-5 text-xl font-bold  sm:text-2xl lg:text-2xl 2xl:text-3xl flex  items-center w-full">
-            <span className="mr-2 text-3xl">🚀</span> 
-            Shuttle
+            <span className="mr-2 text-3xl">{appLogo}</span> 
+            {siteName}
           </div>
           <Sidebar />
         </aside>

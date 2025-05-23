@@ -1,12 +1,14 @@
 import { Outlet } from "react-router-dom";
+import { getValue } from "../config/runtimeConfig";
 
 const LoginLayout = () => {
+  const loginPageImage = getValue("loginPageImage","")
   return (
     <div className="relative min-h-screen w-full">
   {/* 背景图：全屏显示 */}
   <div
     className="absolute inset-0 bg-cover bg-center"
-    style={{ backgroundImage: "url('/header.jpg')" }}
+    style={{ backgroundImage: `url(${loginPageImage})` }}
   />
 
   {/* 登录框区域 */}

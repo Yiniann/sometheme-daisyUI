@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { getValue } from "../config/runtimeConfig";
 import {
   login,
   register,
@@ -30,8 +31,8 @@ const Login = () => {
   // 从 Redux 读取 loading 状态和服务端错误信息
   const { loading, error } = useSelector((state) => state.passport);
 
-  const siteName = "Shuttle";
-
+  const siteName = getValue("siteName","App")
+  const appLogo = getValue ("appLogo","")
   // 统一管理各异步接口 loading 状态
   const isLoading = {
     login: loading.login,
@@ -168,19 +169,19 @@ const Login = () => {
   return (
     <div className="relative w-full h-full p-8 flex flex-col justify-center rounded-none lg:rounded-xl shadow-xl min-h-[480px]">
       {/* 左上 Logo */}
-      <div className="absolute top-6 left-6 text-xl font-bold select-none">
-        🚀 {siteName}
+      <div className="absolute top-6 left-6 text-xl font-bold select-none text-primary-content">
+        {appLogo} {siteName}
       </div>
 
       {/* 右上 说明 */}
-      <div className="absolute top-6 right-6 text-sm text-gray-500 select-none">
+      <div className="absolute top-6 right-6 text-sm text-secondary-text select-none">
         Network Service
       </div>
 
       {/* 中间主体内容：标题 + 表单 */}
       <div className="w-full max-w-sm mx-auto flex flex-col items-center">
         {/* 标题  */}
-        <h2 className="mb-6 text-2xl font-bold text-left w-full">
+        <h2 className="mb-6 text-2xl font-bold text-left w-full text-primary-content">
           {TEXT[mode].title}
         </h2>
 
@@ -273,7 +274,7 @@ const Login = () => {
         </form>
 
         {/* 底部切换按钮 */}
-        <div className="fixed bottom-10 px-20 mt-6 flex justify-between text-sm text-primary w-full">
+        <div className="fixed bottom-10 px-20 mt-6 flex justify-between text-sm text-primary-content w-full">
           {mode === "login" && (
             <>
               <button
