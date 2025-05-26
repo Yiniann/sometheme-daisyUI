@@ -6,6 +6,33 @@ import { useSelector } from "react-redux";
 
 const Infobar = () => {
   const info = useSelector((state) => state.user.info);
+  const isLoading = useSelector((state)=> state.user.loading)
+
+  if (isLoading.fetchInfo) {
+    return (
+      <div className="space-y-6 p-4 bg-base-200 rounded-lg max-w-md mx-auto animate-pulse">
+        {/* 头像区域骨架 */}
+        <div className="flex items-center gap-5">
+          <div className="avatar">
+            <div className="w-16 h-16 rounded-full bg-base-300" />
+          </div>
+          <div className="space-y-2 flex-1">
+            <div className="h-4 w-20 bg-base-300 rounded" />
+            <div className="h-3 w-32 bg-base-300 rounded" />
+          </div>
+        </div>
+
+        {/* 余额区域骨架 */}
+        <div className="w-full h-16 rounded-md bg-base-300" />
+
+        {/* 按钮骨架 */}
+        <div className="flex flex-col gap-3">
+          <div className="h-10 bg-base-300 rounded" />
+          <div className="h-10 bg-base-300 rounded" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6 p-4 bg-base-200 rounded-lg max-w-md mx-auto">
