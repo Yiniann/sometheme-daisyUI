@@ -1,7 +1,9 @@
 import { useSelector } from "react-redux";
 import ReactMarkdown from "react-markdown";
-import { CalendarDays, Megaphone } from "lucide-react";
-import WelcomeBanner from "../components/home/WelcomeBanner"
+import { CalendarDays } from "lucide-react";
+import WelcomeBanner from "../components/home/WelcomeBanner";
+
+const isHTML = (str) => /<\/?[a-z][\s\S]*>/i.test(str);
 
 const Home = () => {
   const { notices, loading, error, fetchedNotice } = useSelector(
@@ -9,11 +11,9 @@ const Home = () => {
   );
 
   return (
-    
     <div className="p-2 lg:px-8 space-y-12">
       {/* Hero */}
       <WelcomeBanner />
-
 
       {/* 公告列表 */}
       <section>
@@ -24,20 +24,17 @@ const Home = () => {
                 key={index}
                 className="p-4 flex flex-col md:flex-row md:items-start md:gap-4"
               >
-                {/* 图标占位 */}
                 <div className="flex-shrink-0">
                   <div className="skeleton w-6 h-6 mt-1 rounded-full" />
                 </div>
-
-                {/* 内容区 */}
                 <div className="flex-grow space-y-2">
-                  <div className="skeleton h-5 w-32 rounded" /> {/* 标题 */}
+                  <div className="skeleton h-5 w-32 rounded" />
                   <div className="space-y-1">
                     <div className="skeleton h-4 w-full rounded" />
                     <div className="skeleton h-4 w-4/5 rounded" />
                     <div className="skeleton h-4 w-3/5 rounded" />
                   </div>
-                  <div className="skeleton h-3 w-24 rounded" /> {/* 时间 */}
+                  <div className="skeleton h-3 w-24 rounded" />
                 </div>
               </li>
             ))}
@@ -67,7 +64,6 @@ const Home = () => {
                       </div>
 
                       <div className="flex-grow space-y-1">
-                        {/* 标题和时间 */}
                         <div className="flex justify-between items-center flex-wrap gap-2">
                           <div className="font-semibold text-lg">{title}</div>
                           <time className="text-xs text-primary whitespace-nowrap">
@@ -75,15 +71,20 @@ const Home = () => {
                           </time>
                         </div>
 
-                        {/* 内容 */}
+                        {/* 内容区：判断是 HTML 还是 Markdown */}
                         <div className="prose prose-sm max-w-none">
-                          <ReactMarkdown>{content}</ReactMarkdown>
+                          {isHTML(content) ? (
+                            <div
+                              dangerouslySetInnerHTML={{ __html: content }}
+                            />
+                          ) : (
+                            <ReactMarkdown>{content}</ReactMarkdown>
+                          )}
                         </div>
                       </div>
                     </li>
                   ))}
               </ul>
-
             ) : (
               <p className="text-center text-neutral">暂无公告。</p>
             )}
