@@ -1,9 +1,12 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import SubscriptionButton from "./SubscriptionButton"
 import ResetButton from './ResetButtom'
+import { useNavigate } from "react-router-dom";
 
 const Subscription = () => {
+  const navigate = useNavigate();
+
   const subscription = useSelector((state) => state.user.subscription);
   const plans = useSelector((state) => state.plan.plans);
   const loading = useSelector((state) => state.plan.loading);
@@ -58,60 +61,78 @@ const Subscription = () => {
 
 
   return (
-    <div className="px-4">
-      <p className="pb-5 text-3xl">{planName.toUpperCase()}</p>
+  <div className="px-4">
+    <p className="pb-5 text-2xl font-semibold">{planName.toUpperCase()}</p>
 
-      <div
-        className="pb-5 text-base"
-        dangerouslySetInnerHTML={{ __html: planContent }}
-      />
+    <div
+      className="pb-5 text-base"
+      dangerouslySetInnerHTML={{ __html: planContent }}
+    />
 
-      <p className="text-base">
-        本月流量将于
-        <span className="text-primary">
-          {subscription.reset_day !== null
-            ? `${subscription.reset_day} 日`
-            : " 月末 "}
+    <p className="text-base">
+      本月流量将于
+      <span className="text-primary font-medium">
+        {subscription.reset_day !== null
+          ? `${subscription.reset_day} 日`
+          : " 月末 "}
+      </span>
+      后重置，订阅
+      {subscription.expired_at ? (
+        <span>
+          将于{" "}
+          <span className="text-primary font-medium">
+            {formattedExpiredAt}
+          </span>{" "}
+          到期
         </span>
-        后重置，订阅
-        {subscription.expired_at ? (
-          <span>
-            将于{" "}
-            <span className="text-primary">
-              {formattedExpiredAt}
-            </span>{" "}
-            到期
-          </span>
-        ) : (
-          <span>
-            为 <span className="text-accent">无限期</span> 订阅
-          </span>
-        )}
-      </p>
-      {/* 流量使用进度条 */}
-      <div className="mt-6">
-        <label className="label">
-          <span className="label-text">流量使用情况</span>
-        </label>
-        <progress
-          className="progress progress-info w-full h-4"
-          value={usagePercentage}
-          max="100"
-        ></progress>
-        <div className="text-right text-sm mt-1">
-          已使用：<span className="font-medium text-base-content">{usedGB} GB</span>（
-          {usagePercentage}%） / 可用：<span className="font-medium text-base-content">{totalGB} GB</span>
-        </div>
-        {/*按钮区域*/}
-        <div className="mt-2 flex gap-4">
-          <SubscriptionButton />
-          <ResetButton />
-        </div>
+      ) : (
+        <span>
+          为 <span className="text-accent font-medium">无限期</span> 订阅
+        </span>
+      )}
+    </p>
 
+    {/* 流量使用进度条 */}
+    <div className="mt-6">
+      <label className="label">
+        <span className="label-text text-sm">流量使用情况</span>
+      </label>
+      <progress
+        className="progress progress-info w-full h-4"
+        value={usagePercentage}
+        max="100"
+      ></progress>
+      <div className="text-right text-sm mt-1">
+        已使用：<span className="font-semibold">{usedGB} GB</span>（
+        {usagePercentage}%） / 可用：
+        <span className="font-semibold">{totalGB} GB</span>
       </div>
 
+      {/* 按钮区域 */}
+      <div className="mt-4 flex gap-4">
+        <SubscriptionButton />
+        <ResetButton />
+        {/* 下拉菜单按钮 */}
+        <div className="dropdown dropdown-end">
+          <label tabIndex={0} className="btn btn-outline btn-sm">
+            More
+          </label>
+          <ul
+            tabIndex={0}
+            className="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-40"
+          >
+            <li>
+              <button onClick={()=>navigate("/plan")} className="btn btn-sm btn-ghost justify-start">续费订阅</button>
+            </li>
+            <li>
+              <button className="btn btn-sm btn-ghost justify-start">重置流量</button>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
-  )
+  </div>
+);
 }
 
 export default Subscription
