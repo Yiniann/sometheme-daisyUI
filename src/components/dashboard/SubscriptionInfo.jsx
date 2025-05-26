@@ -4,6 +4,7 @@ import SubscriptionButton from "./SubscriptionButton"
 import ResetButton from './ResetButtom'
 import { useNavigate } from "react-router-dom";
 
+
 const Subscription = () => {
   const navigate = useNavigate();
 
@@ -11,16 +12,54 @@ const Subscription = () => {
   const plans = useSelector((state) => state.plan.plans);
   const loading = useSelector((state) => state.plan.loading);
   const error = useSelector((state) => state.plan.error);
-  
-  //当前订阅  
-  const currentPlan = plans
+
+   const currentPlan = plans
     ? plans.find((plan) => plan?.id === subscription?.plan_id)
     : null;
 
-    if (!currentPlan) {
+  if (loading.fetchPlan) {
     return (
-      <div className="flex min-h-full flex-col items-center justify-center p-5 text-center">
-        <div className="w-full max-w-lg rounded-lg bg-transparent p-8  ">
+      <div className="px-4">
+        <div className="skeleton h-8 w-1/3 mb-4"></div>
+        <div className="space-y-2 mb-6">
+          <div className="skeleton h-4 w-full"></div>
+          <div className="skeleton h-4 w-5/6"></div>
+          <div className="skeleton h-4 w-5/7"></div>
+          <div className="skeleton h-4 w-2/3"></div>
+        </div>
+
+        <div className="skeleton h-4 w-1/2 mb-2"></div>
+        <progress className="progress w-full h-4 mb-1"></progress>
+        <div className="skeleton h-4 w-1/3 mb-4"></div>
+
+        <div className="flex gap-4 mt-2">
+          <div className="skeleton h-10 w-24 rounded"></div>
+          <div className="skeleton h-10 w-24 rounded"></div>
+          <div className="skeleton h-10 w-20 rounded"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error.fetchPlan) {
+    return (
+      <div className="flex min-h-full flex-col items-center justify-center">
+        <div className="w-full max-w-lg rounded-lg bg-transparent p-8">
+          <h1 className="mb-4 text-3xl font-bold">
+            错误
+          </h1>
+          <p className="mb-6 text-lg">
+           {error.fetchPlan || "无法获取订阅信息，请稍后再试。"}
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!currentPlan) {
+    return (
+      <div className="flex min-h-full flex-col items-center justify-center">
+        <div className="w-full max-w-lg rounded-lg bg-transparent p-8">
           <h1 className="mb-4 text-3xl font-bold">
             订阅信息未找到
           </h1>
@@ -48,16 +87,6 @@ const Subscription = () => {
     (parseFloat(usedGB) / parseFloat(totalGB)) *
     100
   ).toFixed(2);
-
-  const toBase64 = (str) => {
-    const encoder = new TextEncoder();
-    const uint8Array = encoder.encode(str);
-    let binary = "";
-    uint8Array.forEach((byte) => {
-      binary += String.fromCharCode(byte);
-    });
-    return btoa(binary);
-  };
 
 
   return (
@@ -114,7 +143,7 @@ const Subscription = () => {
         <ResetButton />
         {/* 下拉菜单按钮 */}
         <div className="dropdown dropdown-end">
-          <label tabIndex={0} className="btn btn-outline btn-sm">
+          <label tabIndex={0} className="btn btn-ghost btn-sm">
             More
           </label>
           <ul

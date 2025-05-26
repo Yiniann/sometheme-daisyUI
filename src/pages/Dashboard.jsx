@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import Subscriptioninfo from "../components/dashboard/SubscriptionInfo";
 import { fetchSubscription } from "../redux/slices/userSlice";
 import { fetchPlan } from "../redux/slices/planSlice";
+import Subscriber from "../components/dashboard/Subscriber";
 
 const Dashboard = () => {
   const dispatch = useDispatch()
@@ -15,7 +16,10 @@ const Dashboard = () => {
 
   return (
     <div className="flex flex-col lg:flex-row">
-      <Subscriptioninfo />
+      <div>
+        <Subscriptioninfo />
+        <Subscriber />
+      </div>
     </div>
   )
 }
