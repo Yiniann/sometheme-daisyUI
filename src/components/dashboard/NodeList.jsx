@@ -49,63 +49,63 @@ const NodeList = () => {
           </p>
         </div>
       </div>
-
       {/* 节点卡片 */}
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
         {servers.map((node) => (
           <div
             key={node.id}
             className={`card shadow-md ${
-              node.is_online
-                ? "bg-success/20"
-                : "bg-error/20"
+              node.is_online ? "bg-success/10" : "bg-error/10"
             }`}
           >
             <div className="card-body p-4">
-              <div className="flex items-center justify-between">
-                <h3 className="card-title text-base text-base-content">
-                  {node.name}
-                </h3>
-                {/* 在线状态指示器 */}
-                 <div
-                    className="relative flex h-3 w-3 items-center justify-center"
-                    title={node.is_online ? "在线" : "离线"}
-                  >
-                    {node.is_online ? (
-                      <>
-                        <span className="absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping bg-success"></span>
-                        <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-success"></span>
-                      </>
-                    ) : (
-                      <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-error animate-bounce"></span>
-                    )}
-                  </div>
-
-
+              {/* 标题和状态 */}
+              <div className="flex justify-between items-center">
+                <h2 className="card-title text-base">{node.name}</h2>
+                <div
+                  className="relative flex h-3 w-3 items-center justify-center"
+                  title={node.is_online ? "在线" : "离线"}
+                >
+                  {node.is_online ? (
+                    <>
+                      <span className="absolute inline-flex h-full w-full rounded-full opacity-75 animate-ping bg-success"></span>
+                      <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-success"></span>
+                    </>
+                  ) : (
+                    <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-error animate-bounce"></span>
+                  )}
+                </div>
               </div>
 
-              <div className="mt-2 flex flex-wrap gap-1 text-sm">
-                {node.tags?.length ? (
-                  node.tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="badge badge-outline badge-sm text-xs"
-                    >
-                      {tag}
-                    </span>
-                  ))
-                ) : (
-                  <span className="text-xs opacity-60">无标签</span>
-                )}
+              {/* 标签 + 类型 */}
+              <div className="flex justify-between items-center text-sm gap-4">
+                <div className="flex flex-wrap gap-1">
+                  {node.tags?.length ? (
+                    node.tags.map((tag, index) => (
+                      <span
+                        key={index}
+                        className="badge badge-outline badge-sm text-xs"
+                      >
+                        {tag}
+                      </span>
+                    ))
+                  ) : (
+                    <span className="text-xs opacity-60">无标签</span>
+                  )}
+                </div>
+                <span className="text-xs text-base-content/60 whitespace-nowrap">
+                  {node.type}
+                </span>
               </div>
 
-              <p className="mt-3 text-xs text-base-content/60">
-                最后检测时间：{new Date(node.last_check_at * 1000).toLocaleString()}
+              <p className="text-right text-xs text-base-content/60 mt-2">
+                最后检测：{new Date(node.last_check_at * 1000).toLocaleString()}
               </p>
             </div>
           </div>
         ))}
       </div>
+
     </div>
   );
 };
