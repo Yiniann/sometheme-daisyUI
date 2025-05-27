@@ -54,8 +54,9 @@ const Subscriber = ({ isOpen, onClose }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title="导入方式">
       <div className="space-y-2">
+        <div className="divider text-sm">订阅信息</div>
         <SubscriptionButton />
-        <div className="divider">一键订阅</div>
+        <div className="divider text-sm">一键订阅</div>
         {filteredClients.map((client) => {
           const url = buildUrl(client.scheme, subscribeUrl, siteName);
           return (
