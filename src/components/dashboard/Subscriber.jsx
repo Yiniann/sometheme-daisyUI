@@ -1,9 +1,8 @@
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import { getValue } from "../../config/runtimeConfig";
 import Modal from "../modals/Modal";
 import SubscriptionButton from "./SubscriptionButton";
-import {Rss} from "lucide-react";
+
 
 const getPlatform = () => {
   const ua = navigator.userAgent || "";
@@ -39,8 +38,7 @@ const clientSchemas = [
   { name: "Streisand", scheme: "streisand://import/{url}#{name:component}", platforms: ["ios"], icon: null },
 ];
 
-const Subscriber = () => {
-  const [isOpen, setIsOpen] = useState(false);
+const Subscriber = ({ isOpen, onClose }) => {
   const subscription = useSelector((state) => state.user.subscription);
   const isLoading = useSelector((state) => state.user.loading);
   const subscribeUrl = subscription?.subscribe_url;
@@ -53,36 +51,26 @@ const Subscriber = () => {
     client.platforms.includes(platform)
   );
 
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
-
   return (
-    <>
-      <button onClick={openModal} className="btn btn-primary btn-sm">
-        <Rss className="w-4 h-4" />
-        订阅
-      </button>
-
-      <Modal isOpen={isOpen} onClose={closeModal} title="导入方式">
-        <div className="space-y-2">
-          <SubscriptionButton />
-          <div className="divider">一键订阅</div>
-          {filteredClients.map((client) => {
-            const url = buildUrl(client.scheme, subscribeUrl, siteName);
-            return (
-              <a
-                key={client.name}
-                href={url}
-                className="btn btn-sm btn-outline w-full flex items-center gap-2 justify-center"
-              >
-                {client.icon && <span className={`icon ${client.icon}`} />}
-                导入到 {client.name}
-              </a>
-            );
-          })}
-        </div>
-      </Modal>
-    </>
+    <Modal isOpen={isOpen} onClose={onClose} title="导入方式">
+      <div className="space-y-2">
+        <SubscriptionButton />
+        <div className="divider">一键订阅</div>
+        {filteredClients.map((client) => {
+          const url = buildUrl(client.scheme, subscribeUrl, siteName);
+          return (
+            <a
+              key={client.name}
+              href={url}
+              className="btn btn-sm btn-outline w-full flex items-center gap-2 justify-center"
+            >
+              {client.icon && <span className={`icon ${client.icon}`} />}
+              导入到 {client.name}
+            </a>
+          );
+        })}
+      </div>
+    </Modal>
   );
 };
 

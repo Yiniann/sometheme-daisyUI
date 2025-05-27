@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import SubscriptionButton from "./SubscriptionButton"
 import ResetButton from './ResetButtom'
 import { useNavigate } from "react-router-dom";
 import Subscriber from "./Subscriber";
-
+import { Rss } from "lucide-react";
 
 const Subscription = () => {
   const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+
 
   const subscription = useSelector((state) => state.user.subscription);
   const plans = useSelector((state) => state.plan.plans);
@@ -147,7 +148,10 @@ const Subscription = () => {
 
       {/* 按钮区域 */}
       <div className="mt-4 flex gap-4">
-        <Subscriber />
+        <button className="btn btn-outline btn-sm" onClick={() => setShowModal(true)}>
+          <Rss size={16} className="mr-1" />
+          导入订阅
+        </button>
         <ResetButton />
         {/* 下拉菜单按钮 */}
         <div className="dropdown dropdown-end">
@@ -167,6 +171,7 @@ const Subscription = () => {
           </ul>
         </div>
       </div>
+      <Subscriber isOpen={showModal} onClose={() => setShowModal(false)} />
     </div>
   </div>
 );
