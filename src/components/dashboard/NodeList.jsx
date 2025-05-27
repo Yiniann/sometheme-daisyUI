@@ -55,10 +55,10 @@ const NodeList = () => {
         {servers.map((node) => (
           <div
             key={node.id}
-            className={`card shadow-md border ${
+            className={`card shadow-md ${
               node.is_online
-                ? "border-success bg-success/10"
-                : "border-error bg-error/10"
+                ? "bg-success/20"
+                : "bg-error/20"
             }`}
           >
             <div className="card-body p-4">
