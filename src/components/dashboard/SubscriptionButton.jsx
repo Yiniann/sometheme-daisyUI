@@ -27,10 +27,10 @@ const SubscriptionButton = () => {
     <>
       <button
         onClick={openModal}
-        className="btn btn-outline btn-sm flex items-center gap-2"
+        className="btn btn-outline btn-sm w-full flex items-center gap-2"
       >
         <QrCode className="w-4 h-4" />
-        订阅信息
+        二维码订阅
       </button>
 
       <Modal isOpen={isOpen} onClose={closeModal} title="订阅信息">

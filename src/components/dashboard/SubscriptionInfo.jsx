@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import SubscriptionButton from "./SubscriptionButton"
 import ResetButton from './ResetButtom'
 import { useNavigate } from "react-router-dom";
+import Subscriber from "./Subscriber";
 
 
 const Subscription = () => {
@@ -19,27 +20,34 @@ const Subscription = () => {
 
   if (loading.fetchPlan) {
     return (
-      <div className="px-4">
-        <div className="skeleton h-8 w-1/3 mb-4"></div>
-        <div className="space-y-2 mb-6">
-          <div className="skeleton h-4 w-full"></div>
-          <div className="skeleton h-4 w-5/6"></div>
-          <div className="skeleton h-4 w-5/7"></div>
-          <div className="skeleton h-4 w-2/3"></div>
+      <div className="px-4 space-y-4">
+
+        <div className="skeleton h-8 w-1/3 rounded"></div>
+
+        <div className="space-y-2">
+          <div className="skeleton h-4 w-full rounded"></div>
+          <div className="skeleton h-4 w-5/6 rounded"></div>
+          <div className="skeleton h-4 w-2/3 rounded"></div>
         </div>
 
-        <div className="skeleton h-4 w-1/2 mb-2"></div>
-        <progress className="progress w-full h-4 mb-1"></progress>
-        <div className="skeleton h-4 w-1/3 mb-4"></div>
+        <div className="skeleton h-4 w-2/3 rounded"></div>
 
-        <div className="flex gap-4 mt-2">
-          <div className="skeleton h-10 w-24 rounded"></div>
-          <div className="skeleton h-10 w-24 rounded"></div>
+        <div className="space-y-1">
+          <div className="skeleton h-4 w-1/3 rounded"></div>
+          <progress className="progress progress-info w-full h-4"></progress>
+          <div className="skeleton h-4 w-1/2 rounded"></div>
+        </div>
+
+        <div className="flex gap-4 mt-4">
+          <div className="skeleton h-10 w-28 rounded"></div>
+          <div className="skeleton h-10 w-28 rounded"></div>
+          <div className="skeleton h-10 w-28 rounded"></div>
           <div className="skeleton h-10 w-20 rounded"></div>
         </div>
       </div>
     );
   }
+
 
   if (error.fetchPlan) {
     return (
@@ -139,7 +147,7 @@ const Subscription = () => {
 
       {/* 按钮区域 */}
       <div className="mt-4 flex gap-4">
-        <SubscriptionButton />
+        <Subscriber />
         <ResetButton />
         {/* 下拉菜单按钮 */}
         <div className="dropdown dropdown-end">
