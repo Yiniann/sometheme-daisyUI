@@ -3,12 +3,19 @@ import { getValue } from "../../config/runtimeConfig";
 
 // 获取用户平台
 const getPlatform = () => {
-  const ua = navigator.userAgent;
-  if (/iPhone|iPad|iPod/.test(ua)) return "ios";
+  const ua = navigator.userAgent || "";
+  const platform = navigator.platform || "";
+  const isTouch = navigator.maxTouchPoints > 1;
+
+
+  if (/iPhone|iPod/.test(ua)) return "ios";
+  if (/iPad/.test(ua) || (platform === "MacIntel" && isTouch) || platform === "iPad") return "ios";
   if (/Android/.test(ua)) return "android";
   if (/Macintosh/.test(ua)) return "macos";
   return "desktop";
 };
+
+
 
 // 构造替换 URL
 const buildUrl = (scheme, url, name) => {
@@ -23,27 +30,27 @@ const buildUrl = (scheme, url, name) => {
 // 客户端配置列表
 const clientSchemas = [
   {
-    name: "Clash",
-    scheme: "clash://install-config?url={url:component}",
-    platforms: ["desktop", "android"],
-    icon: "iClash",
-  },
-  {
     name: "Shadowrocket",
     scheme: "shadowrocket://add/sub://{url:base64}?remarks={name:component}",
     platforms: ["ios"],
     icon: "iShadowrocket",
   },
   {
+    name: "Clash",
+    scheme: "clash://install-config?url={url:component}",
+    platforms: ["desktop", "android", "macos"],
+    icon: "iClash",
+  },
+  {
     name: "Surge",
     scheme: "surge:///install-config?url={url:component}",
-    platforms: ["desktop", "ios"],
+    platforms: ["desktop", "ios","macos"],
     icon: "iSurge",
   },
  {
     name: "Sing Box",
     scheme: "sing-box://import-remote-profile?url={url:component}#{name:component}",
-    platforms: ["desktop", "ios", "android"],
+    platforms: ["desktop", "ios", "android","macos"],
     icon: null,
   },
   {
@@ -55,7 +62,7 @@ const clientSchemas = [
   {
     name: "Hiddify",
     scheme: "hiddify://import/{url}#{name:component}",
-    platforms: ["desktop", "ios", "android"],
+    platforms: ["desktop", "ios", "android","macos"],
     icon: "iHiddify",
   },
   {
@@ -99,7 +106,8 @@ const Subscriber = () => {
   );
 
   return (
-    <div className="flex flex-wrap gap-2 mt-3 px-4">
+    <div className="flex flex-nowrap overflow-x-auto gap-2 mt-3 px-4">
+
       {filteredClients.map((client) => {
         const url = buildUrl(client.scheme, subscribeUrl, siteName);
         return (
