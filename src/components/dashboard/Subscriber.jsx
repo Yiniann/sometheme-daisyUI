@@ -3,6 +3,7 @@ import { getValue } from "../../config/runtimeConfig";
 
 const Subscriber = () => {
   const subscription = useSelector((state) => state.user.subscription);
+  const isLoading = useSelector((state) => state.user.loading);
   const subscribeUrl = subscription?.subscribe_url;
   const siteName = getValue("siteName") || "";
 
@@ -33,7 +34,7 @@ const Subscriber = () => {
     window.location.href = url;
   };
   
-  if (!subscribeUrl) return null;
+  if (isLoading.fetchSubscription) return null;
 
   return (
     <div className="flex flex-wrap gap-2 mt-3 px-4">

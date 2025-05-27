@@ -4,10 +4,11 @@ import Subscriptioninfo from "../components/dashboard/SubscriptionInfo";
 import { fetchSubscription } from "../redux/slices/userSlice";
 import { fetchPlan } from "../redux/slices/planSlice";
 import Subscriber from "../components/dashboard/Subscriber";
+import NodeList from "../components/dashboard/NodeList";
 
 const Dashboard = () => {
   const dispatch = useDispatch()
-  const subscription = useSelector((state) => state.user.subscription);
+ 
   
   useEffect(() => {
     dispatch(fetchPlan());
@@ -19,6 +20,7 @@ const Dashboard = () => {
       <div>
         <Subscriptioninfo />
         <Subscriber />
+        <NodeList />
       </div>
     </div>
   )
