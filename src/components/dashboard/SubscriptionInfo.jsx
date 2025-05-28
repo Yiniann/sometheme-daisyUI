@@ -136,7 +136,7 @@ const Subscription = () => {
         <span className="label-text text-sm">流量使用情况</span>
       </label>
       <progress
-        className="progress progress-neutral w-full h-4"
+        className="progress w-full h-4"
         value={usagePercentage}
         max="100"
       ></progress>

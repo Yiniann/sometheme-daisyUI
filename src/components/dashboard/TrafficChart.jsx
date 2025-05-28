@@ -1,11 +1,9 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import ApexCharts from "react-apexcharts";
-import { getTrafficLog } from "../../redux/slices/userSlice";
 import StatusMessage from "../ui/StatusMessage";
 
 const TrafficChart = () => {
-  const dispatch = useDispatch();
   const trafficLogs = useSelector((state) => state.user.trafficLog);
   const loading = useSelector((state) => state.user.loading.getTrafficLog);
   const error = useSelector((state) => state.user.error.getTrafficLog);
@@ -42,11 +40,8 @@ const TrafficChart = () => {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    if (!trafficLogs || trafficLogs.length === 0) {
-      dispatch(getTrafficLog());
-    }
-  }, [dispatch, trafficLogs]);
+
+
 
   const chartData = useMemo(() => {
     const reversedLogs = trafficLogs ? trafficLogs.slice().reverse() : [];
