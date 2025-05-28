@@ -35,7 +35,7 @@ const Subscription = () => {
 
         <div className="space-y-1">
           <div className="skeleton h-4 w-1/3 rounded"></div>
-          <progress className="progress progress-info w-full h-4"></progress>
+          <progress className="progress progress-neutral w-full h-4"></progress>
           <div className="skeleton h-4 w-1/2 rounded"></div>
         </div>
 
@@ -136,7 +136,7 @@ const Subscription = () => {
         <span className="label-text text-sm">流量使用情况</span>
       </label>
       <progress
-        className="progress progress-info w-full h-4"
+        className="progress progress-neutral w-full h-4"
         value={usagePercentage}
         max="100"
       ></progress>

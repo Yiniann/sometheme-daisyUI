@@ -4,7 +4,7 @@ const StatusMessage = ({ loading, error, loadingText = "加载中...", errorText
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center py-6 text-base-content/70">
-        <Loader2 className="animate-spin h-15 w-15 mb-2 text-primary" />
+        <Loader2 className="animate-spin h-15 w-15 mb-2 text-neutral" />
         <span>{loadingText}</span>
       </div>
     );
