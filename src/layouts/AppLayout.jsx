@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react"
 import { Outlet } from "react-router-dom"
 import Sidebar from "../components/layout/Sidebar"
-import { Menu } from "lucide-react"
+import Topbar from "../components/layout/Topbar"
 import Infobar from "../components/layout/Infobar"
 import Settingsbar from "../components/layout/Settingsbar"
 import Docker from "../components/layout/Docker"
@@ -64,22 +64,13 @@ const AppLayout = () => {
   return (
     <div className="w-screen h-screen overflow-hidden">
       {/* 顶栏（仅小屏） */}
-      <header className="fixed top-0 left-0 right-0 z-30 h-14 bg-neutral text-neutral-content flex items-center px-4 shadow-md lg:hidden">
-        <button
-          className="btn btn-square btn-ghost mr-2"
-          onClick={() => setDrawerOpen(!drawerOpen)}
-          aria-label="打开菜单"
-        >
-          <Menu className="w-6 h-6" />
-        </button>
-        <span className="flex-grow text-center text-xl font-bold select-none">
-          {appLogo} {siteName}
-        </span>
-        <RightPanelToggleButtons
-          active={activeRightPanel}
-          setActive={setActiveRightPanel}
-        />
-      </header>
+      <Topbar
+        drawerOpen={drawerOpen}
+        setDrawerOpen={setDrawerOpen}
+        activeRightPanel={activeRightPanel}
+        setActiveRightPanel={setActiveRightPanel}
+      />
+
 
       {/* 遮罩层（小屏） */}
       {drawerOpen && (

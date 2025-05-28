@@ -7,12 +7,16 @@ const RightPanelToggleButtons = ({ active, setActive }) => {
 
   return (
     <>
-      <button className="btn btn-square btn-ghost" onClick={() => toggle("info")}>
-        <IdCard className="w-5 h-5" />
-      </button>
-      <button className="btn btn-square btn-ghost" onClick={() => toggle("settings")}>
-        <Settings className="w-5 h-5" />
-      </button>
+      <div className="tooltip tooltip-bottom" data-tip="用户" >
+        <button className="btn btn-square btn-ghost" onClick={() => toggle("info")}>
+          <IdCard className="w-5 h-5" />
+        </button>
+      </div>
+      <div className="tooltip tooltip-bottom" data-tip="设置" >
+        <button className="btn btn-square btn-ghost" onClick={() => toggle("settings")}>
+          <Settings className="w-5 h-5" />
+        </button>
+      </div>
     </>
   );
 };
