@@ -29,22 +29,21 @@ const Docker = () => {
         </NavLink>
 
         {/* 订阅按钮 */}
-<button
-  onClick={() => setShowSubscriber(true)}
-  className="
-    cursor-pointer 
-    flex flex-col items-center justify-center gap-1 text-xs 
-    h-full w-full rounded-lg 
-    bg-gradient-to-r from-primary-content via-base to-neutral-content
-    font-semibold
-    shadow-lg
-    transform transition-transform duration-200 hover:scale-105
-  "
-  aria-label="打开订阅面板"
->
-  <Rss className="w-6 h-6" />
-  <span>订阅</span>
-</button>
+        <button
+          onClick={() => setShowSubscriber(true)}
+          className="
+            cursor-pointer 
+            flex flex-col items-center justify-center gap-1 text-xs 
+            h-full w-full rounded-xl
+            font-semibold
+            shadow-lg
+            transform transition-transform duration-200 hover:scale-105
+          "
+          aria-label="打开订阅面板"
+        >
+          <Rss className="w-8 h-8" />
+          <span className="font-bold">订阅</span>
+        </button>
 
 
         <NavLink to="/ticket" className={navItemClass}>

@@ -1,9 +1,16 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState, useMemo, use } from "react";
 import { useSelector } from "react-redux";
 import ApexCharts from "react-apexcharts";
 import StatusMessage from "../ui/StatusMessage";
+import { getTrafficLog } from "../../redux/slices/userSlice";
+import { useDispatch } from "react-redux";
 
 const TrafficChart = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getTrafficLog());
+  }, []);
+
   const trafficLogs = useSelector((state) => state.user.trafficLog);
   const loading = useSelector((state) => state.user.loading.getTrafficLog);
   const error = useSelector((state) => state.user.error.getTrafficLog);

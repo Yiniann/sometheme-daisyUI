@@ -2,11 +2,12 @@ import { useState, useEffect } from "react"
 import { Outlet } from "react-router-dom"
 import Sidebar from "../components/layout/Sidebar"
 import Topbar from "../components/layout/Topbar"
+import UserControls from "../components/layout/Usercontrols"
 import Infobar from "../components/layout/Infobar"
 import Settingsbar from "../components/layout/Settingsbar"
 import Docker from "../components/layout/Docker"
 import RightPanelWrapper from "../components/layout/RightPanelWrapper"
-import RightPanelToggleButtons from "../components/layout/RightPanelToggleButtons"
+import { useSelector } from "react-redux"
 import { getValue } from "../config/runtimeConfig"
 
 import { useDispatch } from "react-redux"
@@ -83,13 +84,20 @@ const AppLayout = () => {
       {/* 主区域（高度 = 屏幕高度 - 底部高度） */}
       <div className="pt-14 lg:pt-0 h-full flex">
         {/* 左侧栏（大屏） */}
-        <aside className="hidden lg:flex lg:flex-col w-auto bg-base-200 border-r border-base-300">
-          <div className="m-4 mb-10 p-5 text-xl font-bold sm:text-2xl lg:text-2xl 2xl:text-3xl flex items-center w-full">
-            <span className="mr-2 text-3xl">{appLogo}</span>
-            {siteName}
+        <aside className="hidden lg:flex lg:flex-col w-auto bg-base-200 border-r border-base-300 justify-between">
+          <div>
+            <div className="m-4 mb-10 p-5 text-xl font-bold sm:text-2xl lg:text-2xl 2xl:text-3xl flex items-center w-full">
+              <span className="mr-2 text-3xl">{appLogo}</span>
+              {siteName}
+            </div>
+            <Sidebar />
           </div>
-          <Sidebar />
+          <UserControls
+            onInfoClick={() => setActiveRightPanel("info")}
+            onSettingsClick={() => setActiveRightPanel("settings")}
+          />
         </aside>
+
 
         {/* 抽屉栏（小屏） */}
         <aside
@@ -105,13 +113,7 @@ const AppLayout = () => {
           <Outlet />
         </main>
 
-        {/* 右侧按钮栏（大屏） */}
-        <aside className="hidden lg:flex flex-col items-center w-16 bg-base-200 border-l border-base-300 py-4 space-y-4">
-          <RightPanelToggleButtons
-            active={activeRightPanel}
-            setActive={setActiveRightPanel}
-          />
-        </aside>
+
 
         {/* 右侧抽屉面板 */}
         <RightPanelWrapper
@@ -122,7 +124,7 @@ const AppLayout = () => {
       </div>
 
       {/* 底部栏 */}
-      <div className="fixed bottom-0 left-0 right-0 h-16 z-30">
+      <div className="fixed bottom-0 left-0 right-0 h-16 z-50 lg:hidden">
         <Docker />
       </div>
     </div>

@@ -43,7 +43,7 @@ const NodeList = () => {
           </div>
 
           {/* 节点卡片 */}
-          <div className="grid gap-4 xl:grid-cols-2 2xl:grid-cols-3">
+          <div className="grid gap-4 xl:grid-cols-1 2xl:grid-cols-1">
             {servers.map((node) => (
               <div
                 key={node.id}
