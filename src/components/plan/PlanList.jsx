@@ -1,5 +1,3 @@
-import parse from "html-react-parser";
-
 const formatTraffic = (bytes) => {
   if (!bytes) return "∞";
   return bytes >= 1024
@@ -29,9 +27,10 @@ const PlanList = ({ plans, onSelect }) => {
                     {formatTraffic(plan.transfer_enable)}
                   </span>
                 </div>
-                <div className="prose max-w-none text-sm text-base-content/80">
-                  {parse(plan.content)}
-                </div>
+               <div
+                className="prose max-w-none text-sm text-base-content/80"
+                dangerouslySetInnerHTML={{ __html: plan.content }}
+              />
               </div>
 
               <button

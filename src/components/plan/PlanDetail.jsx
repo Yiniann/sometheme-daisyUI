@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import parse from "html-react-parser";
 import { Gift, BadgeJapaneseYen, Undo2, X } from "lucide-react";
 import { checkCoupon, clearCoupon } from "../../redux/slices/planSlice";
 import { saveOrder } from "../../redux/slices/orderSlice";
@@ -101,7 +100,10 @@ const PlanDetail = ({ plan, onBack }) => {
             <h2 className="mb-2 text-2xl font-bold text-base-content">
               {plan.name}
             </h2>
-            <div className="text-sm text-base-content/70">{parse(plan.content)}</div>
+              <div
+                className="text-sm text-base-content/70"
+                dangerouslySetInnerHTML={{ __html: plan.content }}
+              />
           </div>
 
           {/* 周期价格 */}
