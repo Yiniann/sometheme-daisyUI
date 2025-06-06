@@ -14,14 +14,19 @@ const Plan = () => {
     dispatch(fetchPlan());
   }, [dispatch]);
 
-  if (loading.fetchPlan || error.fetchPlan) {
-    return <StatusMessage loading={loading} error={error} />;
-  }
-
-  return selectedPlan ? (
-    <PlanDetail plan={selectedPlan} onBack={() => setSelectedPlan(null)} />
-  ) : (
-    <PlanList plans={plans} onSelect={(plan) => setSelectedPlan(plan)} />
+  return (
+    <StatusMessage
+      loading={loading.fetchPlan}
+      error={error.fetchPlan}
+      loadingText="正在加载订阅方案..."
+      errorText="加载失败，无法获取订阅方案"
+    >
+      {selectedPlan ? (
+        <PlanDetail plan={selectedPlan} onBack={() => setSelectedPlan(null)} />
+      ) : (
+        <PlanList plans={plans} onSelect={(plan) => setSelectedPlan(plan)} />
+      )}
+    </StatusMessage>
   );
 };
 

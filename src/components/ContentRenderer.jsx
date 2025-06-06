@@ -1,5 +1,6 @@
 import React from "react";
 import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 import { CheckCircle, XCircle } from "lucide-react";
 
 function isJSON(str) {
@@ -13,12 +14,11 @@ function isJSON(str) {
 
 function isHTML(str) {
   if (typeof window === "undefined") return false;
-  // 简单正则判断
   return /<\/?[a-z][\s\S]*>/i.test(str);
 }
 
 function isMarkdown(str) {
-  const markdownIndicators = ["\n", "*", "#", "`", "-", "_", ">"];
+  const markdownIndicators = ["\n", "*", "#", "`", "-", "_", ">", "[", "]"];
   return markdownIndicators.some(sym => str.includes(sym));
 }
 
@@ -55,7 +55,18 @@ const ContentRenderer = ({ content, className = "" }) => {
   if (isMarkdown(content)) {
     return (
       <div className={`prose max-w-none text-sm text-base-content/80 ${className}`}>
-        <ReactMarkdown>{content}</ReactMarkdown>
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            a: ({ href, children }) => (
+              <a href={href} target="_blank" rel="noopener noreferrer" className="text-primary underline">
+                {children}
+              </a>
+            ),
+          }}
+        >
+          {content}
+        </ReactMarkdown>
       </div>
     );
   }
