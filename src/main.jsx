@@ -5,14 +5,19 @@ import App from "./App.jsx";
 import "./index.css";
 import store from "./redux/store.js";
 import { loadRuntimeConfig } from "./config/runtimeConfig";
-import { initApi } from "./utils/api.js"; 
+import { initApi } from "./utils/api.js";
+import { Toaster } from "sonner"; 
 
 loadRuntimeConfig().then(() => {
-  initApi(); //  初始化 axios 的 baseURL
+  initApi();
+
   createRoot(document.getElementById("root")).render(
     <StrictMode>
       <Provider store={store}>
-        <App />
+        <>
+          <Toaster position="bottom-center" richColors theme="system" /> 
+          <App />
+        </>
       </Provider>
     </StrictMode>
   );

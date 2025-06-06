@@ -4,6 +4,7 @@ import { checkCoupon, clearCoupon } from "../../redux/slices/planSlice";
 import { saveOrder } from "../../redux/slices/orderSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const periodOptions = [
   { key: "month_price", label: "月付" },
@@ -35,12 +36,22 @@ const PlanDetail = ({ plan, onBack }) => {
     if (!coupon) return;
 
     try {
-      await dispatch(checkCoupon({ code: coupon, plan_id: plan.id }));
-    } catch (e) {}
+      const resultAction = await dispatch(checkCoupon({ code: coupon, plan_id: plan.id }));
+      if (checkCoupon.fulfilled.match(resultAction)) {
+        toast.success("优惠券已应用");
+      } else {
+        toast.error(resultAction.payload?.message || "优惠券无效");
+      }
+    } catch (e) {
+      toast.error("验证优惠券时出错");
+    }
   };
 
   const handleOrder = async () => {
-    if (!selectedPeriod) return;
+    if (!selectedPeriod) {
+      toast.warning("请先选择付款周期");
+      return;
+    }
 
     const finalCouponCode = appliedCoupon?.code || null;
 
@@ -50,13 +61,18 @@ const PlanDetail = ({ plan, onBack }) => {
           period: selectedPeriod,
           plan_id: plan.id,
           coupon_code: finalCouponCode,
-        }),
+        })
       );
 
-      if (action.type === "user/saveOrder/fulfilled") {
+      if (saveOrder.fulfilled.match(action)) {
+        toast.success("下单成功，正在跳转...");
         navigate("/order");
+      } else {
+        toast.error(action.payload?.message || "下单失败");
       }
-    } catch (error) {}
+    } catch (error) {
+      toast.error("提交订单时出错");
+    }
   };
 
   const selectedPrice = selectedPeriod ? plan[selectedPeriod] : null;
@@ -68,9 +84,7 @@ const PlanDetail = ({ plan, onBack }) => {
     if (type === 1) {
       return price - value;
     } else if (type === 2) {
-      if (value === 100) {
-        return 0;
-      }
+      if (value === 100) return 0;
       return price * (1 - value / 100);
     }
     return price;
@@ -100,10 +114,10 @@ const PlanDetail = ({ plan, onBack }) => {
             <h2 className="mb-2 text-2xl font-bold text-base-content">
               {plan.name}
             </h2>
-              <div
-                className="text-sm text-base-content/70"
-                dangerouslySetInnerHTML={{ __html: plan.content }}
-              />
+            <div
+              className="text-sm text-base-content/70"
+              dangerouslySetInnerHTML={{ __html: plan.content }}
+            />
           </div>
 
           {/* 周期价格 */}
@@ -119,18 +133,18 @@ const PlanDetail = ({ plan, onBack }) => {
                     if (price == null) return null;
                     const isSelected = selectedPeriod === key;
                     return (
-                     <button
-                      key={key}
-                      className={`btn w-full justify-between normal-case ${
-                        isSelected
-                          ? "btn-active btn-neutral text-neutral-content"
-                          : "btn-outline"
-                      }`}
-                      onClick={() => setSelectedPeriod(key)}
-                    >
-                      <span>{label}</span>
-                      <span>¥{(price / 100).toFixed(2)}</span>
-                    </button>
+                      <button
+                        key={key}
+                        className={`btn w-full justify-between normal-case ${
+                          isSelected
+                            ? "btn-active btn-neutral text-neutral-content"
+                            : "btn-outline"
+                        }`}
+                        onClick={() => setSelectedPeriod(key)}
+                      >
+                        <span>{label}</span>
+                        <span>¥{(price / 100).toFixed(2)}</span>
+                      </button>
                     );
                   })}
                 </div>

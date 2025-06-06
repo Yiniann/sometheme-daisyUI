@@ -23,7 +23,7 @@ const PlanList = ({ plans, onSelect }) => {
               <div>
                 <div className="mb-3 flex items-center justify-between">
                   <h3 className="text-lg font-bold text-base-content">{plan.name}</h3>
-                  <span className="text-sm text-primary">
+                  <span className="text-sm text-neutral">
                     {formatTraffic(plan.transfer_enable)}
                   </span>
                 </div>
@@ -34,7 +34,7 @@ const PlanList = ({ plans, onSelect }) => {
               </div>
 
               <button
-                className="btn btn-primary btn-block"
+                className="btn btn-neutral btn-block"
                 onClick={(e) => {
                   e.stopPropagation();
                   onSelect(plan);
