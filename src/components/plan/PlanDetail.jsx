@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Gift, BadgeJapaneseYen, Undo2, X } from "lucide-react";
-import { checkCoupon, clearCoupon } from "../../redux/slices/planSlice";
-import { saveOrder } from "../../redux/slices/orderSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+
+import ContentRenderer from "../ContentRenderer";
+import { checkCoupon, clearCoupon } from "../../redux/slices/planSlice";
+import { saveOrder } from "../../redux/slices/orderSlice";
 
 const periodOptions = [
   { key: "month_price", label: "月付" },
@@ -19,7 +21,11 @@ const periodOptions = [
 const PlanDetail = ({ plan, onBack }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const appliedCoupon = useSelector((state) => state.plan.coupon);
+  const loadingCheckCoupon = useSelector((state) => state.plan.loading.checkCoupon);
+  const loadingSaveOrder = useSelector((state) => state.order.loading.saveOrder);
+
   const [selectedPeriod, setSelectedPeriod] = useState(null);
   const [coupon, setCoupon] = useState("");
 
@@ -29,20 +35,17 @@ const PlanDetail = ({ plan, onBack }) => {
     };
   }, [dispatch]);
 
-  const loadingCheckCoupon = useSelector((state) => state.plan.loading.checkCoupon);
-  const loadingSaveOrder = useSelector((state) => state.order.loading.saveOrder);
-
   const handleCheckCoupon = async () => {
-    if (!coupon) return;
+    if (!coupon.trim()) return;
 
     try {
-      const resultAction = await dispatch(checkCoupon({ code: coupon, plan_id: plan.id }));
+      const resultAction = await dispatch(checkCoupon({ code: coupon.trim(), plan_id: plan.id }));
       if (checkCoupon.fulfilled.match(resultAction)) {
         toast.success("优惠券已应用");
       } else {
         toast.error(resultAction.payload?.message || "优惠券无效");
       }
-    } catch (e) {
+    } catch {
       toast.error("验证优惠券时出错");
     }
   };
@@ -70,7 +73,7 @@ const PlanDetail = ({ plan, onBack }) => {
       } else {
         toast.error(action.payload?.message || "下单失败");
       }
-    } catch (error) {
+    } catch {
       toast.error("提交订单时出错");
     }
   };
@@ -90,9 +93,7 @@ const PlanDetail = ({ plan, onBack }) => {
     return price;
   };
 
-  const discountedPrice = selectedPrice
-    ? calculateDiscountedPrice(selectedPrice)
-    : null;
+  const discountedPrice = selectedPrice !== null ? calculateDiscountedPrice(selectedPrice) : null;
 
   const noPricesAvailable = periodOptions.every(({ key }) => plan[key] == null);
 
@@ -107,17 +108,13 @@ const PlanDetail = ({ plan, onBack }) => {
           <span>返回套餐列表</span>
         </div>
       </button>
+
       <div className="flex flex-col gap-4 lg:flex-row">
+        {/* 套餐信息 */}
         <div className="flex-1 space-y-4">
-          {/* 套餐信息 */}
           <div className="rounded-xl bg-base-100 p-4">
-            <h2 className="mb-2 text-2xl font-bold text-base-content">
-              {plan.name}
-            </h2>
-            <div
-              className="text-sm text-base-content/70"
-              dangerouslySetInnerHTML={{ __html: plan.content }}
-            />
+            <h2 className="mb-2 text-2xl font-bold text-base-content">{plan.name}</h2>
+            <ContentRenderer content={plan.content} />
           </div>
 
           {/* 周期价格 */}
@@ -131,6 +128,7 @@ const PlanDetail = ({ plan, onBack }) => {
                   {periodOptions.map(({ key, label }) => {
                     const price = plan[key];
                     if (price == null) return null;
+
                     const isSelected = selectedPeriod === key;
                     return (
                       <button
@@ -156,6 +154,7 @@ const PlanDetail = ({ plan, onBack }) => {
         {/* 订单卡片 */}
         <div className="w-full space-y-4 lg:w-auto">
           <div className="rounded-xl bg-base-100 p-4">
+            {/* 优惠券输入 */}
             <div className="mb-3 flex gap-2">
               {!appliedCoupon ? (
                 <>
@@ -181,9 +180,7 @@ const PlanDetail = ({ plan, onBack }) => {
                 <div className="flex w-full min-w-[285px] items-center justify-between text-sm text-success">
                   <div className="flex items-center gap-2 truncate">
                     <Gift className="h-5 w-5 shrink-0" />
-                    <span className="truncate text-base font-semibold">
-                      {appliedCoupon.name}
-                    </span>
+                    <span className="truncate text-base font-semibold">{appliedCoupon.name}</span>
                   </div>
                   <button
                     onClick={() => dispatch(clearCoupon())}
@@ -195,37 +192,31 @@ const PlanDetail = ({ plan, onBack }) => {
               )}
             </div>
 
+            {/* 订单总额 */}
             <div className="space-y-4 rounded-xl bg-base-100 p-4">
               <div className="text-2xl font-bold text-base-content">订单总额</div>
 
               {selectedPeriod ? (
                 <div className="text-center text-sm">
                   <div className="mb-2 border-b border-base-content/20 pb-2 text-base-content">
-                    {plan.name}（
-                    {periodOptions.find((p) => p.key === selectedPeriod)?.label}
-                    ）
+                    {plan.name}（{periodOptions.find((p) => p.key === selectedPeriod)?.label}）
                   </div>
                   <div className="text-3xl font-extrabold">
                     ¥
-                    {discountedPrice !== null
-                      ? (discountedPrice / 100).toFixed(2)
-                      : (selectedPrice / 100).toFixed(2)}{" "}
-                    CNY
+                    {(discountedPrice !== null ? discountedPrice : selectedPrice) / 100}
+                    .00 CNY
                   </div>
                   {appliedCoupon && (
                     <div className="text-sm text-base-content/70">
-                      <span className="font-semibold">{appliedCoupon.name}</span>{" "}
-                      -{" "}
+                      <span className="font-semibold">{appliedCoupon.name}</span> -{" "}
                       {appliedCoupon.type === 1
-                        ? `¥${appliedCoupon.value / 100}`
+                        ? `¥${(appliedCoupon.value / 100).toFixed(2)}`
                         : `${appliedCoupon.value}%`}
                     </div>
                   )}
                 </div>
               ) : (
-                <div className="text-center text-sm text-base-content/50">
-                  请先选择付款周期
-                </div>
+                <div className="text-center text-sm text-base-content/50">请先选择付款周期</div>
               )}
             </div>
 

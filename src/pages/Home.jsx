@@ -1,9 +1,7 @@
 import { useSelector } from "react-redux";
-import ReactMarkdown from "react-markdown";
+import ContentRenderer from "../components/ContentRenderer"
 import { CalendarDays } from "lucide-react";
 import WelcomeBanner from "../components/home/WelcomeBanner";
-
-const isHTML = (str) => /<\/?[a-z][\s\S]*>/i.test(str);
 
 const Home = () => {
   const { notices, loading, error, fetchedNotice } = useSelector(
@@ -11,7 +9,7 @@ const Home = () => {
   );
 
   return (
-    <div className="p-2 lg:px-8 space-y-12">
+    <div className="p-2 lg:px-12 space-y-12">
       {/* Hero */}
       <WelcomeBanner />
 
@@ -70,17 +68,7 @@ const Home = () => {
                             发布时间：{new Date(created_at * 1000).toLocaleString()}
                           </time>
                         </div>
-
-                        {/* 内容区：判断是 HTML 还是 Markdown */}
-                        <div className="prose prose-sm max-w-none">
-                          {isHTML(content) ? (
-                            <div
-                              dangerouslySetInnerHTML={{ __html: content }}
-                            />
-                          ) : (
-                            <ReactMarkdown>{content}</ReactMarkdown>
-                          )}
-                        </div>
+                        <ContentRenderer content={content} className="prose prose-sm max-w-none pt-2" />
                       </div>
                     </li>
                   ))}

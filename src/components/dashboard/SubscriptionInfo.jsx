@@ -4,6 +4,7 @@ import ResetButton from './ResetButtom'
 import { useNavigate } from "react-router-dom";
 import Subscriber from "./Subscriber";
 import { Rss } from "lucide-react";
+import ContentRenderer from "../ContentRenderer";
 
 const Subscription = () => {
   const navigate = useNavigate();
@@ -102,10 +103,7 @@ const Subscription = () => {
   <div className="px-4">
     <p className="pb-5 text-2xl font-semibold">{planName.toUpperCase()}</p>
 
-    <div
-      className="pb-5 text-base"
-      dangerouslySetInnerHTML={{ __html: planContent }}
-    />
+    <ContentRenderer className="pb-5 text-base" content={planContent} />
 
     <p className="text-base">
       本月流量将于

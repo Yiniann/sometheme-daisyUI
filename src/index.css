@@ -3,7 +3,15 @@
 @plugin "daisyui" {
   themes: light --default, dark --prefersdark, cupcake, dracula, cyberpunk, valentine, nord;
 }
+@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *, [data-theme=dracula] *));
 
-
-@custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *, [data-theme=dracula] *))
-
+/* 隐藏滚动条*/
+@layer utilities {
+  .scrollbar-hide {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+}

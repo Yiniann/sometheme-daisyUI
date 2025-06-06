@@ -6,7 +6,7 @@ const UserControls = ({ onInfoClick, onSettingsClick }) => {
   const loading = useSelector((state) => state.user.loading.fetchInfo)
 
   return (
-    <div className="flex items-center justify-between gap-4 p-4 border-t border-base-300">
+    <div className="flex items-center justify-between gap-4 p-4">
       {/* 头像按钮 or skeleton */}
       {loading ? (
         <div className="skeleton w-10 h-10 rounded-full" />

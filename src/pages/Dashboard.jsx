@@ -16,15 +16,17 @@ const Dashboard = () => {
   }, [dispatch]);
 
   return (
-    <div className="flex flex-col lg:flex-row">
+   <div className="flex flex-col lg:flex-row lg:h-[calc(100vh-4rem)]">
       <div className="lg:w-2/3 flex flex-col">
         <Subscriptioninfo />
         <TrafficChart />
       </div>
-      <div className="lg:w-1/3 flex flex-col">
+
+      <div className="lg:w-1/3 flex flex-col overflow-y-auto scrollbar-hide">
         <NodeList />
       </div>  
     </div>
+
   )
 }
 
