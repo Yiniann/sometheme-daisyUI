@@ -100,7 +100,7 @@ const PlanDetail = ({ plan, onBack }) => {
     <div className="mx-auto max-w-7xl space-y-4 px-4">
       <button
         onClick={onBack}
-        className="btn btn-link btn-sm normal-case text-neutral"
+        className="btn btn-link btn-sm normal-case text-base-content"
       >
         <div className="flex items-center justify-center gap-1">
           <Undo2 className="h-5 w-5" />
@@ -205,7 +205,7 @@ const PlanDetail = ({ plan, onBack }) => {
                     {periodOptions.find((p) => p.key === selectedPeriod)?.label}
                     ）
                   </div>
-                  <div className="text-3xl font-extrabold text-neutral">
+                  <div className="text-3xl font-extrabold">
                     ¥
                     {discountedPrice !== null
                       ? (discountedPrice / 100).toFixed(2)

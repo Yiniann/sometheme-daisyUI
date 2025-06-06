@@ -23,7 +23,7 @@ const PlanList = ({ plans, onSelect }) => {
               <div>
                 <div className="mb-3 flex items-center justify-between">
                   <h3 className="text-lg font-bold text-base-content">{plan.name}</h3>
-                  <span className="text-sm text-neutral">
+                  <span className="text-sm">
                     {formatTraffic(plan.transfer_enable)}
                   </span>
                 </div>
