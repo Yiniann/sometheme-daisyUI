@@ -30,8 +30,9 @@ const UserControls = ({ onInfoClick, onSettingsClick }) => {
         ) : (
           <>
             <span className="text-sm font-bold text-base-content truncate">
-              {info?.email}
+              {info?.email?.split("@")[0]}
             </span>
+
             <span className="text-xs text-muted">
                ¥{(Number(info?.balance ?? 0) / 100).toFixed(2)}
             </span>
