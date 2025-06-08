@@ -30,9 +30,9 @@ const Sidebar = ({ onLinkClick }) => {
         <MessagesSquare className="w-5 h-5 flex-shrink-0" />
         <span className="truncate">Ticket</span>
       </NavLink>
-       <NavLink to="/knowledege" className={navItemClass} onClick={onLinkClick}>
+       <NavLink to="/knowledge" className={navItemClass} onClick={onLinkClick}>
         <BookOpen className="w-5 h-5 flex-shrink-0" />
-        <span className="truncate">Knowledege</span>
+        <span className="truncate">Knowledge</span>
       </NavLink>
       <NavLink to="/profile" className={navItemClass} onClick={onLinkClick}>
         <IdCard className="w-5 h-5 flex-shrink-0" />

@@ -1,9 +1,12 @@
+import { Outlet } from "react-router-dom";
+
 const Order = () => {
   return (
-    <div className="text-2xl font-bold">
-      OrderPage
+    <div className="p-4">
+      <h2 className="text-xl font-bold mb-4">订单中心</h2>
+      <Outlet />
     </div>
-  )
-}
+  );
+};
 
-export default Order
+export default Order;

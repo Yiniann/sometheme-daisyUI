@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { getValue } from "../../config/runtimeConfig";
 import Modal from "../modals/Modal";
 import SubscriptionButton from "./SubscriptionButton";
-
+import { toast } from "sonner";
 
 const getPlatform = () => {
   const ua = navigator.userAgent || "";
@@ -64,6 +64,9 @@ const Subscriber = ({ isOpen, onClose }) => {
               key={client.name}
               href={url}
               className="btn btn-sm btn-outline w-full flex items-center gap-2 justify-center"
+              onClick={() =>
+                toast.info(`尝试唤醒 ${client.name}，若无效请手动复制订阅地址`)
+              }
             >
               {client.icon && <span className={`icon ${client.icon}`} />}
               导入到 {client.name}

@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import  { QRCodeSVG } from "qrcode.react"; 
 import { Copy, QrCode } from "lucide-react";
 
-
 const SubscriptionButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);

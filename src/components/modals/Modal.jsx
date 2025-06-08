@@ -9,17 +9,17 @@ const Modal = ({ isOpen, onClose, title, children }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60" 
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm"
       onClick={handleBackgroundClick}
     >
-      <div className="w-full max-w-md rounded-lg bg-base-100 p-6 shadow-2xl">
-        <div className="mb-4 flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-base-content">{title}</h3>
-          <button onClick={onClose} className="btn btn-ghost btn-sm">
+      <div className="w-full max-w-md rounded-2xl bg-base-100 p-6 shadow-xl">
+        <div className="mb-4 flex items-center justify-between text-base-content">
+          <h3 className="text-lg font-bold">{title}</h3>
+          <button onClick={onClose} className="btn btn-sm btn-ghost">
             <X className="w-5 h-5" />
           </button>
         </div>
-        <div>{children}</div>
+        <div className="text-base-content">{children}</div>
       </div>
     </div>
   );

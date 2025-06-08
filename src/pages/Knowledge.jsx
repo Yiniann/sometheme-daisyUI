@@ -1,4 +1,4 @@
-const Knowledege = () => {
+const Knowledge = () => {
   return (
     <div className="text-2xl font-bold">
       知识库页面
@@ -6,4 +6,4 @@ const Knowledege = () => {
   )
 }
 
-export default Knowledege
+export default Knowledge

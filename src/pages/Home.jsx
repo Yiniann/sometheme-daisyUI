@@ -9,7 +9,7 @@ const Home = () => {
   );
 
   return (
-    <div className="p-2 lg:px-12 space-y-12">
+    <div className="x-auto max-w-7xl space-y-4 px-4">
       {/* Hero */}
       <WelcomeBanner />
 
@@ -68,7 +68,7 @@ const Home = () => {
                             发布时间：{new Date(created_at * 1000).toLocaleString()}
                           </time>
                         </div>
-                        <ContentRenderer content={content} className="prose prose-sm max-w-none pt-2" />
+                        <ContentRenderer content={content} className="prose prose-sm max-w-none pt-2 pl-4" />
                       </div>
                     </li>
                   ))}
