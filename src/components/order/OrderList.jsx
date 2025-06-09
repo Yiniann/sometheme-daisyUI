@@ -77,8 +77,8 @@ const OrderList = () => {
   });
 
   return (
-    <div className="flex flex-col gap-4 lg:flex-row max-w-7xl mx-auto lg:p-4 h-full">
-      <div className="w-auto flex-1 space-y-4 overflow-y-auto lg:overflow-hidden lg:scrollbar-hide">
+    <div className="flex flex-col gap-4 lg:flex-row max-w-7xl mx-auto lg:p-4 h-full overflow-hidden">
+      <div className="w-auto flex-1 space-y-4 overflow-y-auto lg:scrollbar-hide h-full">
         <StatusMessage
           loading={loading}
           error={error}

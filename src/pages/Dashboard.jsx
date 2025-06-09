@@ -31,7 +31,7 @@ const Dashboard = () => {
       loadingText="正在加载仪表盘数据..."
       errorText="加载失败"
     >
-      <div className="flex flex-col lg:flex-row ">
+      <div className="flex flex-col lg:flex-row">
         <div className="lg:w-2/3 flex flex-col">
           <Subscriptioninfo />
           <TrafficChart />
