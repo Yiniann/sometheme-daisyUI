@@ -72,7 +72,7 @@ const CreateTicketButton = () => {
   return (
     <div>
       <button
-        className="btn btn-primary w-full mt-4"
+        className="btn btn-neutral w-full mt-4"
         onClick={handleCreateTicketClick}
       >
         创建新工单

@@ -53,7 +53,7 @@ const Ticket = () => {
           key={ticket.id}
           className={`mb-2 cursor-pointer rounded-lg p-4 hover:bg-base-300 ${
             selectedTicket?.id === ticket.id
-              ? "bg-primary/10 dark:bg-primary/20"
+              ? "bg-neutral/30"
               : ""
           }`}
           onClick={() => handleTicketClick(ticket)}

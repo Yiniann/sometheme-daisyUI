@@ -74,7 +74,7 @@ const TicketDetail = ({ selectedTicket, detailLoading, detailError, onBack }) =>
             {selectedTicket.status === 0 ? (
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="btn btn-error btn-sm"
+                className="btn btn-neutral hover: btn-sm"
               >
                 关闭工单
               </button>
@@ -97,10 +97,10 @@ const TicketDetail = ({ selectedTicket, detailLoading, detailError, onBack }) =>
               <span
                 className={`h-2 w-2 rounded-full ${
                   selectedTicket.level === 2
-                    ? "bg-red-500"
+                    ? "bg-error-content"
                     : selectedTicket.level === 1
-                    ? "bg-yellow-500"
-                    : "bg-green-500"
+                    ? "bg-warning-content"
+                    : "bg-success-content"
                 }`}
               />
               优先级：{["低", "中", "高"][selectedTicket.level]}
@@ -129,13 +129,13 @@ const TicketDetail = ({ selectedTicket, detailLoading, detailError, onBack }) =>
                     <div
                       className={`rounded-lg p-3 break-words text-sm ${
                         isMe
-                          ? "bg-primary/20 dark:bg-slate-500 dark:text-white"
-                          : "bg-base-200 text-base-content"
+                          ? "bg-base-200 text-base-content"
+                          : "bg-base-300 text-base-content"
                       }`}
                       style={{ maxWidth: "80%" }}
                     >
                       <p>{msg.message}</p>
-                      <small className="block text-right text-xs text-gray-400 dark:text-black">
+                      <small className="block text-right text-xs ">
                         {new Date(msg.created_at * 1000).toLocaleString()}
                       </small>
                     </div>
@@ -168,7 +168,7 @@ const TicketDetail = ({ selectedTicket, detailLoading, detailError, onBack }) =>
               <button
                 onClick={handleSendMessage}
                 disabled={loading.replyToTicket || selectedTicket.status === 1}
-                className="btn btn-primary"
+                className="btn btn-neutral"
               >
                 发送
               </button>
