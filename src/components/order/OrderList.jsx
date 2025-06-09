@@ -77,8 +77,8 @@ const loading = useSelector((state) => state.order.loading.fetchOrders);
   });
 
   return (
-    <div className="flex flex-col gap-4 lg:flex-row max-w-7xl mx-auto lg:p-4">
-      <div className="w-auto flex-1 space-y-4">
+      <div className="flex flex-col gap-4 lg:flex-row max-w-7xl mx-auto lg:p-4 h-[calc(100vh-4rem)]">
+        <div className="w-auto flex-1 space-y-4 overflow-y-auto scrollbar-hide">
         <StatusMessage
           loading={loading}
           error={error}

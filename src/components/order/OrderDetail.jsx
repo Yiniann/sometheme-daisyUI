@@ -272,10 +272,10 @@ const OrderDetails = () => {
                 onClick={handleCheckout}
                 className="mt-2 btn btn-neutral w-full"
                 disabled={
-                  loading.saveOrder || error.saveOrder || !selectedPaymentMethod
+                  loading.checkout || error.checkout || !selectedPaymentMethod
                 }
               >
-                {loading.saveOrder ? "正在处理结账..." : "结账"}
+                {loading.checkout ? "正在处理结账..." : "结账"}
               </button>
             </div>
           </div>
