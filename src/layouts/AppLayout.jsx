@@ -7,7 +7,6 @@ import Infobar from "../components/layout/Infobar"
 import Settingsbar from "../components/layout/Settingsbar"
 import Docker from "../components/layout/Docker"
 import RightPanelWrapper from "../components/layout/RightPanelWrapper"
-import { useSelector } from "react-redux"
 import { getValue } from "../config/runtimeConfig"
 
 import { useDispatch } from "react-redux"
@@ -108,10 +107,12 @@ const AppLayout = () => {
           <Sidebar onLinkClick={() => setDrawerOpen(false)} />
         </aside>
 
-        {/* 中间内容（可滚动区域） */}
-        <main className="flex-1 overflow-y-auto bg-base-100 px-4 pt-4 pb-20">
+        {/* 中间内容 */}
+        <main className="flex-1 min-h-0 bg-base-100 px-4 pt-4  pb-20 lg:pb-0 overflow-y-auto">
           <Outlet />
         </main>
+
+
 
 
 

@@ -260,10 +260,11 @@ const ticketSlice = createSlice({
         state.error.createTicket = null;
         state.success.create = false;
       })
-      .addCase(createTicket.fulfilled, (state, action) => {
+     .addCase(createTicket.fulfilled, (state, action) => {
         state.loading.createTicket = false;
-        state.success.create = !!action.payload?.data;
+        state.success.create = action.payload?.data === true;
       })
+
       .addCase(createTicket.rejected, (state, action) => {
         state.loading.createTicket = false;
         state.error.createTicket = action.payload;

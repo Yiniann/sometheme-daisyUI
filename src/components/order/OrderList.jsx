@@ -42,7 +42,7 @@ const OrderList = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const orders = useSelector((state) => state.order.orders);
-const loading = useSelector((state) => state.order.loading.fetchOrders);
+  const loading = useSelector((state) => state.order.loading.fetchOrders);
   const error = useSelector((state) => state.order.error.fetchOrders);
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -77,24 +77,27 @@ const loading = useSelector((state) => state.order.loading.fetchOrders);
   });
 
   return (
-      <div className="flex flex-col gap-4 lg:flex-row max-w-7xl mx-auto lg:p-4 h-[calc(100vh-4rem)]">
-        <div className="w-auto flex-1 space-y-4 overflow-y-auto scrollbar-hide">
+    <div className="flex flex-col gap-4 lg:flex-row max-w-7xl mx-auto lg:p-4 h-full">
+      <div className="w-auto flex-1 space-y-4 overflow-y-auto lg:overflow-hidden lg:scrollbar-hide">
         <StatusMessage
           loading={loading}
           error={error}
           loadingText="正在加载订单列表..."
-          errorText="加载订单列表失败，请稍后重试">
+          errorText="加载订单列表失败，请稍后重试"
+        >
           {filteredOrders.map((order) => (
             <div
               key={order.id}
-              className="relative rounded-2xl bg-base-100 p-4 shadow-md"
+              className="relative rounded-2xl bg-base-100 p-4 shadow-md overflow-y-auto scrollbar-hide"
             >
               <div className="absolute top-12 right-4 flex items-center text-sm sm:top-4">
                 {order.status === 0 && <Clock4 className="mr-1 h-4 w-4 text-warning" />}
                 {order.status === 1 && <CircleCheck className="mr-1 h-4 w-4 text-success" />}
                 {order.status === 2 && <CircleX className="mr-1 h-4 w-4 text-error" />}
                 {order.status === 3 && <CircleCheck className="mr-1 h-4 w-4 text-primary" />}
-                {order.status === 4 && <CircleCheck className="mr-1 h-4 w-4 text-base-content/50" />}
+                {order.status === 4 && (
+                  <CircleCheck className="mr-1 h-4 w-4 text-base-content/50" />
+                )}
                 <span>{statusTextMap[order.status]}</span>
               </div>
 
@@ -140,10 +143,7 @@ const loading = useSelector((state) => state.order.loading.fetchOrders);
 
                 {order.status === 0 && (
                   <div className="mt-4 flex flex-row gap-2">
-                    <button
-                      onClick={() => handleOrderClick(order)}
-                      className="btn btn-neutral flex-1"
-                    >
+                    <button onClick={() => handleOrderClick(order)} className="btn btn-neutral flex-1">
                       <ShoppingCart className="h-5 w-5" />
                       结算订单
                     </button>
@@ -178,10 +178,7 @@ const loading = useSelector((state) => state.order.loading.fetchOrders);
                 <p className="mt-1 text-sm text-base-content/70">查看我们的计划找到适合自己的服务。</p>
               </div>
 
-              <button
-                onClick={() => navigate("/plan")}
-                className="btn btn-secondary mt-2"
-              >
+              <button onClick={() => navigate("/plan")} className="btn btn-secondary mt-2">
                 查看订阅计划
               </button>
             </div>
