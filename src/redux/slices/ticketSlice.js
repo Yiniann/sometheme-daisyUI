@@ -232,10 +232,15 @@ const ticketSlice = createSlice({
         state.error.replyToTicket = null;
         state.success.reply = false;
       })
-      .addCase(replyToTicket.fulfilled, (state) => {
+      .addCase(replyToTicket.fulfilled, (state, action) => {
         state.loading.replyToTicket = false;
-        state.success.reply = true;
+        if (action.payload.status === "success" && action.payload.data === true) {
+          state.success.reply = true;
+        } else {
+          state.error.replyToTicket = action.payload.message || "回复失败";
+        }
       })
+
       .addCase(replyToTicket.rejected, (state, action) => {
         state.loading.replyToTicket = false;
         state.error.replyToTicket = action.payload;
