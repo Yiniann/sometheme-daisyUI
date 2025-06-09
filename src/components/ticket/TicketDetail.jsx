@@ -13,41 +13,35 @@ import StatusMessage from "../../components/ui/StatusMessage";
 const TicketDetail = ({ selectedTicket, detailLoading, detailError, onBack }) => {
   const info = useSelector((state) => state.user.info);
   const fetchedDetail = useSelector((state) => state.ticket.fetchedDetail);
-  const { loading, error, success } = useSelector((state) => state.ticket);
+  const { loading} = useSelector((state) => state.ticket);
 
   const [message, setMessage] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
   const lastSentMessageRef = useRef("");
 
-  useEffect(() => {
-    if (success.reply) {
-      const sentMessage = lastSentMessageRef.current;
-      if (process.env.NODE_ENV === "development") {
-        console.log(
-          `✅ 模拟发送成功\n工单 ID: ${selectedTicket.id}\n消息内容: ${sentMessage}`
-        );
-      } else {
-        dispatch(fetchTicketDetail(selectedTicket.id));
-      }
-      toast.success("消息已发送");
-      setMessage("");
-      dispatch(clearReplyStatus());
-    } else if (error.replyToTicket) {
-      toast.error(`发送失败：${error.replyToTicket}`);
-      dispatch(clearReplyStatus());
-    }
-  }, [success.reply, error.replyToTicket, dispatch, selectedTicket?.id]);
-
-  const handleSendMessage = () => {
+  
+  const handleSendMessage = async () => {
     if (!message.trim()) {
       toast.error("请输入消息");
       return;
     }
-    lastSentMessageRef.current = message;
-    dispatch(replyToTicket({ id: selectedTicket.id, message }));
-    dispatch(fetchTicketDetail(selectedTicket.id));
+
+    try {
+      await dispatch(replyToTicket({ id: selectedTicket.id, message })).unwrap();
+      toast.success("消息已发送");
+      lastSentMessageRef.current = message;
+      setMessage("");
+
+      // 请求最新工单详情
+      dispatch(fetchTicketDetail(selectedTicket.id));
+    } catch (err) {
+        const message = typeof err === 'string' ? err : err?.message || '未知错误';
+        toast.error(`发送失败：${message}`);
+      }
+
   };
+
 
   return (
     <div className="flex flex-col h-full">
@@ -180,13 +174,6 @@ const TicketDetail = ({ selectedTicket, detailLoading, detailError, onBack }) =>
               </button>
             </div>
 
-            {/* 状态提示 */}
-            {loading.replyToTicket && (
-              <p className="mt-1 text-info text-sm px-2">正在发送...</p>
-            )}
-            {error.replyToTicket && (
-              <p className="mt-1 text-error text-sm px-2">{error.replyToTicket}</p>
-            )}
           </div>
 
           <CloseTicketModal
