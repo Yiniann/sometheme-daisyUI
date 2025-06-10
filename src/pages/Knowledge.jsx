@@ -106,10 +106,10 @@ const Knowledge = () => {
         {isDetailPage && (
           <>
             {/* 面包屑 + 返回按钮（仅移动端显示） */}
-            <div className="mb-4 flex items-center justify-between lg:hidden">
+            <div className="sticky top-[-16px] z-10 flex items-center justify-between bg-base-100 lg:hidden border-b border-base-300">
               <div className="breadcrumbs text-sm">
                 <ul>
-                  <li><a onClick={handleBack} className="cursor-pointer">知识库</a></li>
+                  <li>知识库</li>
                   {loading.fetchKnowledgeById ? (
                     <>
                       <li><div className="skeleton h-4 w-16"></div></li>
@@ -133,10 +133,10 @@ const Knowledge = () => {
             </div>
 
             {/* 面包屑（仅桌面端显示） */}
-            <div className="mb-4 hidden lg:block">
+            <div className="sticky top-[-16px] z-10 hidden bg-base-100 lg:block border-b border-base-300">
               <div className="breadcrumbs text-sm">
                 <ul>
-                  <li><a onClick={handleBack} className="cursor-pointer">知识库</a></li>
+                  <li>知识库</li>
                   {loading.fetchKnowledgeById ? (
                     <>
                       <li><div className="skeleton h-4 w-16"></div></li>
