@@ -36,7 +36,7 @@ const Docker = () => {
             flex flex-col items-center justify-center gap-1 text-xs 
             h-full w-full rounded-xl
             font-semibold
-            shadow-lg
+            bg-base-300 text-base-content
             transform transition-transform duration-200 hover:scale-105
           "
           aria-label="打开订阅面板"

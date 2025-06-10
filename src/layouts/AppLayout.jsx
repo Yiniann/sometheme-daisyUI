@@ -113,7 +113,7 @@ const AppLayout = () => {
         </aside>
 
         {/* 中间内容 */}
-        <main className="flex-1 min-h-0 bg-base-100 px-4 pt-4  pb-14 lg:pb-4 overflow-auto">
+        <main className="flex-1 min-h-0 bg-base-100 px-4 pt-4 pb-14 lg:pb-4 overflow-auto">
           <Outlet />
         </main>
 
