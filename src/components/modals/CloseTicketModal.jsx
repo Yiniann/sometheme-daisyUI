@@ -52,17 +52,18 @@ const CloseTicketModal = ({ isOpen, onClose, selectedTicket }) => {
       <div className="space-y-6 text-base-content">
         <p>你确定要关闭此工单吗？关闭后将无法继续回复。</p>
         <div className="flex justify-end gap-4">
+
+          <button onClick={onClose} className="btn btn-outline">
+            取消
+          </button>
           <button
             onClick={handleCloseTicket}
             disabled={closeLoading || isProcessing}
-            className={`btn btn-error ${
+            className={`btn btn-neutral ${
               closeLoading || isProcessing ? "btn-disabled" : ""
             }`}
           >
             {closeLoading || isProcessing ? "关闭中..." : "确认关闭"}
-          </button>
-          <button onClick={onClose} className="btn btn-outline">
-            取消
           </button>
         </div>
       </div>

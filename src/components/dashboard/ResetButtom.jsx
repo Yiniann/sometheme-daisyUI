@@ -46,7 +46,7 @@ const ResetButton = () => {
             </button>
             <button
               onClick={onResetConfirm}
-              className="btn btn-sm btn-error"
+              className="btn btn-sm btn-neutral"
             >
               确认重置
             </button>
