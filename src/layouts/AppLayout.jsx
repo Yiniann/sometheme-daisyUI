@@ -8,6 +8,7 @@ import Settingsbar from "../components/layout/Settingsbar"
 import Docker from "../components/layout/Docker"
 import RightPanelWrapper from "../components/layout/RightPanelWrapper"
 import { getValue } from "../config/runtimeConfig"
+import useViewportHeight from '../hooks/useViewportHeight'
 
 import { useDispatch } from "react-redux"
 import {
@@ -20,6 +21,7 @@ import { fetchAccountConfig, checkLogin } from "../redux/slices/passportSlice"
 
 const AppLayout = () => {
   const dispatch = useDispatch()
+  const vh = useViewportHeight()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [activeRightPanel, setActiveRightPanel] = useState(null)
   const siteName = getValue("siteName", "App")
@@ -62,7 +64,10 @@ const AppLayout = () => {
   }, [dispatch])
 
   return (
-    <div className="w-screen h-screen overflow-hidden">
+    <div
+      className="w-screen overflow-hidden"
+      style={{ height: `calc(${vh * 100}px)` }}
+    >
       {/* 顶栏（仅小屏） */}
       <Topbar
         drawerOpen={drawerOpen}
@@ -108,12 +113,9 @@ const AppLayout = () => {
         </aside>
 
         {/* 中间内容 */}
-        <main className="flex-1 min-h-0 bg-base-100 px-4 pt-4  pb-20 lg:pb-0 overflow-y-auto">
+        <main className="flex-1 min-h-0 bg-base-100 px-4 pt-4  pb-14 lg:pb-4 overflow-auto">
           <Outlet />
         </main>
-
-
-
 
 
         {/* 右侧抽屉面板 */}

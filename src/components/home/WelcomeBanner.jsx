@@ -43,8 +43,8 @@ const WelcomeBanner = () => {
       }}
     >
       <div className="text-neutral-content text-left m-6 max-w-md">
-        <h1 className="mb-2 text-4xl font-bold">{greeting}</h1>
-        <p className="mb-2 text-4xl">{userEmail}</p>
+        <h1 className="mb-2 text-4xl font-bold">{greeting},</h1>
+        <p className="mb-2 ml-5 text-4xl">{userEmail?.split("@")[0]}</p>
       </div>
     </section>
   );
