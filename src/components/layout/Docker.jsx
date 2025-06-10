@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Home, LayoutDashboard, FileText, User, Rss } from "lucide-react";
+import { Home, LayoutDashboard,  BookOpen , Wallet, Rss } from "lucide-react";
 import Subscriber from "../dashboard/Subscriber"; 
 
 const navItemClass = ({ isActive }) =>
@@ -46,14 +46,14 @@ const Docker = () => {
         </button>
 
 
-        <NavLink to="/ticket" className={navItemClass}>
-          <FileText className="w-5 h-5" />
-          <span>Ticket</span>
+        <NavLink to="/knowledge" className={navItemClass}>
+          <BookOpen className="w-5 h-5" />
+          <span>Knowledge</span>
         </NavLink>
 
-        <NavLink to="/profile" className={navItemClass}>
-          <User className="w-5 h-5" />
-          <span>Profile</span>
+        <NavLink to="/wallet" className={navItemClass}>
+          <Wallet className="w-5 h-5" />
+          <span>Wallet</span>
         </NavLink>
       </nav>
     </>

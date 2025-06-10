@@ -1,4 +1,4 @@
-const Profile = () => {
+const Wallet = () => {
   return (
     <div className="text-2xl font-bold">
       Profile页面
@@ -6,4 +6,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default Wallet

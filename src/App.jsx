@@ -14,7 +14,7 @@ import OrderList from "./components/order/OrderList";
 import OrderDetail from "./components/order/OrderDetail";
 import Ticket from "./pages/Ticket";
 import Knowledge from './pages/Knowledge'
-import Profile from "./pages/Profile";
+import Wallet from "./pages/Wallet";
 
 import { useThemeInit } from "./hooks/useThemeInit";//主题初始化
 import ProtectedRoute from "./components/ProtectedRoute";//保护路由
@@ -70,7 +70,7 @@ const App = () => {
             <Route path="knowledge" element={<Knowledge />}>
               <Route path=":id" element={<Knowledge />} />
             </Route>
-            <Route path="profile" element={<Profile />} />
+            <Route path="wallet" element={<Wallet />} />
           </Route>
 
           {/* 404 页面 */}
