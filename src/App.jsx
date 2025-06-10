@@ -67,7 +67,9 @@ const App = () => {
             </Route>
 
             <Route path="ticket" element={<Ticket />} />
-            <Route path="knowledge" element={<Knowledge />} />
+            <Route path="knowledge" element={<Knowledge />}>
+              <Route path=":id" element={<Knowledge />} />
+            </Route>
             <Route path="profile" element={<Profile />} />
           </Route>
 

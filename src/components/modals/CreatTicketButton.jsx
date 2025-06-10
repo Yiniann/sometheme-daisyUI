@@ -17,7 +17,7 @@ const CreateTicketButton = () => {
   const [message, setMessage] = useState("");
   const [level, setLevel] = useState(0);
 
-  const { tickets, loading, success, error } = useSelector(
+  const { loading, error } = useSelector(
     (state) => state.ticket,
   );
   const isCreating = loading.createTicket;
@@ -136,7 +136,7 @@ const CreateTicketButton = () => {
             <button
               type="submit"
               disabled={isCreating}
-              className={`btn btn-success ${isCreating ? "btn-disabled" : ""}`}
+              className={`btn btn-neutral ${isCreating ? "btn-disabled" : ""}`}
             >
               {isCreating ? "提交中..." : "提交"}
             </button>

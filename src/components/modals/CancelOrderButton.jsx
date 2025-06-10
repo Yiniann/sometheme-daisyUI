@@ -17,7 +17,7 @@ const CancelOrderButton = ({ tradeNo }) => {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="btn btn-error w-auto"
+        className="btn btn-error text-error-content w-auto"
       >
         <CircleX className="h-5 w-5" />
         取消订单
@@ -31,7 +31,7 @@ const CancelOrderButton = ({ tradeNo }) => {
           <button onClick={() => setIsOpen(false)} className="btn btn-ghost">
             关闭
           </button>
-          <button onClick={handleCancel} className="btn btn-error text-white">
+          <button onClick={handleCancel} className="btn btn-error text-error-content">
             确认取消
           </button>
         </div>

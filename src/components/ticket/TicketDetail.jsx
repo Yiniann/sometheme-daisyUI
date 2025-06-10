@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   replyToTicket,
-  clearReplyStatus,
   fetchTicketDetail,
 } from "../../redux/slices/ticketSlice";
 import { toast } from "sonner";
@@ -97,10 +96,10 @@ const TicketDetail = ({ selectedTicket, detailLoading, detailError, onBack }) =>
               <span
                 className={`h-2 w-2 rounded-full ${
                   selectedTicket.level === 2
-                    ? "bg-error-content"
+                    ? "bg-red-300"
                     : selectedTicket.level === 1
-                    ? "bg-warning-content"
-                    : "bg-success-content"
+                    ? "bg-yellow-300"
+                    : "bg-green-300"
                 }`}
               />
               优先级：{["低", "中", "高"][selectedTicket.level]}
@@ -122,8 +121,8 @@ const TicketDetail = ({ selectedTicket, detailLoading, detailError, onBack }) =>
                   >
                     {!isMe && (
                       <div className="mr-2 flex flex-col items-center self-center">
-                        <CircleUser className="h-10 w-10 text-gray-400" />
-                        <p className="mt-1 text-xs text-gray-500">Admin</p>
+                        <CircleUser className="h-10 w-10 text-base-400" />
+                        <p className="mt-1 text-xs text-base-500">Admin</p>
                       </div>
                     )}
                     <div
@@ -135,7 +134,7 @@ const TicketDetail = ({ selectedTicket, detailLoading, detailError, onBack }) =>
                       style={{ maxWidth: "80%" }}
                     >
                       <p>{msg.message}</p>
-                      <small className="block text-right text-xs ">
+                      <small className="block text-right text-xs text-base-content/70 ">
                         {new Date(msg.created_at * 1000).toLocaleString()}
                       </small>
                     </div>
