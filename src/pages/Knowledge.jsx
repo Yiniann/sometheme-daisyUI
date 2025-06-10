@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchKnowledgeList, fetchKnowledgeById } from "../redux/slices/knowledgeSlice";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import StatusMessage from "../components/ui/StatusMessage";
 import ContentRenderer from "../components/ContentRenderer";
 import { ArrowLeft } from "lucide-react";
@@ -16,12 +16,10 @@ const Knowledge = () => {
 
   const isDetailPage = !!id;
 
-  // 获取列表
   useEffect(() => {
     dispatch(fetchKnowledgeList());
   }, [dispatch]);
 
-  // 获取详情
   useEffect(() => {
     if (id) {
       const knowledgeId = Number(id);
@@ -41,6 +39,35 @@ const Knowledge = () => {
     navigate("/knowledge");
   };
 
+  // 默认选中第一个知识库条目（大屏幕且当前无选中项）
+  useEffect(() => {
+    if (!isDetailPage && Object.keys(list).length > 0 && window.innerWidth >= 1024) {
+      const firstCategory = Object.keys(list)[0];
+      const firstItem = list[firstCategory][0];
+      if (firstItem) {
+        navigate(`/knowledge/${firstItem.id}`, { replace: true });
+      }
+    }
+  }, [list, isDetailPage, navigate]);
+
+  const isListEmpty = Object.keys(list).length === 0;
+
+  if (isListEmpty && !loading.fetchKnowledgeList) {
+    return (
+      <div className="flex h-full flex-col items-center justify-center text-center text-base-content/70 p-10">
+        <div className="text-4xl mb-4">📄</div>
+        <p className="mb-2 font-semibold">知识库为空</p>
+        <p className="text-sm">请稍后重试或联系管理员添加内容</p>
+        <button
+          onClick={() => dispatch(fetchKnowledgeList())}
+          className="btn btn-neutral btn-sm mt-4"
+        >
+          重新加载
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-full flex-col lg:flex-row">
       {/* 列表区 */}
@@ -51,54 +78,80 @@ const Knowledge = () => {
           loadingText="加载知识库..."
           errorText="加载知识库失败"
         >
-          {Object.keys(list).length === 0 ? (
-            <div className="flex flex-col items-center justify-center text-center text-base-content/70 py-10">
-              <div className="text-4xl mb-4">📄</div>
-              <p className="mb-2 font-semibold">知识库为空</p>
-              <p className="text-sm">请稍后重试或联系管理员添加内容</p>
-              <button
-                onClick={() => dispatch(fetchKnowledgeList())}
-                className="btn btn-primary btn-sm mt-4"
-              >
-                重新加载
-              </button>
-            </div>
-          ) : (
-            <ul>
-              {Object.keys(list).map((category) => (
-                <li key={category} className="mb-4">
-                  <h3 className="mb-2 text-lg font-semibold">{category}</h3>
-                  <ul>
-                    {list[category].map((item) => (
-                      <li
-                        key={item.id}
-                        onClick={() => handleSelect(item.id)}
-                        className={`mb-2 cursor-pointer rounded-full p-2 text-center hover:bg-primary/10 ${
-                          selectedId === item.id ? 'bg-primary/20 font-bold' : ''
-                        }`}
-                      >
-                        {item.title}
-                      </li>
-                    ))}
-                  </ul>
-                </li>
-              ))}
-            </ul>
-          )}
+          <ul>
+            {Object.keys(list).map((category) => (
+              <li key={category} className="mb-4">
+                <h3 className="mb-2 text-lg font-semibold">{category}</h3>
+                <ul>
+                  {list[category].map((item) => (
+                    <li
+                      key={item.id}
+                      onClick={() => handleSelect(item.id)}
+                      className={`mb-2 cursor-pointer rounded-full p-2 text-center hover:bg-neutral/10 ${
+                        selectedId === item.id ? 'bg-neutral/20 font-bold' : ''
+                      }`}
+                    >
+                      {item.title}
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
         </StatusMessage>
       </div>
 
       {/* 详情区 */}
       <div className={`flex-1 overflow-y-auto p-4 ${!isDetailPage && 'hidden lg:block'}`}>
-        {/* 移动端返回按钮 */}
         {isDetailPage && (
-          <button
-            onClick={handleBack}
-            className="mb-4 flex items-center text-sm text-primary lg:hidden"
-          >
-            <ArrowLeft className="mr-1 h-4 w-4" />
-            返回列表
-          </button>
+          <>
+            {/* 面包屑 + 返回按钮（仅移动端显示） */}
+            <div className="mb-4 flex items-center justify-between lg:hidden">
+              <div className="breadcrumbs text-sm">
+                <ul>
+                  <li><a onClick={handleBack} className="cursor-pointer">知识库</a></li>
+                  {loading.fetchKnowledgeById ? (
+                    <>
+                      <li><div className="skeleton h-4 w-16"></div></li>
+                      <li><div className="skeleton h-4 w-24"></div></li>
+                    </>
+                  ) : (
+                    <>
+                      <li>{current?.category || '未知分类'}</li>
+                      <li className="font-semibold text-base-content">{current?.title || '加载中...'}</li>
+                    </>
+                  )}
+                </ul>
+              </div>
+              <button
+                onClick={handleBack}
+                className="flex items-center text-sm text-neutral"
+              >
+                <ArrowLeft className="mr-1 h-4 w-4" />
+                返回
+              </button>
+            </div>
+
+            {/* 面包屑（仅桌面端显示） */}
+            <div className="mb-4 hidden lg:block">
+              <div className="breadcrumbs text-sm">
+                <ul>
+                  <li><a onClick={handleBack} className="cursor-pointer">知识库</a></li>
+                  {loading.fetchKnowledgeById ? (
+                    <>
+                      <li><div className="skeleton h-4 w-16"></div></li>
+                      <li><div className="skeleton h-4 w-24"></div></li>
+                    </>
+                  ) : (
+                    <>
+                      <li>{current?.category || '未知分类'}</li>
+                      <li className="font-semibold text-base-content">{current?.title || '加载中...'}</li>
+                    </>
+                  )}
+                </ul>
+              </div>
+            </div>
+          </>
         )}
 
         <StatusMessage
