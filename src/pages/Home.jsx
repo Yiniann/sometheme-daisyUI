@@ -9,7 +9,7 @@ const Home = () => {
   );
 
   return (
-    <div className="x-auto max-w-7xl space-y-4 pb-4 ">
+    <div className="mx-auto max-w-7xl space-y-4 pb-4 ">
       {/* Hero */}
       <WelcomeBanner />
 

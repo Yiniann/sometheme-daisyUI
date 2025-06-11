@@ -73,7 +73,7 @@ const ContentRenderer = ({ content, className = "" }) => {
         rehypePlugins={[rehypeRaw, rehypeSanitize]}
         components={{
           a: ({ href, children }) => (
-            <a href={href} target="_blank" rel="noopener noreferrer" className="text-primary underline">
+            <a href={href} target="_self" rel="noopener noreferrer" className="text-primary underline">
               {children}
             </a>
           ),
