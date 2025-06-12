@@ -17,7 +17,7 @@ const CreateTicketButton = () => {
   const [message, setMessage] = useState("");
   const [level, setLevel] = useState(-1); // 默认未选择
 
-  const { loading, error } = useSelector((state) => state.ticket);
+  const { loading } = useSelector((state) => state.ticket);
   const isCreating = loading.createTicket;
 
 
@@ -31,6 +31,10 @@ const CreateTicketButton = () => {
 
   const handleCreateTicket = async (e) => {
   e.preventDefault();
+  if (level === -1) {
+    toast.error("请选择优先级！");
+    return;
+  }
   try {
     const res = await dispatch(createTicket({ subject, message, level })).unwrap();
 
@@ -101,44 +105,39 @@ const CreateTicketButton = () => {
             </label>
 
             {/* 优先级选择器 */}
-            <form
-              className="filter w-full flex gap-2"
+            <div
+              className="filter w-full flex"
               onChange={(e) => setLevel(Number(e.target.value))}
             >
               <input
-                className="btn btn-square"
-                type="reset"
-                value="×"
-                onClick={() => setLevel(-1)}
+                className="btn filter-reset"
+                type="radio"
+                name="priority"
+                aria-label="未选择"
+                value={-1}
               />
               <input
                 className="btn"
                 type="radio"
-                name="level"
+                name="priority"
                 value={2}
                 aria-label="高"
-                checked={level === 2}
-                readOnly
               />
               <input
                 className="btn"
                 type="radio"
-                name="level"
+                name="priority"
                 value={1}
                 aria-label="中"
-                checked={level === 1}
-                readOnly
               />
               <input
                 className="btn"
                 type="radio"
-                name="level"
+                name="priority"
                 value={0}
                 aria-label="低"
-                checked={level === 0}
-                readOnly
               />
-            </form>
+            </div>
           </div>
 
           <div className="flex justify-end gap-4 pt-2">
