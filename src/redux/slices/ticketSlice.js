@@ -135,7 +135,7 @@ export const createTicket = createAsyncThunk(
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
       });
 
-      return response.data;
+      return response.data;  // 这里返回整个接口响应体
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || "创建工单失败");
     }
@@ -265,14 +265,18 @@ const ticketSlice = createSlice({
         state.error.createTicket = null;
         state.success.create = false;
       })
-     .addCase(createTicket.fulfilled, (state, action) => {
+      .addCase(createTicket.fulfilled, (state, action) => {
         state.loading.createTicket = false;
-        state.success.create = action.payload?.data === true;
+        // 判断接口返回的 status 字段决定是否成功
+        state.success.create = action.payload?.status === "success" && action.payload?.data === true;
+        if (!state.success.create) {
+          state.error.createTicket = action.payload?.message || "创建工单失败";
+        }
       })
-
       .addCase(createTicket.rejected, (state, action) => {
         state.loading.createTicket = false;
-        state.error.createTicket = action.payload;
+        // rejectWithValue 传来的错误信息放这里
+        state.error.createTicket = action.payload || action.error.message;
       })
       // 提现操作
       .addCase(withdrawTicket.pending, (state) => {

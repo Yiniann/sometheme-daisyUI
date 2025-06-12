@@ -15,21 +15,11 @@ const CreateTicketButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
-  const [level, setLevel] = useState(0);
+  const [level, setLevel] = useState(-1); // 默认未选择
 
-  const { loading, error } = useSelector(
-    (state) => state.ticket,
-  );
+  const { loading, error } = useSelector((state) => state.ticket);
   const isCreating = loading.createTicket;
 
-  useEffect(() => {
-    if (error.createTicket) {
-      toast.error(error.createTicket);
-      dispatch(clearCreateStatus());
-    }
-  }, [error.createTicket, dispatch]);
-
-  // 这里移除之前依赖 tickets 自动选中的逻辑，改为手动选中
 
   const handleCreateTicketClick = () => {
     setIsModalOpen(true);
@@ -40,34 +30,32 @@ const CreateTicketButton = () => {
   };
 
   const handleCreateTicket = async (e) => {
-    e.preventDefault();
-    try {
-      const resultAction = await dispatch(createTicket({ subject, message, level }));
-      if (createTicket.fulfilled.match(resultAction)) {
-        toast.success("工单创建成功！");
+  e.preventDefault();
+  try {
+    const res = await dispatch(createTicket({ subject, message, level })).unwrap();
 
-        // 创建成功后，刷新列表并手动选中第一个工单
-        const ticketsResult = await dispatch(fetchTickets());
-        const newTickets = ticketsResult.payload;
-        if (Array.isArray(newTickets) && newTickets.length > 0) {
-          dispatch(fetchTicketDetail(newTickets[0].id));
-        }
-
-        setSubject("");
-        setMessage("");
-        setLevel(0);
-        setIsModalOpen(false);
-        dispatch(clearCreateStatus());
-      } else {
-        // 失败时提示
-        toast.error("创建工单失败");
-        dispatch(clearCreateStatus());
+    if (res.status === "success") {
+      toast.success("工单创建成功！");
+      const ticketsResult = await dispatch(fetchTickets());
+      const newTickets = ticketsResult.payload;
+      if (Array.isArray(newTickets) && newTickets.length > 0) {
+        dispatch(fetchTicketDetail(newTickets[0].id));
       }
-    } catch (err) {
-      toast.error("创建工单异常");
+
+      setSubject("");
+      setMessage("");
+      setLevel(0);
+      setIsModalOpen(false);
+      dispatch(clearCreateStatus());
+    } else {
+      toast.error(res.message || "创建工单失败");
       dispatch(clearCreateStatus());
     }
-  };
+  } catch (error) {
+    toast.error(error || "创建工单异常");
+    dispatch(clearCreateStatus());
+  }
+};
 
   return (
     <div>
@@ -108,19 +96,49 @@ const CreateTicketButton = () => {
           </div>
 
           <div>
-            <label htmlFor="level" className="label">
+            <label className="label">
               <span className="label-text">优先级</span>
             </label>
-            <select
-              id="level"
-              value={level}
+
+            {/* 优先级选择器 */}
+            <form
+              className="filter w-full flex gap-2"
               onChange={(e) => setLevel(Number(e.target.value))}
-              className="select select-bordered w-full"
             >
-              <option value={2}>高</option>
-              <option value={1}>中</option>
-              <option value={0}>低</option>
-            </select>
+              <input
+                className="btn btn-square"
+                type="reset"
+                value="×"
+                onClick={() => setLevel(-1)}
+              />
+              <input
+                className="btn"
+                type="radio"
+                name="level"
+                value={2}
+                aria-label="高"
+                checked={level === 2}
+                readOnly
+              />
+              <input
+                className="btn"
+                type="radio"
+                name="level"
+                value={1}
+                aria-label="中"
+                checked={level === 1}
+                readOnly
+              />
+              <input
+                className="btn"
+                type="radio"
+                name="level"
+                value={0}
+                aria-label="低"
+                checked={level === 0}
+                readOnly
+              />
+            </form>
           </div>
 
           <div className="flex justify-end gap-4 pt-2">
