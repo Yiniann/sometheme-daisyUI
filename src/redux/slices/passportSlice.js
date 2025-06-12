@@ -69,15 +69,9 @@ export const login = createAsyncThunk(
         qs.stringify({ email, password }),
         { headers: { "Content-Type": "application/x-www-form-urlencoded" } },
       );
-      const { data } = response.data;
-      // 返回包含用户信息和token的对象
-      return {
-        token: data.token,
-        authData: data.auth_data,
-        isAdmin: data.is_admin,
-      };
+      return response.data; // 返回完整响应
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "登录失败");
+      return rejectWithValue(error.response?.data || { message: "登录失败" });
     }
   },
 );
@@ -109,16 +103,9 @@ export const register = createAsyncThunk(
         qs.stringify({ email, password }),
         { headers: { "Content-Type": "application/x-www-form-urlencoded" } },
       );
-      const { data } = response.data;
-
-      // 返回包含 token 和 authData 等信息
-      return {
-        token: data.token,
-        authData: data.auth_data,
-        isAdmin: data.is_admin,
-      };
+      return response.data; // 返回完整响应数据
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "注册失败");
+      return rejectWithValue(error.response?.data || { message: "注册失败" });
     }
   },
 );
@@ -130,12 +117,12 @@ export const forgetPassword = createAsyncThunk(
     try {
       const response = await api.post(
         "/api/v1/passport/auth/forget",
-        qs.stringify({ email, password: password, email_code: email_code }),
+        qs.stringify({ email, password, email_code }),
         { headers: { "Content-Type": "application/x-www-form-urlencoded" } },
       );
-      return "密码重置成功"; // 成功时返回成功信息
+      return response.data; 
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "密码重置失败");
+      return rejectWithValue(error.response?.data || { message: "密码重置失败" });
     }
   },
 );
@@ -213,19 +200,24 @@ const passportSlice = createSlice({
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading.login = false;
-        state.token = action.payload.token;
-        state.authData = action.payload.authData;
-        state.isAdmin = action.payload.isAdmin;
-        state.isAuthenticated = true;
-        //本地存储
-        localStorage.setItem("token", action.payload.token);
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("isAdmin", JSON.stringify(action.payload.isAdmin));
-        localStorage.setItem(
-          "authData",
-          JSON.stringify(action.payload.authData),
-        );
-        localStorage.setItem("hasCheckedLogin", "true");
+
+        if (action.payload?.status === "success") {
+          const { token, auth_data, is_admin } = action.payload.data;
+          state.token = token;
+          state.authData = auth_data;
+          state.isAdmin = is_admin;
+          state.isAuthenticated = true;
+
+          // 本地存储
+          localStorage.setItem("token", token);
+          localStorage.setItem("isLoggedIn", "true");
+          localStorage.setItem("isAdmin", JSON.stringify(is_admin));
+          localStorage.setItem("authData", JSON.stringify(auth_data));
+          localStorage.setItem("hasCheckedLogin", "true");
+        } else {
+          // 登录失败时，写入后端返回的 message
+          state.error.login = action.payload?.message || "登录失败";
+        }
       })
       .addCase(login.rejected, (state, action) => {
         state.loading.login = false;
@@ -257,42 +249,52 @@ const passportSlice = createSlice({
         state.error.register = null;
       })
       .addCase(register.fulfilled, (state, action) => {
-        state.loading.register = false;
         if (!action.payload) {
+          state.loading.register = false;
           state.error.register = "注册返回数据为空";
           return;
         }
-        state.token = action.payload.token;
-        state.authData = action.payload.authData;
-        state.isAdmin = action.payload.isAdmin;
-        state.isAuthenticated = true;
 
-        localStorage.setItem("token", action.payload.token);
-        localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("isAdmin", JSON.stringify(action.payload.isAdmin));
-        localStorage.setItem(
-          "authData",
-          JSON.stringify(action.payload.authData),
-        );
+        if (action.payload?.status === "success") {
+          const { token, auth_data, is_admin } = action.payload.data;
+          state.loading.register = false;
+          state.token = token;
+          state.authData = auth_data;
+          state.isAdmin = is_admin;
+          state.isAuthenticated = true;
+
+          localStorage.setItem("token", token);
+          localStorage.setItem("isLoggedIn", "true");
+          localStorage.setItem("isAdmin", JSON.stringify(is_admin));
+          localStorage.setItem("authData", JSON.stringify(auth_data));
+        } else {
+          state.loading.register = false;
+          state.error.register = action.payload?.message || "注册失败";
+        }
       })
       .addCase(register.rejected, (state, action) => {
         state.loading.register = false;
         state.error.register = action.payload;
       });
     // 忘记密码操作的状态变化
-    builder
-      .addCase(forgetPassword.pending, (state) => {
-        state.loading.forgetPassword = true;
-        state.error.forgetPassword = null;
-      })
-      .addCase(forgetPassword.fulfilled, (state, action) => {
-        state.loading.forgetPassword = false;
-        state.error.forgetPassword = null;
-      })
-      .addCase(forgetPassword.rejected, (state, action) => {
-        state.loading.forgetPassword = false;
-        state.error.forgetPassword = action.payload;
-      });
+      builder
+        .addCase(forgetPassword.pending, (state) => {
+          state.loading.forgetPassword = true;
+          state.error.forgetPassword = null;
+        })
+        .addCase(forgetPassword.fulfilled, (state, action) => {
+          state.loading.forgetPassword = false;
+          if (action.payload?.status === "success") {
+            state.error.forgetPassword = null;
+          } else {
+            state.error.forgetPassword =
+              action.payload?.message || "密码重置失败";
+          }
+        })
+        .addCase(forgetPassword.rejected, (state, action) => {
+          state.loading.forgetPassword = false;
+          state.error.forgetPassword = action.payload;
+        });
   },
 });
 

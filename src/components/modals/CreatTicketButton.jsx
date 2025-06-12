@@ -116,14 +116,14 @@ const CreateTicketButton = () => {
                 aria-label="未选择"
                 value={-1}
               />
-              <input
+                <input
                 className="btn"
                 type="radio"
                 name="priority"
-                value={2}
-                aria-label="高"
+                value={0}
+                aria-label="低"
               />
-              <input
+                <input
                 className="btn"
                 type="radio"
                 name="priority"
@@ -134,8 +134,8 @@ const CreateTicketButton = () => {
                 className="btn"
                 type="radio"
                 name="priority"
-                value={0}
-                aria-label="低"
+                value={2}
+                aria-label="高"
               />
             </div>
           </div>

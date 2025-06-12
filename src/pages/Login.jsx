@@ -9,6 +9,7 @@ import {
   sendEmailVerify,
   forgetPassword,
 } from "../redux/slices/passportSlice";
+import { toast } from "sonner";
 
 const Login = () => {
   // 当前模式：登录 / 注册 / 找回密码
@@ -21,9 +22,6 @@ const Login = () => {
   const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
-  // 本地错误提示
-  const [localError, setLocalError] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -55,48 +53,48 @@ const Login = () => {
     setCode("");
     setPassword("");
     setConfirmPassword("");
-    setLocalError("");
   };
 
   // 表单提交处理
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLocalError("");
 
     if (!email.includes("@")) {
-      setLocalError("请输入有效的邮箱地址");
+      toast.error("请输入有效的邮箱地址");
       return;
     }
 
     if (mode === "login") {
       if (password.length < 6) {
-        setLocalError("密码长度至少6位");
+        toast.error("密码长度至少6位");
         return;
       }
       const result = await dispatch(login({ email, password }));
-      if (result.payload?.token) {
+      if (result.payload?.status === "success" && result.payload?.data?.token) {
+        toast.success("登录成功");
         navigate("/home");
       } else {
-        setLocalError(result.payload || "登录失败，请稍后重试");
+        toast.error(result.payload?.message || "登录失败，请稍后重试");
       }
       return;
     }
 
     if (mode === "register") {
       if (password.length < 6) {
-        setLocalError("密码长度至少6位");
+        toast.error("密码长度至少6位");
         return;
       }
       if (password !== confirmPassword) {
-        setLocalError("两次密码输入不一致");
+        toast.error("两次密码输入不一致");
         return;
       }
       const result = await dispatch(register({ email, password }));
-      if (result.payload?.token) {
+      if (result.payload?.status === "success" && result.payload?.data?.token) {
+        toast.success(result.payload?.message || "注册成功,跳转登陆");
         setMode("login");
         setEmail(email);
       } else {
-        setLocalError(result.payload || "注册失败");
+        toast.error(result.payload?.message || "注册失败");
       }
       return;
     }
@@ -106,9 +104,10 @@ const Login = () => {
         // 发送验证码
         const result = await dispatch(sendEmailVerify(email));
         if (result.payload?.status === "success") {
+          toast.success( "验证码已发送，请查收");
           setForgotStep(2);
         } else {
-          setLocalError(result.payload || "发送验证码失败");
+          toast.error(result.payload?.message || "发送验证码失败");
         }
         return;
       }
@@ -116,26 +115,27 @@ const Login = () => {
       if (forgotStep === 2) {
         // 验证码 + 新密码重置
         if (!code) {
-          setLocalError("请输入验证码");
+          toast.error("请输入验证码");
           return;
         }
         if (password.length < 6) {
-          setLocalError("密码长度至少6位");
+          toast.error("密码长度至少6位");
           return;
         }
         if (password !== confirmPassword) {
-          setLocalError("两次密码输入不一致");
+          toast.error("两次密码输入不一致");
           return;
         }
 
         const result = await dispatch(
           forgetPassword({ email, password, email_code: code }),
         );
-        if (result.payload) {
+        if (result.payload?.status === "success") {
           resetForm();
           setMode("login");
+          toast.success("密码已重置，请重新登录");
         } else {
-          setLocalError(result.payload || "密码重置失败");
+          toast.error(result.payload?.message || "密码重置失败");
         }
       }
     }
@@ -245,16 +245,9 @@ const Login = () => {
 
           {/* 找回密码第一步提示 */}
           {mode === "forgot" && forgotStep === 1 && (
-            <p className="mb-4 text-sm text-gray-500 text-center">
+            <p className="mb-4 text-sm text-center">
               请输入注册邮箱，我们将发送验证码。
             </p>
-          )}
-
-          {/* 错误提示 */}
-          {(localError || error[mode]) && (
-            <div className="mb-4 rounded bg-red-100 px-3 py-2 text-sm text-red-600 text-center">
-              {localError || error[mode]}
-            </div>
           )}
 
           {/* 提交按钮 */}
