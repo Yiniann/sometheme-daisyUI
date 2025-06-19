@@ -15,7 +15,12 @@ loadRuntimeConfig().then(() => {
     <StrictMode>
       <Provider store={store}>
         <>
-          <Toaster position="bottom-center" richColors theme="system" /> 
+          <Toaster 
+            position="bottom-center" 
+            richColors 
+            theme="system" 
+            style={{ marginBottom: "52px" }} 
+          />
           <App />
         </>
       </Provider>
