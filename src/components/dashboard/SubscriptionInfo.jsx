@@ -12,16 +12,9 @@ const Subscription = () => {
   const [showModal, setShowModal] = useState(false);
 
   const subscription = useSelector((state) => state.user.subscription);
-  const plans = useSelector((state) => state.plan.plans);
   const loading = useSelector((state) => state.plan.loading);
   const error = useSelector((state) => state.plan.error);
 
-  const currentPlan = plans
-    ? plans.find((plan) => plan?.id === subscription?.plan_id)
-    : null;
-
-  const planName = currentPlan?.name;
-  const planContent = currentPlan?.content;
 
   const formattedExpiredAt = subscription?.expired_at
     ? new Date(subscription?.expired_at * 1000).toISOString().split("T")[0]
@@ -44,7 +37,7 @@ const Subscription = () => {
       loadingText="加载订阅信息中..."
       errorText="获取订阅信息失败"
     >
-      {!currentPlan ? (
+      {!subscription ? (
         <div className="flex min-h-full flex-col items-center justify-center">
           <div className="w-full max-w-lg rounded-lg bg-transparent p-8">
             <h1 className="mb-4 text-3xl font-bold">订阅信息未找到</h1>
@@ -55,9 +48,9 @@ const Subscription = () => {
         </div>
       ) : (
         <div className="px-4">
-          <p className="pb-5 text-2xl font-semibold">{planName.toUpperCase()}</p>
+          <p className="pb-5 text-2xl font-semibold">{subscription?.plan?.name?.toUpperCase()}</p>
 
-          <ContentRenderer className="pb-5 text-base" content={planContent} />
+          <ContentRenderer className="pb-5 text-base" content={subscription?.plan?.content} />
 
           <p className="text-base">
             本月流量将于

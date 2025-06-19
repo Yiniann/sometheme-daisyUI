@@ -174,7 +174,7 @@ const Login = () => {
       </div>
 
       {/* 右上 说明 */}
-      <div className="absolute top-6 right-6 text-sm text-secondary-text select-none">
+      <div className="absolute top-6 right-6 text-sm text-base-300 select-none">
         Network Service
       </div>
 
@@ -201,7 +201,7 @@ const Login = () => {
           {/* 验证码输入（找回密码第二步） */}
           {mode === "forgot" && forgotStep === 2 && (
             <div className="form-control mb-4">
-              <p className="mb-1 text-sm text-gray-500">验证码已发送到 {email}</p>
+              <p className="mb-1 text-sm text-primary-content">验证码已发送到 {email}</p>
               <input
                 type="text"
                 placeholder="验证码"
@@ -245,7 +245,7 @@ const Login = () => {
 
           {/* 找回密码第一步提示 */}
           {mode === "forgot" && forgotStep === 1 && (
-            <p className="mb-4 text-sm text-center">
+            <p className="mb-4 text-sm text-center text-primary-content">
               请输入注册邮箱，我们将发送验证码。
             </p>
           )}
