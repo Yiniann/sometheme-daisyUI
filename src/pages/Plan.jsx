@@ -8,12 +8,14 @@ import ContentRenderer from "../components/ContentRenderer";
 import { BadgeJapaneseYen, Gift, X } from "lucide-react";
 
 const periodOptions = [
-  { key: "month_price", label: "月付" },
-  { key: "quarter_price", label: "季付" },
-  { key: "half_year_price", label: "半年付" },
-  { key: "year_price", label: "年付" },
-  { key: "onetime_price", label: "流量包" },
-  { key: "reset_price", label: "重制包" },
+  { key: "month_price", label: "月付", suffix: "/月" },
+  { key: "quarter_price", label: "季付", suffix: "/季" },
+  { key: "half_year_price", label: "半年付", suffix: "/半年" },
+  { key: "year_price", label: "年付", suffix: "/年" },
+  { key: "two_year_price", label: "两年付", suffix: "/两年" },
+  { key: "three_year_price", label: "三年付", suffix: "/三年" },
+  { key: "onetime_price", label: "一次性", suffix: "流量包" },
+  { key: "reset_price", label: "重制包", suffix: "重制流量" },
 ];
 
 const Plan = () => {
@@ -26,6 +28,10 @@ const Plan = () => {
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [coupon, setCoupon] = useState("");
   const [showCouponInput, setShowCouponInput] = useState(false);
+
+  const availablePeriods = periodOptions.filter(({ key }) =>
+    plans.some(plan => plan[key] != null)
+  );
 
   useEffect(() => {
     dispatch(fetchPlan());
@@ -99,6 +105,7 @@ const Plan = () => {
 
   const filteredPlans = plans.filter(plan => plan[selectedPeriod] != null);
 
+
   return (
     <StatusMessage
       loading={loading.fetchPlan}
@@ -106,13 +113,18 @@ const Plan = () => {
       loadingText="正在加载订阅方案..."
       errorText="加载失败，无法获取订阅方案"
     >
+      {plans.length === 0 && !loading.fetchPlan && (
+        <div className="flex min-h-[60vh] items-center justify-center text-center text-lg text-base-content/70 px-4">
+          当前暂无可购买的订阅，服务暂未开放购买。
+        </div>
+      )}
       <div className="mx-auto max-w-7xl px-4 py-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* 左侧：套餐列表 */}
         <div className="lg:col-span-2 space-y-4 pb-32 lg:pb-0"> 
           {/* period filter moved here */}
           <div className="sticky top-[-16px] bg-base-100 z-50 py-2 w-full">
             <div className="flex justify-between rounded-full overflow-hidden border border-base-300 w-full">
-              {periodOptions.map(({ key, label }, index) => (
+              {availablePeriods.map(({ key, label }, index) => (
                 <button
                   key={key}
                   className={`btn btn-outline btn-sm flex-1 transition-transform active:scale-95 ${
@@ -149,8 +161,13 @@ const Plan = () => {
                       <h3 className="text-lg font-bold mb-2">{plan.name}</h3>
                       <ContentRenderer content={plan.content} />
                     </div>
-                    <div className="text-2xl font-extrabold text-right">
-                      ¥{(plan[selectedPeriod] / 100).toFixed(2)}
+                    <div>
+                      <div className="text-xl font-extrabold text-right break-words">
+                        ¥{(plan[selectedPeriod] / 100).toFixed(2)}&nbsp;
+                        <span className="inline-block max-w-full break-keep">
+                          {periodOptions.find(p => p.key === selectedPeriod)?.suffix}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>
