@@ -221,7 +221,7 @@ const Plan = () => {
             {!appliedCoupon ? (
               !showCouponInput ? (
                 <button
-                  className="btn btn-ghost btn-xs"
+                  className="btn btn-ghost btn-sm"
                   onClick={() => setShowCouponInput(true)}
                 >
                   <Gift className="h-4 w-4" />
@@ -234,23 +234,23 @@ const Plan = () => {
                     value={coupon}
                     onChange={(e) => setCoupon(e.target.value)}
                     placeholder="有优惠券？"
-                    className="input input-bordered w-24 bg-base-200 text-base-content input-sm"
+                    className="input input-bordered w-36 bg-base-200 text-base-content"
                   />
                   <button
-                    className="btn btn-neutral btn-xs"
+                    className="btn btn-neutral btn-md"
                     onClick={handleCheckCoupon}
                     disabled={!selectedPlan || loadingCheckCoupon}
                   >
                     <div className="flex items-center gap-1">
-                      <Gift className="h-4 w-4 text-white" />
+                      <Gift className="h-5 w-5 text-white" />
                       <span>{loadingCheckCoupon ? "处理中..." : "核验"}</span>
                     </div>
                   </button>
                   <button
-                    className="btn btn-ghost btn-xs"
+                    className="btn btn-ghost btn-md"
                     onClick={() => setShowCouponInput(false)}
                   >
-                    <X className="h-4 w-4" />
+                    <X className="h-5 w-5" />
                   </button>
                 </>
               )
@@ -260,7 +260,7 @@ const Plan = () => {
                 <span className="text-base font-semibold">{appliedCoupon.name}</span>
                 <button
                   onClick={() => dispatch(clearCoupon())}
-                  className="btn btn-xs btn-error btn-outline"
+                  className="btn btn-md btn-error btn-outline"
                 >
                   <X className="h-4 w-4" />
                 </button>
