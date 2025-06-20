@@ -8,7 +8,7 @@ const PlanList = ({ availablePeriods, selectedPeriod, setSelectedPeriod, filtere
           {availablePeriods.map(({ key, label }, index) => (
             <button
               key={key}
-              className={`btn btn-outline btn-sm flex-1 transition-transform active:scale-95 ${
+              className={`btn btn-sm flex-1 transition-transform active:scale-95 ${
                 selectedPeriod === key ? "bg-neutral text-neutral-content" : "bg-base-100 text-base-content hover:bg-base-300"
               } ${
                 index === 0
