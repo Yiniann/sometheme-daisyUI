@@ -1,237 +1,217 @@
-import React, { useState, useEffect } from "react";
-import { Gift, BadgeJapaneseYen, Undo2, X } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import { BadgeJapaneseYen, Gift, X } from "lucide-react";
+import { clearCoupon } from "../../redux/slices/planSlice";
 
-import ContentRenderer from "../ContentRenderer";
-import { checkCoupon, clearCoupon } from "../../redux/slices/planSlice";
-import { saveOrder } from "../../redux/slices/orderSlice";
-
-const periodOptions = [
-  { key: "month_price", label: "月付" },
-  { key: "quarter_price", label: "季付" },
-  { key: "half_year_price", label: "半年付" },
-  { key: "year_price", label: "年付" },
-  { key: "two_year_price", label: "两年付" },
-  { key: "three_year_price", label: "三年付" },
-  { key: "onetime_price", label: "一次性" },
-];
-
-const PlanDetail = ({ plan, onBack }) => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const appliedCoupon = useSelector((state) => state.plan.coupon);
-  const loadingCheckCoupon = useSelector((state) => state.plan.loading.checkCoupon);
-  const loadingSaveOrder = useSelector((state) => state.order.loading.saveOrder);
-
-  const [selectedPeriod, setSelectedPeriod] = useState(null);
-  const [coupon, setCoupon] = useState("");
-
-  useEffect(() => {
-    return () => {
-      dispatch(clearCoupon());
-    };
-  }, [dispatch]);
-
-  const handleCheckCoupon = async () => {
-    if (!coupon.trim()) return;
-
-    try {
-      const resultAction = await dispatch(checkCoupon({ code: coupon.trim(), plan_id: plan.id }));
-      if (checkCoupon.fulfilled.match(resultAction)) {
-        toast.success("优惠券已应用");
-      } else {
-        toast.error(resultAction.payload?.message || "优惠券无效");
-      }
-    } catch {
-      toast.error("验证优惠券时出错");
-    }
-  };
-
-  const handleOrder = async () => {
-    if (!selectedPeriod) {
-      toast.warning("请先选择付款周期");
-      return;
-    }
-
-    const finalCouponCode = appliedCoupon?.code || null;
-
-    try {
-      const action = await dispatch(
-        saveOrder({
-          period: selectedPeriod,
-          plan_id: plan.id,
-          coupon_code: finalCouponCode,
-        })
-      );
-
-      if (saveOrder.fulfilled.match(action)) {
-        toast.success("下单成功，正在跳转...");
-        navigate("/order");
-      } else {
-        toast.error(action.payload?.message || "下单失败");
-      }
-    } catch {
-      toast.error("提交订单时出错");
-    }
-  };
-
-  const selectedPrice = selectedPeriod ? plan[selectedPeriod] : null;
-
-  const calculateDiscountedPrice = (price) => {
-    if (!appliedCoupon) return price;
-
-    const { type, value } = appliedCoupon;
-    if (type === 1) {
-      return price - value;
-    } else if (type === 2) {
-      if (value === 100) return 0;
-      return price * (1 - value / 100);
-    }
-    return price;
-  };
-
-  const discountedPrice = selectedPrice !== null ? calculateDiscountedPrice(selectedPrice) : null;
-
-  const noPricesAvailable = periodOptions.every(({ key }) => plan[key] == null);
-
+const PlanDetail = ({
+  selectedPlan,
+  selectedPeriod,
+  coupon,
+  setCoupon,
+  appliedCoupon,
+  handleCheckCoupon,
+  handleOrder,
+  orderLoading,
+  discountedPrice,
+  selectedPrice,
+  dispatch,
+  showCouponInput,
+  setShowCouponInput,
+  loadingCheckCoupon,
+}) => {
   return (
-    <div className="mx-auto max-w-7xl space-y-4 px-4">
-      <button
-        onClick={onBack}
-        className="btn btn-link btn-sm normal-case text-base-content"
-      >
-        <div className="flex items-center justify-center gap-1">
-          <Undo2 className="h-5 w-5" />
-          <span>返回套餐列表</span>
-        </div>
-      </button>
+    <>
+      <div className="space-y-4 hidden lg:block sticky top-20 self-start">
+        <OrderDetail
+          selectedPlan={selectedPlan}
+          selectedPeriod={selectedPeriod}
+          coupon={coupon}
+          setCoupon={setCoupon}
+          appliedCoupon={appliedCoupon}
+          handleCheckCoupon={handleCheckCoupon}
+          handleOrder={handleOrder}
+          orderLoading={orderLoading}
+          discountedPrice={discountedPrice}
+          selectedPrice={selectedPrice}
+          dispatch={dispatch}
+          showCouponInput={showCouponInput}
+          setShowCouponInput={setShowCouponInput}
+          loadingCheckCoupon={loadingCheckCoupon}
+        />
+      </div>
 
-      <div className="flex flex-col gap-4 lg:flex-row">
-        {/* 套餐信息 */}
-        <div className="flex-1 space-y-4">
-          <div className="rounded-xl bg-base-100 p-4">
-            <h2 className="mb-2 text-2xl font-bold text-base-content">{plan.name}</h2>
-            <ContentRenderer content={plan.content} />
-          </div>
-
-          {/* 周期价格 */}
-          <div className="space-y-2 rounded-xl bg-base-100 p-4">
-            {noPricesAvailable ? (
-              <div className="text-center text-base-content/70">订阅未开放购买</div>
-            ) : (
-              <>
-                <h3 className="mb-2 font-semibold text-base-content">付款周期</h3>
-                <div className="grid gap-2">
-                  {periodOptions.map(({ key, label }) => {
-                    const price = plan[key];
-                    if (price == null) return null;
-
-                    const isSelected = selectedPeriod === key;
-                    return (
-                      <button
-                        key={key}
-                        className={`btn w-full justify-between normal-case ${
-                          isSelected
-                            ? "btn-active btn-neutral text-neutral-content"
-                            : "btn-outline"
-                        }`}
-                        onClick={() => setSelectedPeriod(key)}
-                      >
-                        <span>{label}</span>
-                        <span>¥{(price / 100).toFixed(2)}</span>
-                      </button>
-                    );
-                  })}
+      <div className="fixed bottom-16 left-0 right-0 border-t border-base-300 bg-base-100 p-4 lg:hidden z-20 flex flex-col gap-2">
+        <div className="flex items-end justify-between">
+          <div className="flex flex-col">
+            <div className="text-lg font-bold mb-1">总计</div>
+            <div className="flex items-center gap-2">
+              <div className="text-2xl font-extrabold">
+                {selectedPlan ? `¥${(discountedPrice !== null ? discountedPrice : selectedPrice) / 100}.00` : "¥0.00"}
+              </div>
+              {appliedCoupon && (
+                <div className="text-xs text-success">
+                  <span className="font-semibold">{appliedCoupon.name}</span> - {appliedCoupon.type === 1 ? `¥${(appliedCoupon.value / 100).toFixed(2)}` : `${appliedCoupon.value}%`}
                 </div>
-              </>
-            )}
+              )}
+            </div>
           </div>
-        </div>
 
-        {/* 订单卡片 */}
-        <div className="w-full space-y-4 lg:w-auto">
-          <div className="rounded-xl bg-base-100 p-4">
-            {/* 优惠券输入 */}
-            <div className="mb-3 flex gap-2">
-              {!appliedCoupon ? (
+          <div className="flex items-end gap-2 flex-wrap">
+            {!appliedCoupon ? (
+              !showCouponInput ? (
+                <button className="btn btn-ghost btn-sm" onClick={() => setShowCouponInput(true)}>
+                  <Gift className="h-4 w-4" />
+                  使用优惠卷
+                </button>
+              ) : (
                 <>
                   <input
                     type="text"
                     value={coupon}
                     onChange={(e) => setCoupon(e.target.value)}
                     placeholder="有优惠券？"
-                    className="input input-bordered flex-1 bg-base-200 text-base-content"
+                    className="input input-bordered w-36 bg-base-200 text-base-content"
                   />
                   <button
-                    className="btn btn-neutral btn-sm normal-case"
+                    className="btn btn-neutral btn-md"
                     onClick={handleCheckCoupon}
-                    disabled={loadingCheckCoupon}
+                    disabled={!selectedPlan || loadingCheckCoupon}
                   >
-                    <div className="flex items-center gap-1 whitespace-nowrap">
+                    <div className="flex items-center gap-1">
                       <Gift className="h-5 w-5 text-white" />
-                      <span>{loadingCheckCoupon ? "处理中..." : "验证"}</span>
+                      <span>{loadingCheckCoupon ? "处理中..." : "核验"}</span>
                     </div>
                   </button>
-                </>
-              ) : (
-                <div className="flex w-full min-w-[285px] items-center justify-between text-sm text-success">
-                  <div className="flex items-center gap-2 truncate">
-                    <Gift className="h-5 w-5 shrink-0" />
-                    <span className="truncate text-base font-semibold">{appliedCoupon.name}</span>
-                  </div>
-                  <button
-                    onClick={() => dispatch(clearCoupon())}
-                    className="btn btn-sm btn-error btn-outline ml-2 normal-case"
-                  >
+                  <button className="btn btn-ghost btn-md" onClick={() => setShowCouponInput(false)}>
                     <X className="h-5 w-5" />
                   </button>
-                </div>
-              )}
-            </div>
-
-            {/* 订单总额 */}
-            <div className="space-y-4 rounded-xl bg-base-100 p-4">
-              <div className="text-2xl font-bold text-base-content">订单总额</div>
-
-              {selectedPeriod ? (
-                <div className="text-center text-sm">
-                  <div className="mb-2 border-b border-base-content/20 pb-2 text-base-content">
-                    {plan.name}（{periodOptions.find((p) => p.key === selectedPeriod)?.label}）
-                  </div>
-                  <div className="text-3xl font-extrabold">
-                    ¥
-                    {(discountedPrice !== null ? discountedPrice : selectedPrice) / 100}
-                    .00 CNY
-                  </div>
-                  {appliedCoupon && (
-                    <div className="text-sm text-base-content/70">
-                      <span className="font-semibold">{appliedCoupon.name}</span> -{" "}
-                      {appliedCoupon.type === 1
-                        ? `¥${(appliedCoupon.value / 100).toFixed(2)}`
-                        : `${appliedCoupon.value}%`}
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="text-center text-sm text-base-content/50">请先选择付款周期</div>
-              )}
-            </div>
-
-            <button
-              onClick={handleOrder}
-              disabled={!selectedPeriod || loadingSaveOrder}
-              className="btn btn-neutral w-full normal-case"
-            >
-              <div className="flex items-center justify-center gap-1">
-                <BadgeJapaneseYen className="h-5 w-5" />
-                <span>{loadingSaveOrder ? "处理中..." : "下单"}</span>
+                </>
+              )
+            ) : (
+              <div className="flex items-center gap-2 text-sm text-success">
+                <Gift className="h-4 w-4" />
+                <span className="text-base font-semibold">{appliedCoupon.name}</span>
+                <button onClick={() => dispatch(clearCoupon())} className="btn btn-md btn-error btn-outline">
+                  <X className="h-4 w-4" />
+                </button>
               </div>
-            </button>
+            )}
+
+            {showCouponInput ? null : (
+              <button
+                onClick={handleOrder}
+                disabled={!selectedPlan || orderLoading.saveOrder}
+                className="btn btn-neutral btn-md"
+              >
+                <div className="flex items-center justify-center gap-1">
+                  <BadgeJapaneseYen className="h-4 w-4" />
+                  <span>{orderLoading.saveOrder ? "处理中..." : "下单"}</span>
+                </div>
+              </button>
+            )}
           </div>
         </div>
+      </div>
+    </>
+  );
+};
+
+const OrderDetail = ({
+  selectedPlan,
+  selectedPeriod,
+  coupon,
+  setCoupon,
+  appliedCoupon,
+  handleCheckCoupon,
+  handleOrder,
+  orderLoading,
+  discountedPrice,
+  selectedPrice,
+  dispatch,
+  showCouponInput,
+  setShowCouponInput,
+  loadingCheckCoupon,
+}) => {
+  return (
+    <div className="space-y-4">
+      <div className="rounded-xl bg-base-100 p-4 space-y-4">
+        <div className="space-y-4 rounded-xl bg-base-100 p-4">
+          <div className="text-2xl font-bold text-base-content">总计</div>
+          <div className="text-center text-sm">
+            {selectedPlan ? (
+              <>
+                <div className="mb-2 border-b border-base-content/20 pb-2 text-base-content">
+                  {selectedPlan.name}（{selectedPeriod === "month_price" ? "月付" : selectedPeriod === "quarter_price" ? "季付" : selectedPeriod === "half_year_price" ? "半年付" : selectedPeriod === "year_price" ? "年付" : selectedPeriod === "two_year_price" ? "两年付" : selectedPeriod === "three_year_price" ? "三年付" : selectedPeriod === "onetime_price" ? "流量包" : "重制流量"}）
+                </div>
+                <div className="text-3xl font-extrabold">
+                  ¥{(discountedPrice !== null ? discountedPrice : selectedPrice) / 100}.00 CNY
+                </div>
+                {appliedCoupon && (
+                  <div className="text-sm text-base-content/70">
+                    <span className="font-semibold">{appliedCoupon.name}</span> - {appliedCoupon.type === 1 ? `¥${(appliedCoupon.value / 100).toFixed(2)}` : `${appliedCoupon.value}%`}
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="text-3xl font-extrabold">¥0.00 CNY</div>
+            )}
+          </div>
+        </div>
+
+        <div className="flex gap-2">
+          {!appliedCoupon ? (
+            !showCouponInput ? (
+              <button className="btn btn-ghost btn-sm" onClick={() => setShowCouponInput(true)}>
+                <Gift className="h-4 w-4" />
+                使用优惠卷
+              </button>
+            ) : (
+              <>
+                <input
+                  type="text"
+                  value={coupon}
+                  onChange={(e) => setCoupon(e.target.value)}
+                  placeholder="有优惠券？"
+                  className="input input-bordered flex-1 bg-base-200 text-base-content"
+                />
+                <button
+                  className="btn btn-neutral btn-sm"
+                  onClick={handleCheckCoupon}
+                  disabled={!selectedPlan || loadingCheckCoupon}
+                >
+                  <div className="flex items-center gap-1">
+                    <Gift className="h-5 w-5 text-white" />
+                    <span>{loadingCheckCoupon ? "处理中..." : "核验"}</span>
+                  </div>
+                </button>
+                <button className="btn btn-ghost btn-sm" onClick={() => setShowCouponInput(false)}>
+                  <X className="h-5 w-5" />
+                </button>
+              </>
+            )
+          ) : (
+            <div className="flex w-full min-w-[285px] items-center justify-between text-sm text-success">
+              <div className="flex items-center gap-2 truncate">
+                <Gift className="h-5 w-5 shrink-0" />
+                <span className="truncate text-base font-semibold">{appliedCoupon.name}</span>
+              </div>
+              <button onClick={() => dispatch(clearCoupon())} className="btn btn-sm btn-error btn-outline ml-2">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+          )}
+        </div>
+
+        {showCouponInput ? null : (
+          <button
+            onClick={handleOrder}
+            disabled={!selectedPlan || orderLoading.saveOrder}
+            className="btn btn-neutral w-full"
+          >
+            <div className="flex items-center justify-center gap-1">
+              <BadgeJapaneseYen className="h-5 w-5" />
+              <span>{orderLoading.saveOrder ? "处理中..." : "下单"}</span>
+            </div>
+          </button>
+        )}
       </div>
     </div>
   );

@@ -4,7 +4,6 @@ import { fetchKnowledgeList, fetchKnowledgeById } from "../redux/slices/knowledg
 import { useNavigate, useParams } from "react-router-dom";
 import StatusMessage from "../components/ui/StatusMessage";
 import ContentRenderer from "../components/ContentRenderer";
-import { ArrowLeft } from "lucide-react";
 
 const Knowledge = () => {
   const dispatch = useDispatch();
