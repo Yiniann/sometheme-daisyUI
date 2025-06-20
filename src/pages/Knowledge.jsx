@@ -105,38 +105,18 @@ const Knowledge = () => {
       <div className={`flex-1 overflow-y-auto p-4 ${!isDetailPage && 'hidden lg:block'}`}>
         {isDetailPage && (
           <>
-            {/* 面包屑 + 返回按钮（仅移动端显示） */}
-            <div className="sticky top-[-16px] z-10 flex items-center justify-between bg-base-100 lg:hidden border-b border-base-300">
+            {/* 面包屑 */}
+            <div className="sticky top-[-16px] z-10 bg-base-100 border-b border-base-300">
               <div className="breadcrumbs text-sm">
                 <ul>
-                  <li>知识库</li>
-                  {loading.fetchKnowledgeById ? (
-                    <>
-                      <li><div className="skeleton h-4 w-16"></div></li>
-                      <li><div className="skeleton h-4 w-24"></div></li>
-                    </>
-                  ) : (
-                    <>
-                      <li>{current?.category || '未知分类'}</li>
-                      <li className="font-semibold text-base-content">{current?.title || '加载中...'}</li>
-                    </>
-                  )}
-                </ul>
-              </div>
-              <button
-                onClick={handleBack}
-                className="flex items-center text-sm text-neutral"
-              >
-                <ArrowLeft className="mr-1 h-4 w-4" />
-                返回
-              </button>
-            </div>
-
-            {/* 面包屑（仅桌面端显示） */}
-            <div className="sticky top-[-16px] z-10 hidden bg-base-100 lg:block border-b border-base-300">
-              <div className="breadcrumbs text-sm">
-                <ul>
-                  <li>知识库</li>
+                  <li>
+                    <button
+                      onClick={handleBack}
+                      className="underline text-primary lg:no-underline lg:text-base-content lg:cursor-default lg:pointer-events-none"
+                    >
+                      知识库
+                    </button>
+                  </li>
                   {loading.fetchKnowledgeById ? (
                     <>
                       <li><div className="skeleton h-4 w-16"></div></li>
