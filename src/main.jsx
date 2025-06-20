@@ -1,3 +1,4 @@
+import useViewportHeight from "./hooks/useViewportHeight";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
@@ -15,11 +16,10 @@ loadRuntimeConfig().then(() => {
     <StrictMode>
       <Provider store={store}>
         <>
-          <Toaster 
-            position="bottom-center" 
-            richColors 
-            theme="system" 
-            style={{ marginBottom: "52px" }} 
+          <Toaster
+            position="top-center"
+            richColors
+            theme="system"
           />
           <App />
         </>

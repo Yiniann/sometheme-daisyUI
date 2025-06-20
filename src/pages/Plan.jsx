@@ -122,7 +122,7 @@ const Plan = () => {
         {/* 左侧：套餐列表 */}
         <div className="lg:col-span-2 space-y-4 pb-32 lg:pb-0"> 
           {/* period filter moved here */}
-          <div className="sticky top-[-16px] bg-base-100 z-50 py-2 w-full">
+          <div className="sticky top-[-16px] bg-base-100 z-20 py-2 w-full">
             <div className="flex justify-between rounded-full overflow-hidden border border-base-300 w-full">
               {availablePeriods.map(({ key, label }, index) => (
                 <button
@@ -198,7 +198,7 @@ const Plan = () => {
       </div>
 
       {/* 小屏订单信息 吸底固定 */}
-      <div className="fixed bottom-16 left-0 right-0 border-t border-base-300 bg-base-100 p-4 lg:hidden z-50 flex flex-col gap-2">
+      <div className="fixed bottom-16 left-0 right-0 border-t border-base-300 bg-base-100 p-4 lg:hidden z-20 flex flex-col gap-2">
         <div className="flex items-end justify-between">
           <div className="flex flex-col">
             <div className="text-lg font-bold mb-1">总计</div>
