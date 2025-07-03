@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { cancelOrder, fetchOrders } from "../redux/slices/orderSlice";
+import {fetchInfo} from "../redux/slices/userSlice";
 import {toast} from "sonner";
 import { useNavigate } from "react-router-dom";
 
@@ -15,6 +16,7 @@ const useCancelOrder = () => {
       if (response.data === true) {
         toast.success("订单取消成功！");
         await dispatch(fetchOrders());
+        await dispatch(fetchInfo());
         navigate("/order");
       } else {
         toast.error("取消订单失败：" + (response?.message || "未知原因"));
