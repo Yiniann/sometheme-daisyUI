@@ -1,84 +1,129 @@
 import { useSelector } from "react-redux";
+import { useState, useEffect, useRef } from "react";
 import ContentRenderer from "../components/ContentRenderer"
-import { CalendarDays } from "lucide-react";
-import WelcomeBanner from "../components/home/WelcomeBanner";
+import Modal from "../components/modals/Modal";
+import StatusMessage from "../components/ui/StatusMessage";
 
 const Home = () => {
   const { notices, loading, error, fetchedNotice } = useSelector(
     (state) => state.user
   );
 
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selectedNotice, setSelectedNotice] = useState(null);
+
+  const totalSlides = notices?.length || 0;
+  const slideIndexRef = useRef(0);
+  const isPausedRef = useRef(false);
+
+  useEffect(() => {
+    if (!fetchedNotice || totalSlides === 0) return;
+
+    const interval = setInterval(() => {
+      if (isPausedRef.current) return;
+      slideIndexRef.current = (slideIndexRef.current + 1) % totalSlides;
+      const nextSlideId = `slide${slideIndexRef.current + 1}`;
+      const el = document.getElementById(nextSlideId);
+      if (el) el.scrollIntoView({ behavior: "smooth" });
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [fetchedNotice, totalSlides]);
+
+  const openModal = (notice) => {
+    setSelectedNotice(notice);
+    setModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalOpen(false);
+    setSelectedNotice(null);
+  };
+
   return (
     <div className="mx-auto max-w-7xl space-y-4 pb-4 ">
       {/* Hero */}
-      <WelcomeBanner />
-
-      {/* 公告列表 */}
-      <section>
-        {loading.fetchNotice && (
-          <ul className="list bg-base-100 rounded-box shadow-md divide-y divide-primary">
-            {Array.from({ length: 3 }).map((_, index) => (
-              <li
-                key={index}
-                className="p-4 flex flex-col md:flex-row md:items-start md:gap-4"
-              >
-                <div className="flex-shrink-0">
-                  <div className="skeleton w-6 h-6 mt-1 rounded-full" />
-                </div>
-                <div className="flex-grow space-y-2">
-                  <div className="skeleton h-5 w-32 rounded" />
-                  <div className="space-y-1">
-                    <div className="skeleton h-4 w-full rounded" />
-                    <div className="skeleton h-4 w-4/5 rounded" />
-                    <div className="skeleton h-4 w-3/5 rounded" />
+      <StatusMessage
+        loading={loading.fetchNotice}
+        error={error.fetchNotice}
+        loadingText="加载公告中..."
+        errorText="加载公告失败"
+      >
+        {fetchedNotice && notices?.length > 0 && (
+          <div
+            className="carousel w-full rounded-box shadow-md"
+            onMouseEnter={() => (isPausedRef.current = true)}
+            onMouseLeave={() => (isPausedRef.current = false)}
+          >
+            {[...notices].reverse().map((notice, index, arr) => {
+              const total = arr.length;
+              const currentId = `slide${index + 1}`;
+              const prevId = `slide${(index - 1 + total) % total + 1}`;
+              const nextId = `slide${(index + 1) % total + 1}`;
+              return (
+                <div
+                  key={index}
+                  id={currentId}
+                  className="carousel-item relative w-full"
+                >
+                  {notice.img_url ? (
+                    <>
+                      <img
+                        src={notice.img_url}
+                        alt={notice.title}
+                        className="w-full object-cover h-64 cursor-pointer bg-base-300"
+                        onClick={() => openModal(notice)}
+                      />
+                      <div className="absolute top-2 left-2 z-10">
+                        <span className="badge badge-neutral text-neutral-content text-sm">公告</span>
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      <div
+                        className="w-full h-64 cursor-pointer bg-neutral/30"
+                        style={{
+                          backgroundImage: 'url(/background.svg)',
+                          backgroundRepeat: 'repeat-x',
+                          backgroundSize: 'auto 100%',
+                          backgroundPosition: 'center',
+                        }}
+                        onClick={() => openModal(notice)}
+                      />
+                      <div className="absolute top-2 left-2 z-10">
+                        <span className="badge badge-neutral text-neutral-content text-sm">公告</span>
+                      </div>
+                    </>
+                  )}
+                  <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between pointer-events-none">
+                    <a href={`#${prevId}`} className="btn btn-circle pointer-events-auto">❮</a>
+                    <a href={`#${nextId}`} className="btn btn-circle pointer-events-auto">❯</a>
                   </div>
-                  <div className="skeleton h-3 w-24 rounded" />
+                  <div
+                    className="absolute bottom-0 left-0 text-white text-2xl rounded-tr-2xl p-2"
+                    onClick={() => openModal(notice)}
+                  >
+                    <div>{notice.title}</div>
+                    <div className="text-xs opacity-80">{new Date(notice.updated_at * 1000).toLocaleDateString()}</div>
+                  </div>
                 </div>
-              </li>
-            ))}
-          </ul>
+              );
+            })}
+          </div>
         )}
+      </StatusMessage>
 
-        {error.fetchNotice && (
-          <p className="text-center text-error">
-            加载公告失败：{error.fetchNotice}
-          </p>
-        )}
-
-        {!loading.fetchNotice && !error.fetchNotice && fetchedNotice && (
-          <>
-            {notices && notices.length > 0 ? (
-              <ul className="list bg-base-100 rounded-box shadow-md divide-y divide-primary">
-                {notices
-                  .slice()
-                  .reverse()
-                  .map(({ title, content, created_at }, index) => (
-                    <li
-                      key={index}
-                      className="p-4 flex flex-col md:flex-row md:items-start md:gap-4"
-                    >
-                      <div className="flex-shrink-0">
-                        <CalendarDays className="w-6 h-6 text-primary mt-1" />
-                      </div>
-
-                      <div className="flex-grow space-y-1">
-                        <div className="flex justify-between items-center flex-wrap gap-2">
-                          <div className="font-semibold text-lg">{title}</div>
-                          <time className="text-xs text-primary whitespace-nowrap">
-                            发布时间：{new Date(created_at * 1000).toLocaleString()}
-                          </time>
-                        </div>
-                        <ContentRenderer content={content} className="prose prose-sm max-w-none pt-2 pl-4" />
-                      </div>
-                    </li>
-                  ))}
-              </ul>
-            ) : (
-              <p className="text-center text-neutral">暂无公告。</p>
-            )}
-          </>
-        )}
-      </section>
+     
+      <Modal
+        isOpen={modalOpen}
+        onClose={closeModal}
+        title={selectedNotice?.title}
+      >
+        <ContentRenderer
+          content={selectedNotice?.content}
+          className="prose prose-sm max-w-none"
+        />
+      </Modal>
     </div>
   );
 };
