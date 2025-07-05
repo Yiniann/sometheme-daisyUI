@@ -1,17 +1,22 @@
 import { useEffect, useRef, useState } from "react";
+import { getValue } from "../../config/runtimeConfig"
 
 const NoticeCarousel = ({ notices, fetched, onSelect }) => {
-  const totalSlides = notices?.length || 0;
+  const hasNotices = Array.isArray(notices) && notices.length > 0;
+  const reversedNotices = hasNotices ? [...notices].reverse() : [];
+  const totalSlides = reversedNotices.length;
   const slideIndexRef = useRef(0);
   const isPausedRef = useRef(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  
+
 
   useEffect(() => {
-    if (!fetched || totalSlides === 0) return;
+    if (!fetched) return;
 
     const interval = setInterval(() => {
       if (isPausedRef.current) return;
-      slideIndexRef.current = (slideIndexRef.current + 1) % totalSlides;
+      slideIndexRef.current = (slideIndexRef.current + 1) % (hasNotices ? totalSlides : 1);
       const container = document.querySelector(".carousel");
       if (container) {
         container.scrollTo({
@@ -23,7 +28,7 @@ const NoticeCarousel = ({ notices, fetched, onSelect }) => {
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [fetched, totalSlides]);
+  }, [fetched, hasNotices]);
 
   useEffect(() => {
     if (!fetched || totalSlides === 0) return;
@@ -64,7 +69,24 @@ const NoticeCarousel = ({ notices, fetched, onSelect }) => {
           onMouseEnter={() => (isPausedRef.current = true)}
           onMouseLeave={() => (isPausedRef.current = false)}
         >
-          {[...notices].reverse().map((notice, index, arr) => {
+          {!hasNotices && (
+            <div id="slide1" className="carousel-item relative w-full">
+              <div
+                className="w-full h-64 cursor-default bg-neutral/30"
+                style={{
+                  backgroundImage: 'url(/background.svg)',
+                  backgroundRepeat: 'repeat-x',
+                  backgroundSize: 'auto 100%',
+                  backgroundPosition: 'center',
+                }}
+              />
+              <div className="absolute top-1/2 left-0 text-neutral-content text-3xl p-2 w-full text-center select-none">
+                欢迎使用{getValue("siteName")}！
+              </div>
+            </div>
+          )}
+
+          {hasNotices && reversedNotices.map((notice, index, arr) => {
             const total = arr.length;
             const currentId = `slide${index + 1}`;
             const prevId = `slide${(index - 1 + total) % total + 1}`;
@@ -118,26 +140,28 @@ const NoticeCarousel = ({ notices, fetched, onSelect }) => {
             );
           })}
         </div>
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-black/20 rounded-md px-2 py-1 z-10">
-          {notices.slice().reverse().map((_, dotIdx) => {
-            const dotId = `slide${dotIdx + 1}`;
-            return (
-              <a
-                key={dotId}
-                href={`#${dotId}`}
-                className={`w-3 h-3 rounded-full transition-colors duration-200 ${
-                  currentIndex === dotIdx
-                    ? "bg-white"
-                    : "bg-white/50 hover:bg-base-content"
-                }`}
-                onClick={() => {
-                  slideIndexRef.current = dotIdx;
-                  setCurrentIndex(dotIdx);
-                }}
-              />
-            );
-          })}
-        </div>
+        {hasNotices && (
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 bg-black/20 rounded-md px-2 py-1 z-10">
+            {reversedNotices.map((_, dotIdx) => {
+              const dotId = `slide${dotIdx + 1}`;
+              return (
+                <a
+                  key={dotId}
+                  href={`#${dotId}`}
+                  className={`w-3 h-3 rounded-full transition-colors duration-200 ${
+                    currentIndex === dotIdx
+                      ? "bg-white"
+                      : "bg-white/50 hover:bg-base-content"
+                  }`}
+                  onClick={() => {
+                    slideIndexRef.current = dotIdx;
+                    setCurrentIndex(dotIdx);
+                  }}
+                />
+              );
+            })}
+          </div>
+        )}
       </div>
     </>
   );

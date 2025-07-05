@@ -38,7 +38,7 @@ const Home = () => {
       errorText="加载公告失败"
     >
       <div className="space-y-4 pb-4">
-        {fetchedNotice && notices?.length > 0 && (
+        {fetchedNotice && (
           <NoticeCarousel notices={notices} fetched={fetchedNotice} onSelect={openModal} />
         )}
 
