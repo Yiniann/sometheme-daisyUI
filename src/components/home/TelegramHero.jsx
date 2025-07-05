@@ -7,7 +7,7 @@ const TelegramHero = () => {
   const telegramLink = accountConfig?.telegram_discuss_link;
 
   return (
-    <div className="my-4 flex flex-col gap-4 w-full">
+    <div className="flex flex-col gap-4 w-full">
       {/* Telegram 讨论组 */}
       {telegramLink && (
         <div className="hero bg-base-200 rounded-xl flex-1">

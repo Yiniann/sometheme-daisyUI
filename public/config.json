@@ -6,8 +6,8 @@
   "headerImage": "/header.jpg",
   "favicon": "favicon.svg",
 
-  "windows_download_url": "https://shuttle.en1an.com/downloads/windows.exe",
-  "macos_download_url": "https://shuttle.en1an.com/downloads/macos.dmg",
-  "ios_download_url": "https://apps.apple.com/app/id123456789",
-  "android_download_url": "https://play.google.com/store/apps/details?id=com.shuttle"
+  "windows_download_url": "https://github.com/mihomo-party-org/mihomo-party/releases",
+  "macos_download_url": "https://github.com/mihomo-party-org/mihomo-party/releases",
+  "ios_download_url": "https://apps.apple.com/tr/app/shadowrocket/id932747118",
+  "android_download_url": "https://play.google.com/store/apps/details?id=com.clashfor.android"
 }

@@ -9,22 +9,22 @@ const platforms = [
   {
     key: "windows_download_url",
     name: "Windows",
-    icon: <Monitor className="w-6 h-6 text-primary shrink-0" />,
+    icon: <Monitor className="w-6 h-6 text-neutral shrink-0" />,
   },
   {
     key: "macos_download_url",
     name: "macOS",
-    icon: <Apple className="w-6 h-6 text-primary shrink-0" />,
+    icon: <Apple className="w-6 h-6 text-neutral shrink-0" />,
   },
   {
     key: "ios_download_url",
     name: "iPhone",
-    icon: <Smartphone className="w-6 h-6 text-primary shrink-0" />,
+    icon: <Smartphone className="w-6 h-6 text-neutral shrink-0" />,
   },
   {
     key: "android_download_url",
     name: "Android",
-    icon: <Smartphone className="w-6 h-6 text-primary shrink-0" />,
+    icon: <Smartphone className="w-6 h-6 text-neutral shrink-0" />,
   },
 ];
 
@@ -39,7 +39,7 @@ const AppDownload = () => {
   if (availablePlatforms.length === 0) return null;
 
   return (
-    <div className="rounded-box bg-base-200 p-4 w-full my-4">
+    <div className="rounded-box bg-base-200 p-4 w-full">
       <h2 className="text-xl font-semibold mb-4">客户端下载</h2>
       <div className="grid grid-cols-4 md:grid-cols-2 lg:grid-cols-1 gap-4">
         {availablePlatforms.map((platform) => (
