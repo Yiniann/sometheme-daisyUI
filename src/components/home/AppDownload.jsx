@@ -13,7 +13,7 @@ const platforms = [
   },
   {
     key: "macos_download_url",
-    name: "macOS",
+    name: "MacOS",
     icon: <Apple className="w-6 h-6 text-neutral shrink-0" />,
   },
   {
@@ -40,7 +40,7 @@ const AppDownload = () => {
 
   return (
     <div className="rounded-box bg-base-200 p-4 w-full">
-      <h2 className="text-xl font-semibold mb-4">客户端下载</h2>
+      <h2 className="text-xl font-semibold mb-4">客户端获取</h2>
       <div className="grid grid-cols-4 md:grid-cols-2 lg:grid-cols-1 gap-4">
         {availablePlatforms.map((platform) => (
           <a
@@ -48,7 +48,7 @@ const AppDownload = () => {
             href={platform.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-base-100 rounded-box border p-4 flex flex-row items-center justify-center gap-2 hover:shadow text-sm"
+            className="bg-base-100 rounded-box border p-4 flex flex-col md:flex-row items-center justify-center gap-2 hover:shadow text-sm w-full text-center"
           >
             {platform.icon}
             <span>{platform.name}</span>
