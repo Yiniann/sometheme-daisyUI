@@ -1,9 +1,10 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const NoticeCarousel = ({ notices, fetched, onSelect }) => {
   const totalSlides = notices?.length || 0;
   const slideIndexRef = useRef(0);
   const isPausedRef = useRef(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     if (!fetched || totalSlides === 0) return;
@@ -14,80 +15,125 @@ const NoticeCarousel = ({ notices, fetched, onSelect }) => {
       const nextSlideId = `slide${slideIndexRef.current + 1}`;
       const el = document.getElementById(nextSlideId);
       if (el) el.scrollIntoView({ behavior: "smooth" });
+      setCurrentIndex(slideIndexRef.current);
     }, 5000);
 
     return () => clearInterval(interval);
   }, [fetched, totalSlides]);
 
+  useEffect(() => {
+    if (!fetched || totalSlides === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id; // e.g., 'slide3'
+            const match = id.match(/slide(\d+)/);
+            if (match) {
+              const visibleIndex = parseInt(match[1], 10) - 1;
+              slideIndexRef.current = visibleIndex;
+              setCurrentIndex(visibleIndex);
+            }
+          }
+        });
+      },
+      {
+        root: document.querySelector(".carousel"),
+        threshold: 0.6,
+      }
+    );
+
+    notices.forEach((_, index) => {
+      const el = document.getElementById(`slide${index + 1}`);
+      if (el) observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, [fetched, totalSlides, notices]);
+
   return (
-    <div
-      className="carousel w-full rounded-box shadow-md"
-      onMouseEnter={() => (isPausedRef.current = true)}
-      onMouseLeave={() => (isPausedRef.current = false)}
-    >
-      {[...notices].reverse().map((notice, index, arr) => {
-        const total = arr.length;
-        const currentId = `slide${index + 1}`;
-        const prevId = `slide${(index - 1 + total) % total + 1}`;
-        const nextId = `slide${(index + 1) % total + 1}`;
-        return (
-          <div
-            key={index}
-            id={currentId}
-            className="carousel-item relative w-full"
-          >
-            {notice.img_url ? (
-              <>
-                <img
-                  src={notice.img_url}
-                  alt={notice.title}
-                  className="w-full object-cover h-64 cursor-pointer bg-base-300"
-                  onClick={() => onSelect(notice)}
-                />
-                <div className="absolute top-2 left-2 z-10">
-                  <span className="badge badge-neutral text-neutral-content text-sm">公告</span>
-                </div>
-              </>
-            ) : (
-              <>
-                <div
-                  className="w-full h-64 cursor-pointer bg-neutral/30"
-                  style={{
-                    backgroundImage: 'url(/background.svg)',
-                    backgroundRepeat: 'repeat-x',
-                    backgroundSize: 'auto 100%',
-                    backgroundPosition: 'center',
-                  }}
-                  onClick={() => onSelect(notice)}
-                />
-                <div className="absolute top-2 left-2 z-10">
-                  <span className="badge badge-neutral text-neutral-content text-sm">公告</span>
-                </div>
-              </>
-            )}
-            <div className="absolute left-2 right-2 top-1/2 flex -translate-y-1/2 transform justify-between pointer-events-none">
-              <a
-                href={`#${prevId}`}
-                className="w-10 h-20 bg-base-100/45 rounded shadow-md hover:bg-base-200 transition-colors duration-200 flex items-center justify-center text-lg pointer-events-auto"
-              >❮</a>
-              <a
-                href={`#${nextId}`}
-                className="w-10 h-20 bg-base-100/45 rounded shadow-md hover:bg-base-200 transition-colors duration-200 flex items-center justify-center text-lg pointer-events-auto"
-              >❯</a>
-            </div>
+    <>
+      <div
+        className="carousel w-full rounded-box shadow-md scroll-smooth"
+        onMouseEnter={() => (isPausedRef.current = true)}
+        onMouseLeave={() => (isPausedRef.current = false)}
+      >
+        {[...notices].reverse().map((notice, index, arr) => {
+          const total = arr.length;
+          const currentId = `slide${index + 1}`;
+          const prevId = `slide${(index - 1 + total) % total + 1}`;
+          const nextId = `slide${(index + 1) % total + 1}`;
+          return (
             <div
-              className="absolute bottom-0 left-0 text-white text-2xl rounded-tr-2xl p-2"
-              onClick={() => onSelect(notice)}
+              key={index}
+              id={currentId}
+              className="carousel-item relative w-full"
             >
-              <div>{notice.title}</div>
-              <div className="text-xs opacity-80">
-                {new Date(notice.updated_at * 1000).toLocaleDateString()}
+              {notice.img_url ? (
+                <>
+                  <img
+                    src={notice.img_url}
+                    alt={notice.title}
+                    className="w-full object-cover h-64 cursor-pointer bg-base-300"
+                    onClick={() => onSelect(notice)}
+                  />
+                  <div className="absolute top-2 left-2 z-10">
+                    <span className="badge badge-neutral text-neutral-content text-sm">公告</span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div
+                    className="w-full h-64 cursor-pointer bg-neutral/30"
+                    style={{
+                      backgroundImage: 'url(/background.svg)',
+                      backgroundRepeat: 'repeat-x',
+                      backgroundSize: 'auto 100%',
+                      backgroundPosition: 'center',
+                    }}
+                    onClick={() => onSelect(notice)}
+                  />
+                  <div className="absolute top-2 left-2 z-10">
+                    <span className="badge badge-neutral text-neutral-content text-sm">公告</span>
+                  </div>
+                </>
+              )}
+              <div
+                className="absolute top-1/2 left-0 text-neutral-content text-3xl p-2"
+                onClick={() => onSelect(notice)}
+              >
+                {notice.title}
+              </div>
+               <div className="absolute bottom-0 left-0 text-lg text-neutral-content  opacity-80 px-2 pb-5"
+               onClick={() => onSelect(notice)}>
+                  {new Date(notice.updated_at * 1000).toLocaleDateString()}
+              </div>
+              <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2 bg-black/20 rounded-md px-2 py-1">
+                {arr.map((_, dotIdx) => {
+                  const dotId = `slide${dotIdx + 1}`;
+                  return (
+                    <a
+                      key={dotId}
+                      href={`#${dotId}`}
+                      className={`w-3 h-3 rounded-full transition-colors duration-200 ${
+                        currentIndex === dotIdx
+                          ? "bg-white"
+                          : "bg-white/50 hover:bg-base-content"
+                      }`}
+                      onClick={() => {
+                        slideIndexRef.current = dotIdx;
+                        setCurrentIndex(dotIdx);
+                      }}
+                    />
+                  );
+                })}
               </div>
             </div>
-          </div>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
+    </>
   );
 };
 
