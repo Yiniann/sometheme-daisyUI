@@ -12,9 +12,13 @@ const NoticeCarousel = ({ notices, fetched, onSelect }) => {
     const interval = setInterval(() => {
       if (isPausedRef.current) return;
       slideIndexRef.current = (slideIndexRef.current + 1) % totalSlides;
-      const nextSlideId = `slide${slideIndexRef.current + 1}`;
-      const el = document.getElementById(nextSlideId);
-      if (el) el.scrollIntoView({ behavior: "smooth" });
+      const container = document.querySelector(".carousel");
+      if (container) {
+        container.scrollTo({
+          left: container.clientWidth * slideIndexRef.current,
+          behavior: "smooth",
+        });
+      }
       setCurrentIndex(slideIndexRef.current);
     }, 5000);
 

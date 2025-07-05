@@ -1,9 +1,9 @@
+import AppDownload from "../components/home/AppDownload";
 import { useSelector } from "react-redux";
 import { useState } from "react";
 import ContentRenderer from "../components/ContentRenderer"
 import Modal from "../components/modals/Modal";
 import StatusMessage from "../components/ui/StatusMessage";
-import { X } from "lucide-react";
 import TelegramHero from "../components/home/TelegramHero"
 import NoticeCarousel from "../components/home/NoticeCarousel";
 import StatAlerts from "../components/home/StatAlerts";
@@ -52,7 +52,10 @@ const Home = () => {
           setShowInvitesAlert={setShowInvitesAlert}
         />
 
-        <TelegramHero />
+        <div className="flex flex-col lg:flex-row gap-4 items-start">
+          <AppDownload />
+          <TelegramHero />
+        </div>
 
         <Modal
           isOpen={modalOpen}
