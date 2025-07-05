@@ -118,7 +118,7 @@ const Plan = () => {
           当前暂无可购买的订阅，服务暂未开放购买。
         </div>
       )}
-      <div className="mx-auto max-w-7xl px-4 py-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="px-4 py-4 grid grid-cols-1 lg:grid-cols-3 gap-6">
         <PlanList
           availablePeriods={availablePeriods}
           selectedPeriod={selectedPeriod}

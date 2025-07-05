@@ -155,13 +155,13 @@ const TrafficChart = () => {
       errorText="加载流量数据失败"
     >
       {trafficLogs && trafficLogs.length > 0 ? (
-        <div className="w-full rounded-lg bg-base-100 p-4">
+        <div className="relative h-full w-full overflow-hidden rounded-lg bg-base-100 p-4">
           <ApexCharts
             key={themeColors.labelColor}
             options={chartData.options}
             series={chartData.series}
             type="area"
-            height={350}
+            height="320"
           />
         </div>
       ) : (

@@ -32,9 +32,13 @@ const Dashboard = () => {
       errorText="加载失败"
     >
       <div className="flex flex-col lg:flex-row lg:h-full lg:overflow-hidden">
-        <div className="lg:w-2/3 flex flex-col">
+        <div className="lg:w-2/3 flex flex-col lg:h-full ">
           <Subscriptioninfo />
-          <TrafficChart />
+          <div className="flex-1 min-h-0 overflow-hidden">
+            <div className="p-4 pb-8">
+              <TrafficChart />
+            </div>
+          </div>
         </div>
 
         <div className="lg:w-1/3 flex flex-col overflow-y-auto scrollbar-hide">
