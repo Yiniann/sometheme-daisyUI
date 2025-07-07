@@ -1,11 +1,17 @@
 import axios from "axios";
 import { getValue } from "../config/runtimeConfig";
 
-const baseURL = ''
 const api = axios.create({
-  baseURL: baseURL, // 初始为空
+  baseURL: "",
   timeout: 10000,
 });
+
+export const initApi = () => {
+  const baseURL = import.meta.env.DEV
+    ? getValue("devUrl")
+    : "";
+  api.defaults.baseURL = baseURL;
+};
 
 // 请求拦截器
 api.interceptors.request.use(
@@ -29,11 +35,5 @@ api.interceptors.response.use(
     return Promise.reject(error);
   },
 );
-
-// ✅ 配置加载完后调用该函数，更新 baseURL
-export const initApi = () => {
-  const baseURL = getValue("baseUrl");
-  api.defaults.baseURL = baseURL;
-};
 
 export default api;
