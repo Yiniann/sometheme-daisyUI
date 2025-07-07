@@ -88,7 +88,7 @@ const AppLayout = () => {
       {/* 主区域（高度 = 屏幕高度 - 底部高度） */}
       <div className="pt-14 lg:pt-0 h-full flex">
         {/* 左侧栏（大屏） */}
-        <aside className="hidden lg:flex lg:flex-col w-1/7 bg-base-200 border-r border-base-300 justify-between">
+        <aside className="hidden lg:flex lg:flex-col w-auto xl:w-1/7 bg-base-200 border-r border-base-300 justify-between">
           <div>
             <div className="m-4 mb-10 p-5 text-xl font-bold sm:text-2xl lg:text-2xl 2xl:text-3xl flex items-center w-full">
               <span className="mr-2 text-3xl">{appLogo}</span>
