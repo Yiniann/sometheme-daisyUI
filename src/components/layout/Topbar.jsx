@@ -23,8 +23,13 @@ const Topbar = ({ drawerOpen, setDrawerOpen, activeRightPanel, setActiveRightPan
         <X className="swap-on w-6 h-6" />
       </label>
 
-      <span className="flex-grow text-center text-xl font-bold select-none">
-        {appLogo} {siteName}
+      <span className="flex-grow text-center text-xl font-bold select-none flex items-center justify-center gap-2">
+        {appLogo && (appLogo.startsWith("http") || appLogo.endsWith(".png")) ? (
+          <img src={appLogo} alt="logo" className="h-6 object-contain" />
+        ) : (
+          <span className="text-3xl">{appLogo}</span>
+        )}
+        {siteName}
       </span>
 
       <RightPanelToggleButtons
