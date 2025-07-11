@@ -3,12 +3,14 @@ import api from "../../utils/api";
 import qs from "qs";
 
 const initialState = {
+  AppConfig : null,
   accountConfig: {},
   token: localStorage.getItem("token") || null,
   isAuthenticated: JSON.parse(localStorage.getItem("isLoggedIn")) || false,
   isAdmin: null,
   authData: null,
   loading: {
+    fetchAppConfig: false,
     fetchAccountConfig: false,
     login: false,
     sendEmailVerify: false,
@@ -16,6 +18,7 @@ const initialState = {
     forgetPassword: false,
   },
   error: {
+    fetchAppConfig: null,
     fetchAccountConfig: null,
     login: null,
     sendEmailVerify: null,
@@ -23,6 +26,20 @@ const initialState = {
     forgetPassword: null,
   },
 };
+//获取站点信息
+export const fetchAppConfig = createAsyncThunk(
+  "app/fetchAppConfig",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/api/v1/guest/comm/config");
+      return response.data.data; // 返回站点配置信息
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "获取站点信息失败",
+      );
+    }
+  },
+);
 
 // 获取账户配置/comm/config
 export const fetchAccountConfig = createAsyncThunk(
@@ -152,6 +169,19 @@ const passportSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      //获取站点信息
+      .addCase(fetchAppConfig.pending, (state) => {
+        state.loading.fetchAppConfig = true;
+        state.error.fetchAppConfig = null;
+      })
+      .addCase(fetchAppConfig.fulfilled, (state, action) => {
+        state.loading.fetchAppConfig = false;
+        state.AppConfig = action.payload; // 存储站点配置信息
+      })
+      .addCase(fetchAppConfig.rejected, (state, action) => {
+        state.loading.fetchAppConfig = false;
+        state.error.fetchAppConfig = action.payload;
+      })
       // 获取账户配置
       .addCase(fetchAccountConfig.pending, (state) => {
         state.loading.fetchAccountConfig = true;
@@ -164,8 +194,8 @@ const passportSlice = createSlice({
       .addCase(fetchAccountConfig.rejected, (state, action) => {
         state.loading.fetchAccountConfig = false;
         state.error.fetchAccountConfig = action.payload;
-      });
-    builder
+      })
+      //checkLogin 的状态变化
       .addCase(checkLogin.pending, (state) => {
         state.loading.checkLogin = true;
         state.error.checkLogin = null;

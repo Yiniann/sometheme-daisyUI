@@ -8,6 +8,7 @@ import {
   clearMessage,
   sendEmailVerify,
   forgetPassword,
+  fetchAppConfig
 } from "../redux/slices/passportSlice";
 import { toast } from "sonner";
 
@@ -25,10 +26,13 @@ const Login = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  // 拉取应用配置
+  useEffect(() => {
+    dispatch(fetchAppConfig());
+  }, [dispatch]);
   // 从 Redux 读取 loading 状态和服务端错误信息
   const { loading, error } = useSelector((state) => state.passport);
-
+  const { AppConfig } = useSelector((state) => state.passport);
   const siteName = getValue("siteName","App")
   const appLogo = getValue ("appLogo","")
   // 统一管理各异步接口 loading 状态
@@ -175,7 +179,7 @@ const Login = () => {
 
       {/* 右上 说明 */}
       <div className="absolute top-6 right-6 text-sm text-base-300 select-none">
-        Network Service
+        {AppConfig?.app_description}
       </div>
 
       {/* 中间主体内容：标题 + 表单 */}
