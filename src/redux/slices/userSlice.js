@@ -5,7 +5,7 @@ import qs from "qs";
 const initialState = {
   info: null,
   subscription: null,
-  bot:null,
+  bot: null,
   servers: [],
   stat: {
     pendingOrders: 0,
@@ -25,7 +25,8 @@ const initialState = {
     resetSecurity: false,
     changePassword: false,
     transferCommission: false,
-    getBotInfo:false,
+    getBotInfo: false,
+    updateUserSettings: false, // 新增
   },
   error: {
     fetchInfo: null,
@@ -37,9 +38,11 @@ const initialState = {
     resetSecurity: null,
     changePassword: null,
     transferCommission: null,
-    getBotInfo:null,
+    getBotInfo: null,
+    updateUserSettings: null, // 新增
   },
 };
+
 
 // 获取用户信息
 export const fetchInfo = createAsyncThunk(
@@ -237,6 +240,18 @@ export const getBotInfo = createAsyncThunk(
     }
   },
 );
+// 更新用户设置
+export const updateUserSettings = createAsyncThunk(
+  "user/updateUserSettings",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response = await api.post("/api/v1/user/update", payload);
+      return response.data.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "更新失败");
+    }
+  }
+);
 
 // 创建 userSlice
 const userSlice = createSlice({
@@ -382,6 +397,18 @@ const userSlice = createSlice({
       state.loading.getBotInfo = false;
       state.error.getBotInfo = action.payload;
     })
+      // 更新用户设置
+      .addCase(updateUserSettings.pending, (state) => {
+        state.loading.updateUserSettings = true;
+        state.error.updateUserSettings = null;
+      })
+      .addCase(updateUserSettings.fulfilled, (state) => {
+        state.loading.updateUserSettings = false;
+      })
+      .addCase(updateUserSettings.rejected, (state, action) => {
+        state.loading.updateUserSettings = false;
+        state.error.updateUserSettings = action.payload;
+      })
   },
 });
 

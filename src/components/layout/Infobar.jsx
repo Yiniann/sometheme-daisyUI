@@ -1,12 +1,39 @@
+import { toast } from "sonner"
 import LogoutButton from "../modals/LogoutButton";
 import ResetPasswordModal from "../modals/ResetPasswordButton";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { updateUserSettings } from "../../redux/slices/userSlice";
 
 
 
 const Infobar = () => {
   const info = useSelector((state) => state.user.info);
   const isLoading = useSelector((state)=> state.user.loading)
+  const dispatch = useDispatch();
+  const [remindExpire, setRemindExpire] = useState(false);
+  const [remindTraffic, setRemindTraffic] = useState(false);
+
+  useEffect(() => {
+    if (info) {
+      setRemindExpire(Boolean(info.remind_expire));
+      setRemindTraffic(Boolean(info.remind_traffic));
+    }
+  }, [info]);
+
+  const handleToggleExpire = () => {
+    const newValue = remindExpire ? 0 : 1;
+    dispatch(updateUserSettings({ remind_expire: newValue }));
+    setRemindExpire(!remindExpire);
+    toast.success(`到期提醒已${newValue ? "开启" : "关闭"}`);
+  };
+
+  const handleToggleTraffic = () => {
+    const newValue = remindTraffic ? 0 : 1;
+    dispatch(updateUserSettings({ remind_traffic: newValue }));
+    setRemindTraffic(!remindTraffic);
+    toast.success(`流量提醒已${newValue ? "开启" : "关闭"}`);
+  };
 
   if (isLoading.fetchInfo) {
     return (
@@ -64,13 +91,22 @@ const Infobar = () => {
       </div>
 
 
-
-
       {/* 操作按钮 */}
       <div className="flex flex-col gap-3">
         <ResetPasswordModal className="btn btn-outline btn-sm flex items-center justify-center gap-2" />
 
         <LogoutButton className="btn btn-outline btn-sm flex items-center justify-center gap-2" />
+      </div>
+      {/* 设置提醒选项 */}
+      <div className="flex flex-col gap-2">
+        <label className="label cursor-pointer justify-between">
+          <span className="label-text text-sm">订阅到期邮件提醒</span>
+          <input type="checkbox" className="toggle" checked={remindExpire} onChange={handleToggleExpire} />
+        </label>
+        <label className="label cursor-pointer justify-between">
+          <span className="label-text text-sm">流量余量邮件提醒</span>
+          <input type="checkbox" className="toggle" checked={remindTraffic} onChange={handleToggleTraffic} />
+        </label>
       </div>
     </div>
   );
