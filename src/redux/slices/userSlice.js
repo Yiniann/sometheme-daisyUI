@@ -5,6 +5,7 @@ import qs from "qs";
 const initialState = {
   info: null,
   subscription: null,
+  bot:null,
   servers: [],
   stat: {
     pendingOrders: 0,
@@ -24,6 +25,7 @@ const initialState = {
     resetSecurity: false,
     changePassword: false,
     transferCommission: false,
+    getBotInfo:false,
   },
   error: {
     fetchInfo: null,
@@ -35,6 +37,7 @@ const initialState = {
     resetSecurity: null,
     changePassword: null,
     transferCommission: null,
+    getBotInfo:null,
   },
 };
 
@@ -220,6 +223,21 @@ export const transferCommission = createAsyncThunk(
   },
 );
 
+//获取Tg机器人信息
+export const getBotInfo = createAsyncThunk(
+  "user/telegram/getBotInfo",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/api/v1/user/telegram/getBotInfo");
+      return response.data.data; // 直接返回数据
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "获取机器人失败",
+      );
+    }
+  },
+);
+
 // 创建 userSlice
 const userSlice = createSlice({
   name: "user",
@@ -350,7 +368,20 @@ const userSlice = createSlice({
       .addCase(transferCommission.rejected, (state, action) => {
         state.loading.transferCommission = false;
         state.error.transferCommission = action.payload;
-      });
+      })
+      //获取bot
+      .addCase(getBotInfo.pending, (state, action) => {
+        state.loading.getBotInfo = true;
+        state.error.getBotInfo = null;
+      })
+      .addCase(getBotInfo.fulfilled, (state, action) => {
+        state.loading.getBotInfo = false;
+        state.bot = action.payload
+      })
+      .addCase(getBotInfo.rejected, (state, action) => {
+      state.loading.getBotInfo = false;
+      state.error.getBotInfo = action.payload;
+    })
   },
 });
 

@@ -16,6 +16,7 @@ import {
   fetchSubscription,
   getStat,
   fetchNotice,
+  getBotInfo
 } from "../redux/slices/userSlice"
 import { fetchAccountConfig, checkLogin } from "../redux/slices/passportSlice"
 
@@ -55,6 +56,7 @@ const AppLayout = () => {
           dispatch(getStat()).unwrap(),
           dispatch(fetchNotice()).unwrap(),
           dispatch(fetchAccountConfig()).unwrap(),
+          dispatch(getBotInfo()).unwrap(),
         ])
       } catch (error) {
         console.error("数据请求失败", error)

@@ -1,8 +1,12 @@
-import { Send, Bot } from "lucide-react";
+import { useState } from "react";
+import { Send, Bot, Copy } from "lucide-react";
 import { useSelector } from "react-redux";
+import Modal from "../modals/Modal";
 
 const TelegramHero = () => {
   const { accountConfig } = useSelector((state) => state.passport);
+  const {bot, subscription} = useSelector((state) => state.user);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const telegramLink = accountConfig?.telegram_discuss_link;
 
@@ -16,9 +20,9 @@ const TelegramHero = () => {
               <Send className="w-8 h-8" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold">加入我们的 Telegram 讨论组！</h1>
+              <h1 className="text-2xl font-bold">Telegram 讨论组！</h1>
               <p className="py-2 text-base-content/70">
-                获取最新资讯，与其他用户交流互动。
+                欢迎加入我们的讨论组！与我们和其他用户一起互动交流，第一时间掌握最新动态与专属优惠。
               </p>
               <a
                 href={telegramLink}
@@ -42,13 +46,48 @@ const TelegramHero = () => {
             <div>
               <h1 className="text-2xl font-bold">绑定 Telegram 机器人</h1>
               <p className="py-2 text-base-content/70">
-                启用机器人接收系统消息、提醒等功能。
+                将您的账号绑定到我们的 Telegram Bot，第一时间接收重要通知，实时了解账户状态与平台最新消息，尽享更加高效、便捷的服务体验。
               </p>
-              <button className="btn btn-disabled">暂未开放</button>
+              <button onClick={() => setIsModalOpen(true)} className="btn btn-neutral">绑定机器人</button>
             </div>
           </div>
         </div>
       )}
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Telegram Bot">
+        <div className="space-y-4">
+          <div>
+            <h2 className="font-semibold">第一步</h2>
+            <p>
+              在 Telegram 中搜索{" "}
+              <a
+                href={`https://t.me/${bot?.username}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary font-mono"
+              >
+                @{bot?.username}
+              </a>
+            </p>
+          </div>
+          <div>
+            <h2 className="font-semibold">第二步</h2>
+            <p>向机器人发送以下指令完成绑定：</p>
+            <div className="mt-2 rounded bg-base-300 px-3 py-2 font-mono text-sm break-all flex items-center justify-between">
+              <span className="mr-4 break-words">
+                /bind {subscription?.subscribe_url}
+              </span>
+              <button
+                className="btn btn-sm btn-ghost"
+                onClick={() =>
+                  navigator.clipboard.writeText(`/bind ${subscription?.subscribe_url}`)
+                }
+              >
+                <Copy className="w-4 h-4" />
+              </button>
+            </div>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };
