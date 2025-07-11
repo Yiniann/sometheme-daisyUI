@@ -15,7 +15,7 @@ const RightPanelWrapper = ({ panelKey, onClose, panelMap }) => {
           <h2 className="font-bold text-lg">{title}</h2>
           <button className="btn btn-sm btn-ghost" onClick={onClose}>✕</button>
         </div>
-        <div className="overflow-y-auto p-4">
+        <div className="overflow-y-auto p-4  pb-14 h-full">
           <PanelComponent />
         </div>
       </div>
