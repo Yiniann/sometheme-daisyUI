@@ -1,11 +1,11 @@
 import { Languages, Palette } from "lucide-react";
 import { useState, useEffect } from "react";
 
-const themes = ["light", "dark", "nord","valentine", "cupcake", "dracula", "cyberpunk"];
+const themes = [ "nord","dark", "valentine", "cupcake", "dracula", "cyberpunk"];
 
 const Settingsbar = () => {
   const [followSystem, setFollowSystem] = useState(true);
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("nord");
   const [lang, setLang] = useState("zh");
 
   // 初始化设置
@@ -13,7 +13,7 @@ const Settingsbar = () => {
     const storedFollow = localStorage.getItem("followSystem");
     const storedTheme = localStorage.getItem("theme");
     const follow = storedFollow === null ? true : storedFollow === "true";
-    const currentTheme = storedTheme || "light";
+    const currentTheme = storedTheme || "nord";
 
     setFollowSystem(follow);
     setTheme(currentTheme);

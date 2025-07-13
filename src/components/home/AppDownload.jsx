@@ -9,22 +9,22 @@ const platforms = [
   {
     key: "windows_download_url",
     name: "Windows",
-    icon: <Monitor className="w-6 h-6 text-neutral shrink-0" />,
+    icon: <Monitor className="w-6 h-6  shrink-0" />,
   },
   {
     key: "macos_download_url",
     name: "MacOS",
-    icon: <Apple className="w-6 h-6 text-neutral shrink-0" />,
+    icon: <Apple className="w-6 h-6 shrink-0" />,
   },
   {
     key: "ios_download_url",
     name: "iPhone",
-    icon: <Smartphone className="w-6 h-6 text-neutral shrink-0" />,
+    icon: <Smartphone className="w-6 h-6  shrink-0" />,
   },
   {
     key: "android_download_url",
     name: "Android",
-    icon: <Smartphone className="w-6 h-6 text-neutral shrink-0" />,
+    icon: <Smartphone className="w-6 h-6 shrink-0" />,
   },
 ];
 

@@ -3,6 +3,7 @@ import { getValue } from "../../config/runtimeConfig";
 import Modal from "../modals/Modal";
 import SubscriptionButton from "./SubscriptionButton";
 import { toast } from "sonner";
+import clientSchemas from "./clientSchemas";
 
 const getPlatform = () => {
   const ua = navigator.userAgent || "";
@@ -25,18 +26,8 @@ const buildUrl = (scheme, url, name) => {
     .replace(/\{name:component\}/g, encodeURIComponent(name));
 };
 
-const clientSchemas = [
-  { name: "Shadowrocket", scheme: "shadowrocket://add/sub://{url:base64}?remarks={name:component}", platforms: ["ios"], icon: "iShadowrocket" },
-  { name: "Clash", scheme: "clash://install-config?url={url:component}", platforms: ["desktop", "android", "macos"], icon: "iClash" },
-  { name: "Surge", scheme: "surge:///install-config?url={url:component}", platforms: ["desktop", "ios", "macos"], icon: "iSurge" },
-  { name: "Sing Box", scheme: "sing-box://import-remote-profile?url={url:component}#{name:component}", platforms: ["desktop", "ios", "android", "macos"], icon: null },
-  { name: "Stash", scheme: "stash://install-config?url={url:component}&name={name:component}", platforms: ["ios"], icon: null },
-  { name: "Hiddify", scheme: "hiddify://import/{url}#{name:component}", platforms: ["desktop", "ios", "android", "macos"], icon: "iHiddify" },
-  { name: "Surfboard", scheme: "surfboard:///install-config?url={url:component}", platforms: ["android"], icon: "iSurfboard" },
-  { name: "Quantumult", scheme: "quantumult://configuration?server={url:component}", platforms: ["ios"], icon: "iQuantumult" },
-  { name: "Quantumult X", scheme: "quantumult-x:///update-configuration?remote-resource=%7B%22server_remote%22%3A%5B%22{url:component}%2C%20tag%3D{name:component}%22%5D%7D", platforms: ["ios"], icon: "iQuantumult" },
-  { name: "Streisand", scheme: "streisand://import/{url}#{name:component}", platforms: ["ios"], icon: null },
-];
+
+ 
 
 const Subscriber = ({ isOpen, onClose }) => {
   const subscription = useSelector((state) => state.user.subscription);
@@ -68,7 +59,11 @@ const Subscriber = ({ isOpen, onClose }) => {
                 toast.info(`尝试唤醒 ${client.name}，若无效请手动复制订阅地址`)
               }
             >
-              {client.icon && <span className={`icon ${client.icon}`} />}
+              {typeof client.icon === "string" ? (
+                <span className={`icon ${client.icon}`} />
+              ) : client.icon ? (
+                <span className="w-5 h-5 text-neutral">{client.icon}</span>
+              ) : null}
               导入到 {client.name}
             </a>
           );
