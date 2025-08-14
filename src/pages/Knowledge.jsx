@@ -88,10 +88,10 @@ const Knowledge = () => {
                       <button
                         type="button"
                         onClick={() => handleSelect(item.id)}
-                        className={`w-full text-left p-3 rounded-lg border border-base-300 mb-2 transition hover:bg-base-200${
+                        className={`w-full text-left p-3 rounded-lg border border-base-300 mb-2 transition ${
                           selectedId === item.id
-                            ? " bg-neutral text-neutral-content font-bold"
-                            : ""
+                            ? "bg-neutral text-neutral-content font-bold"
+                            : "hover:bg-base-200 cursor-pointer"
                         }`}
                       >
                         {item.title}
