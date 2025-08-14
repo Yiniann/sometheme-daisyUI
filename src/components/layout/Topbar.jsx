@@ -38,9 +38,9 @@ const Topbar = ({ drawerOpen, setDrawerOpen, activeRightPanel, setActiveRightPan
         <X className="swap-on w-6 h-6" />
       </label>
       
-      <span className="ml-auto font-semibold text-xl">{pageTitle}</span>
+      <span className="ml-auto font-semibold text-xs sm:text-sm">{pageTitle}</span>
 
-      <span className="flex-grow text-center text-xl font-bold select-none flex items-center justify-center gap-2">
+      <span className="flex-grow text-center text-lg sm:text-xl font-bold select-none flex items-center justify-center gap-2">
         {appLogo && (appLogo.startsWith("http") || appLogo.endsWith(".png")) ? (
           <img src={appLogo} alt="logo" className="h-6 object-contain" />
         ) : (
