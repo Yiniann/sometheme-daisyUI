@@ -14,8 +14,8 @@ const TelegramHero = () => {
     <div className="flex flex-col gap-4 w-full">
       {/* Telegram 讨论组 */}
       {telegramLink && (
-        <div className="hero bg-base-200 rounded-xl flex-1">
-          <div className="hero-content flex-row">
+        <div className="hero bg-base-200 rounded-xl flex-1 items-center justify-items-start">
+          <div className="hero-content flex-row items-center text-left justify-self-start">
             <div className="p-4 rounded-full bg-neutral text-neutral-content">
               <Send className="w-8 h-8" />
             </div>
@@ -38,8 +38,8 @@ const TelegramHero = () => {
       )}
       {/* Telegram Bot 绑定 */}
       {accountConfig?.is_telegram === 1 && (
-        <div className="hero bg-base-200 rounded-xl flex-1">
-          <div className="hero-content flex-row">
+        <div className="hero bg-base-200 rounded-xl flex-1 items-center justify-items-start">
+          <div className="hero-content flex-row items-center text-left justify-self-start">
             <div className="p-4 rounded-full bg-neutral text-neutral-content">
               <Bot className="w-8 h-8" />
             </div>
