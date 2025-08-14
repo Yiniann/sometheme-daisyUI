@@ -36,6 +36,7 @@ const Knowledge = () => {
 
   const handleBack = () => {
     navigate("/knowledge");
+    setSelectedId(null);
   };
 
   // 默认选中第一个知识库条目（大屏幕且当前无选中项）
@@ -83,14 +84,18 @@ const Knowledge = () => {
                 <h3 className="mb-2 text-lg font-semibold">{category}</h3>
                 <ul>
                   {list[category].map((item) => (
-                    <li
-                      key={item.id}
-                      onClick={() => handleSelect(item.id)}
-                      className={`mb-2 cursor-pointer rounded-full p-2 text-center hover:bg-neutral/10 ${
-                        selectedId === item.id ? 'bg-neutral/20 font-bold' : ''
-                      }`}
-                    >
-                      {item.title}
+                    <li key={item.id} className="mb-2">
+                      <button
+                        type="button"
+                        onClick={() => handleSelect(item.id)}
+                        className={`w-full text-left p-3 rounded-lg border border-base-300 mb-2 transition hover:bg-base-200${
+                          selectedId === item.id
+                            ? " bg-neutral text-neutral-content font-bold"
+                            : ""
+                        }`}
+                      >
+                        {item.title}
+                      </button>
                     </li>
                   ))}
                 </ul>
