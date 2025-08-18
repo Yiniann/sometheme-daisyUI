@@ -26,11 +26,11 @@ const NodeList = () => {
           <p className="text-sm">暂无节点数据。</p>
         </div>
       ) : (
-        <div className="p-4 space-y-4">
-          {/* 顶部统计 */}
-          <div className="flex flex-col gap-1">
+        <div className="bg-base-100">
+          {/* 顶部统计（粘顶） */}
+          <div className="p-4 sticky top-0 bg-base-100 z-10">
             <div className="flex justify-between items-center">
-              <h2 className="text-lg font-bold">节点列表</h2>
+              <h2 className="card-title text-base">节点列表</h2>
               <span className="text-sm text-base-content/70">
                 {onlineCount} / {servers.length} 在线
               </span>
@@ -42,8 +42,8 @@ const NodeList = () => {
             </div>
           </div>
 
-          {/* 节点卡片 */}
-          <div className="grid gap-4 xl:grid-cols-1 2xl:grid-cols-1">
+          {/* 列表区 */}
+          <div className="p-4 grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-1">
             {servers.map((node) => (
               <div
                 key={node.id}
@@ -54,7 +54,7 @@ const NodeList = () => {
                 <div className="card-body p-4">
                   {/* 标题和状态 */}
                   <div className="flex justify-between items-center">
-                    <h2 className="card-title text-base">{node.name}</h2>
+                    <h3 className="card-title text-base">{node.name}</h3>
                     <div
                       className="relative flex h-3 w-3 items-center justify-center"
                       title={node.is_online ? "在线" : "离线"}

@@ -17,7 +17,6 @@ const Dashboard = () => {
 
   const isLoading = planLoading || subLoading;
   const isError = planError || subError;
-  const errorMessage = planError || subError;
 
   useEffect(() => {
     dispatch(fetchPlan());
@@ -31,18 +30,26 @@ const Dashboard = () => {
       loadingText="正在加载仪表盘数据..."
       errorText="加载失败"
     >
-      <div className="flex flex-col lg:flex-row lg:h-full lg:overflow-hidden">
-        <div className="lg:w-2/3 flex flex-col lg:h-full ">
-          <Subscriptioninfo />
-          <div className="flex-1 min-h-0 overflow-hidden">
-            <div className="p-4 pb-8">
-              <TrafficChart />
+      {/* 大框容器：统一外观，不再给每个组件单独边框 */}
+      <div className="card bg-base-100 shadow">
+        <div className="card-body p-4 lg:p-6">
+          {/* 页面网格：小屏 1 列，大屏 3 列；左 2 右 1 */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 min-h-[70vh]">
+            {/* 左侧（2列）：订阅 + 流量图（无独立边框） */}
+            <div className="lg:col-span-2 flex flex-col gap-4 min-h-0">
+              <div className="p-0 flex-none">
+                <Subscriptioninfo />
+              </div>
+              <div className="p-0 flex-1 min-h-0">
+                <TrafficChart />
+              </div>
             </div>
-          </div>
-        </div>
 
-        <div className="lg:w-1/3 flex flex-col overflow-y-auto scrollbar-hide">
-          <NodeList />
+            {/* 右侧（1列）：节点列表（可独立滚动） */}
+            <aside className="lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto">
+              <NodeList />
+            </aside>
+          </div>
         </div>
       </div>
     </StatusMessage>
