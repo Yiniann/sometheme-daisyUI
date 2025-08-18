@@ -2,18 +2,33 @@ import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
-import rehypeSanitize from "rehype-sanitize";
+import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { CheckCircle, XCircle, ChevronRight } from "lucide-react";
 
-const isJsonArray = (str) => {
+// Extend sanitize schema to allow details/summary and class/style
+const sanitizeSchema = {
+  ...defaultSchema,
+  tagNames: [...(defaultSchema.tagNames || []), 'details', 'summary'],
+  attributes: {
+    ...(defaultSchema.attributes || {}),
+    details: ['open', 'className'],
+    summary: ['className'],
+    '*': [
+      ...((defaultSchema.attributes && defaultSchema.attributes['*']) || []),
+      'className',
+      'style'
+    ]
+  }
+};
+
+const tryParseFeatureList = (str) => {
   try {
     const parsed = JSON.parse(str);
-    return Array.isArray(parsed) && parsed.every(item => typeof item.feature === "string");
-  } catch {
-    return false;
-  }
+    if (Array.isArray(parsed) && parsed.every(item => typeof item.feature === 'string')) return parsed;
+  } catch {}
+  return null;
 };
 
 const DetailsWithIcon = ({ children, open: defaultOpen = false, ...props }) => {
@@ -24,7 +39,7 @@ const DetailsWithIcon = ({ children, open: defaultOpen = false, ...props }) => {
       {...props}
       open={open}
       onToggle={(e) => setOpen(e.currentTarget.open)}
-      className="border border-base rounded-md p-3 mb-4 bg-base-200"
+      className="border border-base-300 rounded-md p-3 mb-4 bg-base-200"
     >
       {children(open)}
     </details>
@@ -36,8 +51,10 @@ const SummaryWithIcon = ({ children, isOpen, ...props }) => {
     <summary
       {...props}
       className="cursor-pointer font-semibold select-none flex items-center gap-2"
+      aria-expanded={isOpen}
     >
       <ChevronRight
+        aria-hidden="true"
         className={`w-5 h-5 transition-transform duration-200 ease-in-out ${isOpen ? "rotate-90" : "rotate-0"}`}
       />
       {children}
@@ -48,16 +65,16 @@ const SummaryWithIcon = ({ children, isOpen, ...props }) => {
 const ContentRenderer = ({ content, className = "" }) => {
   if (!content) return null;
 
-  if (isJsonArray(content)) {
-    const parsed = JSON.parse(content);
+  const list = tryParseFeatureList(content);
+  if (list) {
     return (
-      <ul className={`space-y-1 text-sm text-base-content/80 ${className}`}>
-        {parsed.map((item, idx) => (
+      <ul className={`space-y-1 text-sm text-base-content leading-relaxed ${className}`}>
+        {list.map((item, idx) => (
           <li key={idx} className="flex items-start gap-2">
             {item.support ? (
-              <CheckCircle className="text-success w-4 h-4 mt-0.5" />
+              <CheckCircle aria-hidden="true" className="text-success w-4 h-4 mt-0.5" />
             ) : (
-              <XCircle className="text-error w-4 h-4 mt-0.5" />
+              <XCircle aria-hidden="true" className="text-error w-4 h-4 mt-0.5" />
             )}
             <span>{item.feature}</span>
           </li>
@@ -67,16 +84,23 @@ const ContentRenderer = ({ content, className = "" }) => {
   }
 
   return (
-    <div className={`prose max-w-none text-sm text-base-content/80 ${className}`}>
+    <div className={`prose max-w-none dark:prose-invert text-base-content prose-a:text-primary prose-code:text-base-content prose-pre:p-0 ${className}`}>
       <ReactMarkdown
         remarkPlugins={[remarkGfm]}
-        rehypePlugins={[rehypeRaw, rehypeSanitize]}
+        rehypePlugins={[rehypeRaw, [rehypeSanitize, sanitizeSchema]]}
         components={{
-          a: ({ href, children }) => (
-            <a href={href} target="_self" rel="noopener noreferrer" className="text-primary underline">
-              {children}
-            </a>
-          ),
+          a: ({ href = '', children }) => {
+            const isExternal = /^https?:\/\//i.test(href) && (typeof window !== 'undefined' ? !href.includes(window.location.host) : true);
+            return (
+              <a
+                href={href}
+                className="text-primary underline"
+                {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              >
+                {children}
+              </a>
+            );
+          },
           details: ({ node, ...props }) => {
             const defaultOpen = props.open || false;
             const children = props.children;
@@ -98,7 +122,7 @@ const ContentRenderer = ({ content, className = "" }) => {
             );
           },
           code({ node, inline, className, children, ...props }) {
-            const match = /language-(\w+)/.exec(className || '');
+            const match = /language-([a-z0-9+-]+)/i.exec(className || '');
             return !inline && match ? (
               <SyntaxHighlighter
                 style={oneDark}
@@ -110,7 +134,7 @@ const ContentRenderer = ({ content, className = "" }) => {
                 {String(children).replace(/\n$/, '')}
               </SyntaxHighlighter>
             ) : (
-              <code className={`rounded px-1 py-[0.15rem] text-sm font-mono ${className}`} {...props}>
+              <code className={`rounded px-1 py-[0.15rem] text-sm font-mono text-base-content bg-base-200 ${className}`} {...props}>
                 {children}
               </code>
             );
