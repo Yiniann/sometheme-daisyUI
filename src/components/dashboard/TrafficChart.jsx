@@ -47,7 +47,23 @@ const TrafficChart = () => {
         { name: "总量",   data: reversedLogs.map((log) => log.d + log.u) },
       ],
       options: {
-        chart: { type: "area", height: '100%', background: "transparent", toolbar: { show: true } },
+        chart: {
+          type: "area",
+          height: '100%',
+          background: "transparent",
+          toolbar: {
+            show: true,
+            tools: {
+              download: false,
+              selection: true,
+              zoom: true,
+              zoomin: true,
+              zoomout: true,
+              pan: true,
+              reset: true
+            }
+          }
+        },
         xaxis: {
           categories: reversedLogs.map((log) =>
             new Date(log.record_at * 1000).toLocaleDateString("zh-CN", { month: "2-digit", day: "2-digit" })
