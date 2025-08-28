@@ -22,7 +22,7 @@ import { HelmetProvider,Helmet } from "react-helmet-async";//Helmet
 import { getValue } from "./config/runtimeConfig";
 
 const App = () => {
-  const siteName = getValue("siteName","App")
+  const siteName = getValue("siteName"); 
   const favicon = getValue("favicon","")
   const isAuthenticated = useSelector(
     (state) => state.passport.isAuthenticated

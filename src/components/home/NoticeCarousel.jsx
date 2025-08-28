@@ -37,7 +37,7 @@ const NoticeCarousel = ({ notices, fetched, onSelect }) => {
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            const id = entry.target.id; // e.g., 'slide3'
+            const id = entry.target.id; 
             const match = id.match(/slide(\d+)/);
             if (match) {
               const visibleIndex = parseInt(match[1], 10) - 1;

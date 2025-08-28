@@ -1,0 +1,113 @@
+Date : 2025-08-26 13:51:19
+Directory : /Users/yinian/Desktop/sometheme-daisyUI/src
+Total : 66 files,  6072 codes, 202 comments, 676 blanks, all 6950 lines
+
+Languages
++----------------+------------+------------+------------+------------+------------+
+| language       | files      | code       | comment    | blank      | total      |
++----------------+------------+------------+------------+------------+------------+
+| JavaScript JSX |         54 |      4,553 |        119 |        545 |      5,217 |
+| JavaScript     |         10 |      1,503 |         82 |        128 |      1,713 |
+| PostCSS        |          1 |         15 |          1 |          3 |         19 |
+| XML            |          1 |          1 |          0 |          0 |          1 |
++----------------+------------+------------+------------+------------+------------+
+
+Directories
++-------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                      | files      | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                         |         66 |      6,072 |        202 |        676 |      6,950 |
+| . (Files)                                                                                 |          3 |        117 |          4 |         18 |        139 |
+| assets                                                                                    |          1 |          1 |          0 |          0 |          1 |
+| components                                                                                |         36 |      3,179 |         57 |        362 |      3,598 |
+| components (Files)                                                                        |          2 |        148 |          4 |         15 |        167 |
+| components/dashboard                                                                      |          7 |        593 |          6 |         67 |        666 |
+| components/home                                                                           |          4 |        374 |          2 |         27 |        403 |
+| components/layout                                                                         |          8 |        431 |         16 |         70 |        517 |
+| components/modals                                                                         |          8 |        622 |          7 |         90 |        719 |
+| components/order                                                                          |          3 |        501 |         11 |         56 |        568 |
+| components/plan                                                                           |          2 |        313 |          3 |         13 |        329 |
+| components/ticket                                                                         |          1 |        163 |          8 |         19 |        190 |
+| components/ui                                                                             |          1 |         34 |          0 |          5 |         39 |
+| config                                                                                    |          1 |         17 |          0 |          4 |         21 |
+| hooks                                                                                     |          5 |        161 |         10 |         39 |        210 |
+| layouts                                                                                   |          2 |        138 |         10 |         22 |        170 |
+| pages                                                                                     |          9 |        973 |         39 |        107 |      1,119 |
+| redux                                                                                     |          8 |      1,454 |         80 |        119 |      1,653 |
+| redux (Files)                                                                             |          1 |         20 |          0 |          3 |         23 |
+| redux/slices                                                                              |          7 |      1,434 |         80 |        116 |      1,630 |
+| utils                                                                                     |          1 |         32 |          2 |          5 |         39 |
++-------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++-------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| filename                                                                                  | language       | code       | comment    | blank      | total      |
++-------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
+| /Users/yinian/Desktop/sometheme-daisyUI/src/App.jsx                                       | JavaScript JSX |         76 |          3 |         11 |         90 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/assets/react.svg                              | XML            |          1 |          0 |          0 |          1 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/ContentRenderer.jsx                | JavaScript JSX |        139 |          1 |         11 |        151 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/ProtectedRoute.jsx                 | JavaScript JSX |          9 |          3 |          4 |         16 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/dashboard/NodeList.jsx             | JavaScript JSX |         95 |          4 |          8 |        107 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/dashboard/ResetButtom.jsx          | JavaScript JSX |         54 |          0 |          7 |         61 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/dashboard/Subscriber.jsx           | JavaScript JSX |         65 |          0 |         12 |         77 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/dashboard/SubscriptionButton.jsx   | JavaScript JSX |         45 |          0 |          7 |         52 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/dashboard/SubscriptionInfo.jsx     | JavaScript JSX |         92 |          2 |         11 |        105 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/dashboard/TrafficChart.jsx         | JavaScript JSX |        120 |          0 |          9 |        129 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/dashboard/clientSchemas.jsx        | JavaScript JSX |        122 |          0 |         13 |        135 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/home/AppDownload.jsx               | JavaScript JSX |         57 |          0 |          5 |         62 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/home/NoticeCarousel.jsx            | JavaScript JSX |        157 |          0 |         13 |        170 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/home/StatAlerts.jsx                | JavaScript JSX |         59 |          0 |          5 |         64 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/home/TelegramHero.jsx              | JavaScript JSX |        101 |          2 |          4 |        107 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/layout/Docker.jsx                  | JavaScript JSX |         52 |          1 |         11 |         64 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/layout/Infobar.jsx                 | JavaScript JSX |        105 |          8 |         15 |        128 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/layout/RightPanelToggleButtons.jsx | JavaScript JSX |         21 |          0 |          4 |         25 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/layout/RightPanelWrapper.jsx       | JavaScript JSX |         23 |          0 |          4 |         27 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/layout/Settingsbar.jsx             | JavaScript JSX |         91 |          4 |         15 |        110 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/layout/Sidebar.jsx                 | JavaScript JSX |         41 |          1 |          5 |         47 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/layout/Topbar.jsx                  | JavaScript JSX |         52 |          0 |          9 |         61 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/layout/UserControls.jsx            | JavaScript JSX |         46 |          2 |          7 |         55 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/modals/CancelOrderButton.jsx       | JavaScript JSX |         37 |          0 |          7 |         44 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/modals/CloseTicketModal.jsx        | JavaScript JSX |         65 |          1 |          9 |         75 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/modals/CreatTicketButton.jsx       | JavaScript JSX |        149 |          1 |         17 |        167 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/modals/LogoutButton.jsx            | JavaScript JSX |         51 |          1 |          7 |         59 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/modals/Modal.jsx                   | JavaScript JSX |         24 |          0 |          5 |         29 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/modals/ResetPasswordButton.jsx     | JavaScript JSX |        117 |          0 |         21 |        138 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/modals/TransferButton.jsx          | JavaScript JSX |         85 |          4 |         12 |        101 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/modals/WithdrawButton.jsx          | JavaScript JSX |         94 |          0 |         12 |        106 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/order/OrderDetail.jsx              | JavaScript JSX |        262 |         11 |         23 |        296 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/order/OrderList.jsx                | JavaScript JSX |        209 |          0 |         27 |        236 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/order/PaymentQRCode.jsx            | JavaScript JSX |         30 |          0 |          6 |         36 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/plan/PlanDetail.jsx                | JavaScript JSX |        212 |          0 |          8 |        220 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/plan/PlanList.jsx                  | JavaScript JSX |        101 |          3 |          5 |        109 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/ticket/TicketDetail.jsx            | JavaScript JSX |        163 |          8 |         19 |        190 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/components/ui/StatusMessage.jsx               | JavaScript JSX |         34 |          0 |          5 |         39 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/config/runtimeConfig.js                       | JavaScript     |         17 |          0 |          4 |         21 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/hooks/useCancelOrder.jsx                      | JavaScript JSX |         26 |          1 |          5 |         32 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/hooks/usePaymentPolling.jsx                   | JavaScript JSX |         70 |          3 |         13 |         86 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/hooks/usePollTicketDetail.jsx                 | JavaScript JSX |         25 |          4 |          8 |         37 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/hooks/useThemeInit.jsx                        | JavaScript JSX |         22 |          1 |          6 |         29 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/hooks/useViewportHeight.jsx                   | JavaScript JSX |         18 |          1 |          7 |         26 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/index.css                                     | PostCSS        |         15 |          1 |          3 |         19 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/layouts/AppLayout.jsx                         | JavaScript JSX |        119 |          8 |         17 |        144 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/layouts/LoginLayout.jsx                       | JavaScript JSX |         19 |          2 |          5 |         26 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/main.jsx                                      | JavaScript JSX |         26 |          0 |          4 |         30 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/pages/Dashboard.jsx                           | JavaScript JSX |         48 |          4 |          7 |         59 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/pages/Home.jsx                                | JavaScript JSX |         65 |          0 |         11 |         76 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/pages/Knowledge.jsx                           | JavaScript JSX |        140 |          4 |         14 |        158 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/pages/Login.jsx                               | JavaScript JSX |        258 |         23 |         25 |        306 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/pages/NotFound.jsx                            | JavaScript JSX |          8 |          0 |          2 |         10 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/pages/Order.jsx                               | JavaScript JSX |         13 |          0 |          3 |         16 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/pages/Plan.jsx                                | JavaScript JSX |        144 |          0 |         18 |        162 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/pages/Ticket.jsx                              | JavaScript JSX |        165 |          8 |         13 |        186 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/pages/Wallet.jsx                              | JavaScript JSX |        132 |          0 |         14 |        146 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/redux/slices/inviteSlice.js                   | JavaScript     |         78 |          3 |          6 |         87 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/redux/slices/knowledgeSlice.js                | JavaScript     |         81 |          2 |         11 |         94 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/redux/slices/orderSlice.js                    | JavaScript     |        252 |         17 |         17 |        286 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/redux/slices/passportSlice.js                 | JavaScript     |        302 |         16 |         15 |        333 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/redux/slices/planSlice.js                     | JavaScript     |         94 |          4 |          8 |        106 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/redux/slices/ticketSlice.js                   | JavaScript     |        264 |         15 |         29 |        308 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/redux/slices/userSlice.js                     | JavaScript     |        363 |         23 |         30 |        416 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/redux/store.js                                | JavaScript     |         20 |          0 |          3 |         23 |
+| /Users/yinian/Desktop/sometheme-daisyUI/src/utils/api.js                                  | JavaScript     |         32 |          2 |          5 |         39 |
+| Total                                                                                     |                |      6,072 |        202 |        676 |      6,950 |
++-------------------------------------------------------------------------------------------+----------------+------------+------------+------------+------------+
