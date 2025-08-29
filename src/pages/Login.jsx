@@ -23,6 +23,7 @@ const Login = () => {
   const [code, setCode] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [inviteCode, setInviteCode] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -92,7 +93,13 @@ const Login = () => {
         toast.error("两次密码输入不一致");
         return;
       }
-      const result = await dispatch(register({ email, password }));
+      const result = await dispatch(
+        register({
+          email,
+          password,
+          invite_code: inviteCode.trim() ? inviteCode.trim() : undefined,
+        })
+      );
       if (result.payload?.status === "success" && result.payload?.data?.token) {
         toast.success(result.payload?.message || "注册成功,跳转登陆");
         setMode("login");
@@ -201,6 +208,18 @@ const Login = () => {
               required
             />
           </div>
+
+          {mode === "register" && (
+            <div className="form-control mb-4">
+              <input
+                type="text"
+                placeholder="邀请码（可选）"
+                className="input input-bordered w-full"
+                value={inviteCode}
+                onChange={(e) => setInviteCode(e.target.value)}
+              />
+            </div>
+          )}
 
           {/* 验证码输入（找回密码第二步） */}
           {mode === "forgot" && forgotStep === 2 && (

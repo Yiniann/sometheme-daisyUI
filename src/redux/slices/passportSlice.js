@@ -113,11 +113,15 @@ export const sendEmailVerify = createAsyncThunk(
 // 创建注册的异步操作
 export const register = createAsyncThunk(
   "auth/register",
-  async ({ email, password }, { rejectWithValue }) => {
+  async ({ email, password, invite_code }, { rejectWithValue }) => {
     try {
+      const payload = { email, password };
+      if (invite_code && String(invite_code).trim()) {
+        payload.invite_code = String(invite_code).trim();
+      }
       const response = await api.post(
         "/api/v1/passport/auth/register",
-        qs.stringify({ email, password }),
+        qs.stringify(payload),
         { headers: { "Content-Type": "application/x-www-form-urlencoded" } },
       );
       return response.data; // 返回完整响应数据
