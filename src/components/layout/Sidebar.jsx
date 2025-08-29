@@ -12,31 +12,31 @@ const Sidebar = ({ onLinkClick }) => {
     <nav className="flex flex-col p-4 space-y-2 w-full">
       <NavLink to="/home" className={navItemClass} onClick={onLinkClick}>
         <Send className="w-5 h-5 flex-shrink-0" />
-        <span className="truncate">Home</span>
+        <span className="truncate">连接启程</span>
       </NavLink>
       <NavLink to="/dashboard" className={navItemClass} onClick={onLinkClick}>
         <LayoutDashboard className="w-5 h-5 flex-shrink-0" />
-        <span className="truncate">Dashboard</span>
+        <span className="truncate">订阅管理</span>
       </NavLink>
       <NavLink to="/plan" className={navItemClass} onClick={onLinkClick}>
         <Store className="w-5 h-5 flex-shrink-0" />
-        <span className="truncate">Plan</span>
+        <span className="truncate">订阅一览</span>
       </NavLink>
       <NavLink to="/order" className={navItemClass} onClick={onLinkClick}>
         <ShoppingCart className="w-5 h-5 flex-shrink-0" />
-        <span className="truncate">Order</span>
+        <span className="truncate">我的订单</span>
       </NavLink>
       <NavLink to="/ticket" className={navItemClass} onClick={onLinkClick}>
         <MessagesSquare className="w-5 h-5 flex-shrink-0" />
-        <span className="truncate">Ticket</span>
+        <span className="truncate">客服支持</span>
       </NavLink>
        <NavLink to="/knowledge" className={navItemClass} onClick={onLinkClick}>
         <BookOpen className="w-5 h-5 flex-shrink-0" />
-        <span className="truncate">Knowledge</span>
+        <span className="truncate">帮助文档</span>
       </NavLink>
       <NavLink to="/wallet" className={navItemClass} onClick={onLinkClick}>
         <Wallet className="w-5 h-5 flex-shrink-0" />
-        <span className="truncate">Wallet</span>
+        <span className="truncate">账户明细</span>
       </NavLink>
 
     </nav>

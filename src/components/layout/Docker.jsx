@@ -20,12 +20,12 @@ const Docker = () => {
       <nav className="fixed bottom-0 left-0 right-0 z-40 bg-base-100 border-t border-base-300 flex justify-around items-center h-16 lg:hidden">
         <NavLink to="/" className={navItemClass}>
           <Home className="w-5 h-5" />
-          <span>Home</span>
+          <span>连接启程</span>
         </NavLink>
 
         <NavLink to="/dashboard" className={navItemClass}>
           <LayoutDashboard className="w-5 h-5" />
-          <span>Dashboard</span>
+          <span>订阅管理</span>
         </NavLink>
 
         {/* 订阅按钮 */}
@@ -48,12 +48,12 @@ const Docker = () => {
 
         <NavLink to="/knowledge" className={navItemClass}>
           <BookOpen className="w-5 h-5" />
-          <span>Knowledge</span>
+          <span>客服支持</span>
         </NavLink>
 
         <NavLink to="/wallet" className={navItemClass}>
           <Wallet className="w-5 h-5" />
-          <span>Wallet</span>
+          <span>账户明细</span>
         </NavLink>
       </nav>
     </>
